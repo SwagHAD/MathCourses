@@ -14,6 +14,5 @@ namespace DataMath.Entities
         public Teacher Teacher { get; set; }
         public int? TeacherId { get; set; }
 
-        public List<Student> Students { get; set; } = new();
     }
 }

@@ -10,6 +10,5 @@ namespace DataMath.Entities
     {
         public int Id { get; set; } // Уникальный идентификатор студента
         public string Name { get; set; } // Имя студента
-        public List<Group> Groups { get; set; } = new();
     }
 }

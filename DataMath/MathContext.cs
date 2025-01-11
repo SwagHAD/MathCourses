@@ -17,24 +17,28 @@ namespace DataMath
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Связь "один-ко-многим" между Group и Teacher
             modelBuilder.Entity<Group>()
                 .HasOne(g => g.Teacher)
                 .WithMany(t => t.Groups)
                 .HasForeignKey(g => g.TeacherId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // Связь "многие-ко-многим" через таблицу StudentGroup
             modelBuilder.Entity<StudentGroup>()
                 .HasKey(sg => sg.Id);
 
             modelBuilder.Entity<StudentGroup>()
                 .HasOne<Student>()
                 .WithMany()
-                .HasForeignKey(sg => sg.StudentId);
+                .HasForeignKey(sg => sg.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StudentGroup>()
                 .HasOne<Group>()
                 .WithMany()
-                .HasForeignKey(sg => sg.GroupId);
+                .HasForeignKey(sg => sg.GroupId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
