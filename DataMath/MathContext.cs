@@ -1,5 +1,4 @@
 ﻿using DataMath.Entities;
-using DataMath.TableParts;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataMath
@@ -15,30 +14,37 @@ namespace DataMath
         {
         }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Связь "один-ко-многим" между Group и Teacher
             modelBuilder.Entity<Group>()
                 .HasOne(g => g.Teacher)
                 .WithMany(t => t.Groups)
                 .HasForeignKey(g => g.TeacherId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Связь "многие-ко-многим" через таблицу StudentGroup
             modelBuilder.Entity<StudentGroup>()
                 .HasKey(sg => sg.Id);
 
             modelBuilder.Entity<StudentGroup>()
-                .HasOne<Student>()
+                .HasOne(sg => sg.Student)
                 .WithMany()
                 .HasForeignKey(sg => sg.StudentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<StudentGroup>()
-                .HasOne<Group>()
+                .HasOne(sg => sg.Group)
                 .WithMany()
                 .HasForeignKey(sg => sg.GroupId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<StudentGroup>()
+                .HasIndex(sg => new { sg.StudentId, sg.GroupId })
+                .IsUnique();
         }
     }
 }

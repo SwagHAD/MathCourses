@@ -1,5 +1,4 @@
 ﻿using DataMath.Entities;
-using DataMath.TableParts;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataMath

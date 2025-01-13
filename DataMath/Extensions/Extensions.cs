@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using DataMath.Interfaces;
+using DataMath.RealizationsInterfaces;
 
 namespace DataMath.Extensions
 {
@@ -12,7 +14,7 @@ namespace DataMath.Extensions
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IMathContext, MathContext>();
-
+            services.AddScoped<IGroupRepository, GroupRepository>();
             return services;
         }
     }
