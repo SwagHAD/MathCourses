@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataMath\DataMath.csproj" />
+  </ItemGroup>
+
 </Project>

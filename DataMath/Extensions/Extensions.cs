@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using DataMath.Interfaces;
 using DataMath.RealizationsInterfaces;
+using DataMath.InterfacesRepository;
 
 namespace DataMath.Extensions
 {
@@ -15,6 +16,7 @@ namespace DataMath.Extensions
 
             services.AddScoped<IMathContext, MathContext>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<ITeacherRepisitory, TeacherRepository>();
             return services;
         }
     }

@@ -12,6 +12,6 @@ namespace DataMath.Entities
         public int Id { get; set; }
         [MaxLength(50)]
         public string Name { get; set; }
-        public List<Group> Groups { get; set; } = new();
+        public ICollection<Group> Groups { get; set; } = new List<Group>();
     }
 }
