@@ -5,11 +5,11 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathWeb", "MathWeb\MathWeb.csproj", "{90905340-876D-45F6-A0D9-FA7717FEA09B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathWebAPI", "MathWebAPI\MathWebAPI.csproj", "{A202F3F5-5289-4501-830B-8621515A1108}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMath", "DataMath\DataMath.csproj", "{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{823092B2-B55C-4D7B-AD21-6714D15AB38C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathgRPCServer", "MathgRPCServer\MathgRPCServer.csproj", "{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +21,6 @@ Global
 		{90905340-876D-45F6-A0D9-FA7717FEA09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90905340-876D-45F6-A0D9-FA7717FEA09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90905340-876D-45F6-A0D9-FA7717FEA09B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A202F3F5-5289-4501-830B-8621515A1108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A202F3F5-5289-4501-830B-8621515A1108}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A202F3F5-5289-4501-830B-8621515A1108}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A202F3F5-5289-4501-830B-8621515A1108}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{823092B2-B55C-4D7B-AD21-6714D15AB38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{823092B2-B55C-4D7B-AD21-6714D15AB38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{823092B2-B55C-4D7B-AD21-6714D15AB38C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
