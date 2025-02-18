@@ -1,4 +1,5 @@
 ﻿using BLL.Repository;
+using DataMath.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BLL.Extentions
@@ -7,7 +8,7 @@ namespace BLL.Extentions
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IGenericRepository<Group>, GroupRepository>();
             return services;
         }
     }
