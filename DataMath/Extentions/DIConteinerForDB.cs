@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataMath.Extensions
 {
-    public static class ExtentionDb
+    public static class DIConteinerForDB
     {
         public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
