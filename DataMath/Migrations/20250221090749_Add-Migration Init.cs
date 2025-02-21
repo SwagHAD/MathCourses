@@ -7,31 +7,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataMath.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class AddMigrationInit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Students",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Students", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Teachers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +31,7 @@ namespace DataMath.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
                     TeacherId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -59,27 +46,22 @@ namespace DataMath.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupStudent",
+                name: "Students",
                 columns: table => new
                 {
-                    GroupsId = table.Column<int>(type: "integer", nullable: false),
-                    StudentsId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    GroupId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupStudent", x => new { x.GroupsId, x.StudentsId });
+                    table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupStudent_Groups_GroupsId",
-                        column: x => x.GroupsId,
+                        name: "FK_Students_Groups_GroupId",
+                        column: x => x.GroupId,
                         principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupStudent_Students_StudentsId",
-                        column: x => x.StudentsId,
-                        principalTable: "Students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -116,35 +98,33 @@ namespace DataMath.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupStudent_StudentsId",
-                table: "GroupStudent",
-                column: "StudentsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_StudentGroups_GroupId",
                 table: "StudentGroups",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StudentGroups_StudentId",
+                name: "IX_StudentGroups_StudentId_GroupId",
                 table: "StudentGroups",
-                column: "StudentId");
+                columns: new[] { "StudentId", "GroupId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_GroupId",
+                table: "Students",
+                column: "GroupId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupStudent");
-
-            migrationBuilder.DropTable(
                 name: "StudentGroups");
 
             migrationBuilder.DropTable(
-                name: "Groups");
+                name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Teachers");

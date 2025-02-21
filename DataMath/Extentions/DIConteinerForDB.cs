@@ -4,14 +4,21 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataMath.Extensions
 {
-    public static class DIConteinerForDB
+    public static class DIContainerForDB
     {
         public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<MathContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' is not defined.");
+            }
 
-            services.AddScoped<IMathContext, MathContext>();
+            services.AddDbContext<MathContext>(options =>
+                options.UseNpgsql(connectionString));
+
+            services.AddScoped<IMathContext, MathContext>(); // Используем интерфейс
+
             return services;
         }
     }
