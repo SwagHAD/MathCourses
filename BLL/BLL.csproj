@@ -15,8 +15,4 @@
     <ProjectReference Include="..\DataMath\DataMath.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MR\StudentMR\Queries\" />
-  </ItemGroup>
-
 </Project>

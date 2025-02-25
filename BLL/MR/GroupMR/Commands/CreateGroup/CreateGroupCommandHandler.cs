@@ -7,14 +7,14 @@ using MediatR;
 
 namespace BLL.MR.GroupMR.Commands.CreateGroup
 {
-    public class CreateGroupCommandHandler(IGenericRepository<Group> groupRepository, IMathContext _context) : IRequestHandler<CreateGroupCommand, Group>
+    public class CreateGroupCommandHandler(IGenericRepository<Group> groupRepository) : IRequestHandler<CreateGroupCommand, Group>
     {
         public async Task<Group> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
-            var teacher = await _context.Teachers.FindAsync(request.TeacherId);
+            var teacher = await groupRepository.GetByIdAsync(request.TeacherId ?? -1, cancellationToken);
             if (teacher == null)
             {
-                throw new NotFoundException(nameof(Teacher), request.TeacherId);
+                throw new NotFoundException(nameof(Teacher), request.TeacherId ?? -1);
             }
             var group = new Group
             {

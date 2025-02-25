@@ -4,8 +4,8 @@ using BLL.MR.GroupMR.Commands.CreateGroup;
 using BLL.MR.GroupMR.Commands.DeleteGroup;
 using BLL.MR.GroupMR.Commands.UpdateGroup;
 using BLL.MR.GroupMR.Queries;
-using GrpcService;
 using DataMath.Entities;
+using MathgRPCServer.Grpc;
 
 public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBase
 {
