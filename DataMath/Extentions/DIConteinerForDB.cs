@@ -17,7 +17,7 @@ namespace DataMath.Extensions
             services.AddDbContext<MathContext>(options =>
                 options.UseNpgsql(connectionString));
 
-            services.AddScoped<IMathContext, MathContext>(); // Используем интерфейс
+            services.AddScoped<IMathContext, MathContext>();
 
             return services;
         }

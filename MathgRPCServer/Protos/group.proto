@@ -17,6 +17,7 @@ message GroupResponse {
   int32 id = 1;
   string name = 2;
   int32 teacherId = 3;
+  repeated int32 students = 4;
 }
 
 message CreateGroupRequest {

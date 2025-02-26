@@ -15,13 +15,18 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
     {
         var groupDto = await _mediator.Send(new GetGroupDetailsQuery { Id = request.Id });
 
-        return new GroupResponse
+        var response = new GroupResponse
         {
             Id = groupDto.Id,
             Name = groupDto.Name,
             TeacherId = groupDto.TeacherId ?? 0
         };
+
+        response.Students.AddRange(groupDto.Students.Select(s => s.Id));
+
+        return response;
     }
+
 
     public override async Task<GroupResponse> CreateGroup(CreateGroupRequest request, ServerCallContext context)
     {
@@ -32,13 +37,17 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
             Students = request.Students.Select(id => new Student { Id = id }).ToList()
         });
 
-        return new GroupResponse
+        var response = new GroupResponse
         {
             Id = group.Id,
             Name = group.Name,
-            TeacherId = group.TeacherId ?? 0
+            TeacherId = group.TeacherId ?? 0,
         };
+
+        response.Students.AddRange(group.Students.Select(student => student.Id));
+        return response;
     }
+
 
     public override async Task<DeleteGroupResponse> DeleteGroup(DeleteGroupRequest request, ServerCallContext context)
     {
@@ -57,11 +66,15 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
             Students = request.Students.Select(id => new Student { Id = id }).ToList()
         });
 
-        return new GroupResponse
+        var response = new GroupResponse
         {
             Id = request.Id,
             Name = request.Name,
             TeacherId = request.TeacherId
         };
+
+        response.Students.AddRange(request.Students);
+        return response;
     }
+
 }
