@@ -1,5 +1,6 @@
 using Grpc.Net.Client.Web;
 using MathWeb.Components;
+using MathWeb.Extensions;
 using MathWeb.Grpc;
 
 internal class Program
@@ -13,13 +14,7 @@ internal class Program
             .AddInteractiveServerComponents();
 
         // Добавляем gRPC-клиента
-        builder.Services.AddGrpcClient<GroupService.GroupServiceClient>(options =>
-        {
-            options.Address = new Uri("https://localhost:5001");
-        }).ConfigurePrimaryHttpMessageHandler(() =>
-        {
-            return new GrpcWebHandler(new HttpClientHandler());
-        });
+        builder.Services.AddGrpcClients(builder.Configuration);
 
         var app = builder.Build();
 
