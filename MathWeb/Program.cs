@@ -1,7 +1,5 @@
-using Grpc.Net.Client.Web;
 using MathWeb.Components;
 using MathWeb.Extensions;
-using MathWeb.Grpc;
 
 internal class Program
 {

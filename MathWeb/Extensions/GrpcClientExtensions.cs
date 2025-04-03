@@ -1,5 +1,5 @@
 ﻿using Grpc.Net.Client.Web;
-using MathWeb.Grpc;
+using MathgRPCServer.Grpc;
 
 namespace MathWeb.Extensions
 {
@@ -7,23 +7,15 @@ namespace MathWeb.Extensions
     {
         public static IServiceCollection AddGrpcClients(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddGrpcClient<GroupService.GroupServiceClient>(options =>
+            services.AddGrpcClient<GroupService.GroupServiceClient>(client =>
             {
-                options.Address = new Uri(configuration["Grpc:GroupServiceUrl"]);
-            }).ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                return new GrpcWebHandler(new HttpClientHandler());
+                client.Address = new Uri("https://localhost:7080");
             });
-
-            services.AddGrpcClient<StudentService.StudentServiceClient>(options =>
+            services.AddGrpcClient<StudentService.StudentServiceClient>(client =>
             {
-                options.Address = new Uri(configuration["Grpc:StudentServiceUrl"]);
-            }).ConfigurePrimaryHttpMessageHandler(() =>
-            {
-                return new GrpcWebHandler(new HttpClientHandler());
+                client.Address = new Uri("https://localhost:7080");
             });
-
-            return services;
+            return services;    
         }
     }
 }

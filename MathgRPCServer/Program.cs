@@ -10,7 +10,11 @@ internal class Program
 
         builder.Services.AddDataAccess(builder.Configuration);
         builder.Services.AddServices();
-        builder.Services.AddGrpc();
+        builder.Services.AddGrpc(options =>
+        {
+            options.EnableDetailedErrors = true;
+            options.IgnoreUnknownServices = true;
+        });
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAll", policy =>

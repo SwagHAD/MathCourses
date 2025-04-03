@@ -1,7 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "MathWeb.Grpc";  // Пространство имен для клиента
-
+option csharp_namespace = "MathgRPCServer.Grpc";
 service StudentService {
     rpc GetStudent (StudentRequest) returns (StudentResponse);
     rpc CreateStudent (CreateStudentRequest) returns (StudentResponse);

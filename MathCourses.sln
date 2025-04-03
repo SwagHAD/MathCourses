@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathgRPCServer", "MathgRPCServer\MathgRPCServer.csproj", "{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{F49F0529-F5E4-4F30-B8FD-D22CB3638249}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +35,15 @@ Global
 		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B04E270B-11DA-4AE9-B3E5-8774BBF8D9AF}
 	EndGlobalSection
 EndGlobal

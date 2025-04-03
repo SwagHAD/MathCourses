@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "MathgRPCServer.Grpc";  // Пространство имен для сервера
+option csharp_namespace = "MathgRPCServer.Grpc";
 
 service GroupService {
   rpc GetGroup (GroupRequest) returns (GroupResponse);
