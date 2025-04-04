@@ -11,8 +11,6 @@ internal class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
-        // Добавляем gRPC-клиента
-        builder.Services.AddGrpcClients(builder.Configuration);
 
         var app = builder.Build();
 
