@@ -1,35 +1,47 @@
 ﻿syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+import "Protos/entities.proto";
+
+package math.v1;
+
 option csharp_namespace = "MathgRPCServer.Grpc";
+
 service StudentService {
-    rpc GetStudent (StudentRequest) returns (StudentResponse);
-    rpc CreateStudent (CreateStudentRequest) returns (StudentResponse);
-    rpc DeleteStudent (DeleteStudentRequest) returns (DeleteStudentResponse);
-    rpc UpdateStudent (UpdateStudentRequest) returns (StudentResponse);
+  rpc GetStudent (StudentRequest) returns (StudentFullResponse);
+  rpc CreateStudent (CreateStudentRequest) returns (StudentFullResponse);
+  rpc DeleteStudent (DeleteStudentRequest) returns (DeleteStudentResponse);
+  rpc UpdateStudent (UpdateStudentRequest) returns (StudentFullResponse);
+  rpc GetAllStudents (google.protobuf.Empty) returns (AllStudentsResponse);
 }
 
 message StudentRequest {
-    int32 id = 1;
+  int32 id = 1;
 }
 
-message StudentResponse {
-    int32 id = 1;
-    string name = 2;
+message StudentFullResponse {
+  StudentGrpc student = 1;
+  repeated GroupGrpc groups = 2;
 }
 
 message CreateStudentRequest {
-    string name = 1;
+  string name = 1;
 }
 
 message DeleteStudentRequest {
-    int32 id = 1;
+  int32 id = 1;
 }
 
 message DeleteStudentResponse {
-    bool success = 1;
+  bool success = 1;
 }
 
 message UpdateStudentRequest {
-    int32 id = 1;
-    string name = 2;
+  int32 id = 1;
+  string name = 2;
+  repeated GroupGrpc groups = 3;
+}
+
+message AllStudentsResponse {
+  repeated StudentFullResponse students = 1;
 }

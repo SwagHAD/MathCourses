@@ -8,7 +8,7 @@ namespace BLL.MR.GroupMR.Queries.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int? TeacherId { get; set; }
+        public Teacher Teacher { get; set; }
         public ICollection<Student> Students = new List<Student>();
 
         public void Mapping(Profile profile)
@@ -18,7 +18,7 @@ namespace BLL.MR.GroupMR.Queries.Dto
                     opt => opt.MapFrom(group => group.Id))
                 .ForMember(dto => dto.Name,
                     opt => opt.MapFrom(group => group.Name))
-                .ForMember(dto => dto.TeacherId,
+                .ForMember(dto => dto.Teacher.Id,
                     opt => opt.MapFrom(group => group.TeacherId))
                 .ForMember(dto => dto.Students,
                     opt => opt.MapFrom(group => group.Students));

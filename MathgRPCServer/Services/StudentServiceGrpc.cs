@@ -4,8 +4,6 @@ using BLL.MR.StudentMR.Queries;
 using BLL.MR.StudentMR.Command.CreateStudent;
 using BLL.MR.StudentMR.Command.DeleteStudent;
 using BLL.MR.StudentMR.Command.UpdateStudent;
-using MathgRPCServer.Grpc;
-
 public class StudentServiceGrpc(IMediator mediator) : StudentService.StudentServiceBase
 {
     private readonly IMediator _mediator = mediator;

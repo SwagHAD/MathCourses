@@ -1,6 +1,5 @@
 ﻿using BLL.Common.Exceptions;
 using BLL.Repository;
-using DataMath;
 using DataMath.Entities;
 using MediatR;
 
@@ -11,15 +10,16 @@ namespace BLL.MR.GroupMR.Commands.CreateGroup
     {
         public async Task<Group> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
-            var teacher = await groupRepository.GetByIdAsync(request.TeacherId ?? -1, cancellationToken);
+            var teacher = await groupRepository.GetByIdAsync(request.Teacher.Id, cancellationToken);
             if (teacher == null)
             {
-                throw new NotFoundException(nameof(Teacher), request.TeacherId ?? -1);
+                throw new NotFoundException(nameof(Teacher), request.Teacher.Id);
             }
             var group = new Group
             {
                 Name = request.Name,
-                TeacherId = request.TeacherId,
+                TeacherId = request.Teacher.Id,
+                Teacher = request.Teacher,
                 Students = request.Students
             };
             await groupRepository.AddAsync(group, cancellationToken);

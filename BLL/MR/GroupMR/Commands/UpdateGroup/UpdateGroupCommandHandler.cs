@@ -15,7 +15,7 @@ namespace BLL.MR.GroupMR.Commands.UpdateGroup
                 throw new NotFoundException(nameof(Group), request.Id);
             }
             group.Name = request.Name;
-            group.TeacherId = request.TeacherId;
+            group.TeacherId = request.Teacher.Id;
             group.Students = request.Students;
 
             await groupRepository.UpdateAsync(group, cancellationToken);

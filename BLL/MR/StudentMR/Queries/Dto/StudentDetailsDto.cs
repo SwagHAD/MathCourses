@@ -19,7 +19,7 @@ namespace BLL.MR.StudentMR.Queries.Dto
             profile.CreateMap<StudentDetailsDto, Student>()
                 .ForMember(dto => dto.Id,
                     opt => opt.MapFrom(student => student.Id))
-                .ForMember(dto => dto.Id,
+                .ForMember(dto => dto.Name,
                     opt => opt.MapFrom(student => student.Name));
         }
 
