@@ -26,18 +26,17 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
                 Id = group.Teacher.Id,
                 Name = group.Teacher.Name,
             },
-            Students = group.Students.Select(student => new StudentGrpc
+            Students =
             {
-                Id = student.Id,
-                Name = student.Name,
-            }),
+                group.Students.Select(s => new StudentGrpc
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                })
+            }
         };
-
-
         return response;
     }
-
-
     public override async Task<GroupFullResponse> CreateGroup(CreateGroupRequest request, ServerCallContext context)
     {
         var group = await _mediator.Send(new CreateGroupCommand
@@ -54,19 +53,27 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
                 Name = student.Name ,
             }).ToList()
         });
-
         var response = new GroupFullResponse()
         {
-            Id = group.Id,
-            Name = group.Name,
+            Group = new GroupGrpc()
+            {
+                Id = group.Id,
+                Name = group.Name,
+            },
             Teacher = new TeacherGrpc()
             {
                 Id = group.Teacher.Id,
                 Name = group.Teacher.Name,
             },
-            
+            Students = 
+            {
+                group.Students.Select(s => new StudentGrpc
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                })
+            }
         };
-
         return response;
     }
 
@@ -80,7 +87,7 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
 
     public override async Task<GroupFullResponse> UpdateGroup(UpdateGroupRequest request, ServerCallContext context)
     {
-        var group = await _mediator.Send(new UpdateGroupCommand
+        await _mediator.Send(new UpdateGroupCommand
         {
             Id = request.Id,
             Name = request.Name,
@@ -89,17 +96,15 @@ public class GroupServiceGrpc(IMediator mediator) : GroupService.GroupServiceBas
                 Id = request.Teacher.Id,
                 Name = request.Teacher.Name,
             },
-            Students = new List<Student>()
+            Students = request.Students.Select(s => new Student
+            {
+                Id = s.Id,
+                Name = s.Name,
+            }).ToList()
         });
 
-        var response = new GroupFullResponse
-        {
-            Id = request.Id,
-            Name = request.Name,
-            Teacher = request.Teacher,
-        };
 
-        return response;
+        return new GroupFullResponse();
     }
 
 }

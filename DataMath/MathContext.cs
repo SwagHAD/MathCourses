@@ -25,7 +25,7 @@ namespace DataMath
                 .HasOne(g => g.Teacher)
                 .WithMany(t => t.Groups)
                 .HasForeignKey(g => g.TeacherId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<StudentGroup>()
                 .HasKey(sg => sg.Id);
@@ -34,13 +34,13 @@ namespace DataMath
                 .HasOne(sg => sg.Student)
                 .WithMany()
                 .HasForeignKey(sg => sg.StudentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<StudentGroup>()
                 .HasOne(sg => sg.Group)
                 .WithMany()
                 .HasForeignKey(sg => sg.GroupId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<StudentGroup>()
                 .HasIndex(sg => new { sg.StudentId, sg.GroupId })

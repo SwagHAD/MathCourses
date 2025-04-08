@@ -4,32 +4,48 @@ using BLL.MR.StudentMR.Queries;
 using BLL.MR.StudentMR.Command.CreateStudent;
 using BLL.MR.StudentMR.Command.DeleteStudent;
 using BLL.MR.StudentMR.Command.UpdateStudent;
+using MathgRPCServer.Grpc;
 public class StudentServiceGrpc(IMediator mediator) : StudentService.StudentServiceBase
 {
     private readonly IMediator _mediator = mediator;
 
-    public override async Task<StudentResponse> GetStudent(StudentRequest request, ServerCallContext context)
+    public override async Task<StudentFullResponse> GetStudent(StudentRequest request, ServerCallContext context)
     {
-        var studentDto = await _mediator.Send(new GetStudentDetailsQuery { Id = request.Id });
+        var student = await _mediator.Send(new GetStudentDetailsQuery { Id = request.Id });
 
-        return new StudentResponse
+        return new StudentFullResponse
         {
-            Id = studentDto.Id,
-            Name = studentDto.Name
+            Student = new StudentGrpc()
+            {
+                Id = student.Id,
+                Name = student.Name,
+            },
+            Groups =
+            {
+                student.Groups.Select(g => new GroupGrpc()
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                })
+            }
         };
+
     }
 
-    public override async Task<StudentResponse> CreateStudent(CreateStudentRequest request, ServerCallContext context)
+    public override async Task<StudentFullResponse> CreateStudent(CreateStudentRequest request, ServerCallContext context)
     {
         var student = await _mediator.Send(new CreateStudentCommand
         {
             Name = request.Name
         });
 
-        return new StudentResponse
+        return new StudentFullResponse
         {
-            Id = student.Id,
-            Name = student.Name
+            Student = new StudentGrpc()
+            {
+                Id = student.Id,
+                Name = student.Name,
+            }
         };
     }
 
@@ -40,7 +56,7 @@ public class StudentServiceGrpc(IMediator mediator) : StudentService.StudentServ
         return new DeleteStudentResponse { Success = true };
     }
 
-    public override async Task<StudentResponse> UpdateStudent(UpdateStudentRequest request, ServerCallContext context)
+    public override async Task<StudentFullResponse> UpdateStudent(UpdateStudentRequest request, ServerCallContext context)
     {
         await _mediator.Send(new UpdateStudentCommand
         {
@@ -48,11 +64,7 @@ public class StudentServiceGrpc(IMediator mediator) : StudentService.StudentServ
             Name = request.Name
         });
 
-        var responce = new StudentResponse
-        {
-            Id = request.Id,
-            Name = request.Name
-        };
-        return responce;
+
+        return new StudentFullResponse();
     }
 }

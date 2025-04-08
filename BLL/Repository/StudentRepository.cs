@@ -1,7 +1,6 @@
 ﻿using DataMath;
 using DataMath.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace BLL.Repository
@@ -23,17 +22,17 @@ namespace BLL.Repository
 
         public async Task<IEnumerable<Student>> FindAsync(Expression<Func<Student, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            return await _ctx.Students.Where(predicate).ToListAsync(cancellationToken);
+            return await _ctx.Students.Include(s => s.Groups).Where(predicate).ToListAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _ctx.Students.ToListAsync(cancellationToken);
+            return await _ctx.Students.Include(s => s.Groups).ToListAsync(cancellationToken);
         }
 
         public async Task<Student> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var student = await _ctx.Students.FindAsync(id, cancellationToken);
+            var student = await _ctx.Students.Include(s => s.Groups).FirstOrDefaultAsync(s => s.Id == id);
             if (student is null)
             {
                 throw new InvalidOperationException($"Student with {id} doesn't exist!");

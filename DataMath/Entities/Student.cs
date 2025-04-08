@@ -12,5 +12,7 @@ namespace DataMath.Entities
         public int Id { get; set; } // Уникальный идентификатор студента
         [MaxLength(50)]
         public string Name { get; set; } // Имя студента
+
+        public ICollection<Group> Groups { get; set; } = new List<Group>();
     }
 }

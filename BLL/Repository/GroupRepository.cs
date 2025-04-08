@@ -23,17 +23,17 @@ namespace BLL.Repository
 
         public async Task<IEnumerable<Group>> FindAsync(Expression<Func<Group, bool>> predicate, CancellationToken cancellationToken = default)
         {
-            return await _ctx.Groups.Where(predicate).ToListAsync(cancellationToken);
+            return await _ctx.Groups.Include(g => g.Students).Where(predicate).ToListAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Group>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _ctx.Groups.ToListAsync(cancellationToken);
+            return await _ctx.Groups.Include(g => g.Students).ToListAsync(cancellationToken);
         }
 
         public async Task<Group> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var group =  await _ctx.Groups.FindAsync(id, cancellationToken);
+            var group =  await _ctx.Groups.Include(g => g.Students).FirstOrDefaultAsync(g => g.Id == id);
             if (group is null)
             {
                 throw new InvalidOperationException($"Group with {id} doesn't exist!");

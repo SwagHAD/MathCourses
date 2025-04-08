@@ -13,6 +13,7 @@ namespace BLL.MR.StudentMR.Queries.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<Group> Groups { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -20,7 +21,9 @@ namespace BLL.MR.StudentMR.Queries.Dto
                 .ForMember(dto => dto.Id,
                     opt => opt.MapFrom(student => student.Id))
                 .ForMember(dto => dto.Name,
-                    opt => opt.MapFrom(student => student.Name));
+                    opt => opt.MapFrom(student => student.Name))
+                .ForMember(dto => dto.Groups,
+                    opt => opt.MapFrom(student => student.Groups));
         }
 
     }
