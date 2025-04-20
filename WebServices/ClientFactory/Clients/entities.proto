@@ -1,0 +1,18 @@
+// entities.proto
+syntax = "proto3";
+option csharp_namespace = "MathgRPCServer.Grpc";
+
+message StudentGrpc {
+  int32 id = 1;
+  string name = 2;
+}
+
+message TeacherGrpc {
+  int32 id = 1;
+  string name = 2;
+}
+
+message GroupGrpc {
+  int32 id = 1;
+  string name = 2;
+}

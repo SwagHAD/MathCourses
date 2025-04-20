@@ -12,13 +12,9 @@ namespace DataMath.Entities
         public int StudentId { get; set; }
         [ProtoMember(3)]
         public Student Student { get; set; }
-        [ProtoMember(4)]
-        public int GroupId { get; set; }
-        [ProtoMember(5)]
+        public int GroupId { get; set; }   // Ссылка на группу (в виде идентификатора)
         public Group Group { get; set; }
-        [ProtoMember(6)]
-        public DateTime JoinedAt { get; set; }
-        [ProtoMember(7)]
-        public StatusStudent Status { get; set; }
+        public DateTime JoinedAt { get; set; } // Дата присоединения студента к группе
+        public StatusStudent Status { get; set; }    // Дополнительное поле (например, "Активный", "Закончил")
     }
 }

@@ -21,4 +21,10 @@
     <ProjectReference Include="..\MathgRPCServer\MathgRPCServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Protobuf Include="ClientFactory\Clients\entities.proto" GrpcServices="None" />
+    <Protobuf Include="ClientFactory\Clients\group.proto" GrpcServices="Client" />
+    <Protobuf Include="ClientFactory\Clients\student.proto" GrpcServices="Client" />
+  </ItemGroup>
+
 </Project>
