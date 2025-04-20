@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BLL.MR.GroupMR.Queries
 {
-    public class GetGroupDetailsQuery : IRequest<GroupDetailsDto>
+    public class GetGroupDetailsQuery : IRequest<Group>
     {
         public int Id { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using BLL.MR.StudentMR.Queries.Dto;
+using DataMath.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.MR.StudentMR.Queries
 {
-    public class GetStudentDetailsQuery : IRequest<StudentDetailsDto>
+    public class GetStudentDetailsQuery : IRequest<Student>
     {
         public int Id { get; set; }
     }

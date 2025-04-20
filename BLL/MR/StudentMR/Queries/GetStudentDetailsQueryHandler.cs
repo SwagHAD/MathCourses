@@ -7,16 +7,16 @@ using MediatR;
 
 namespace BLL.MR.StudentMR.Queries
 {
-    public class GetStudentDetailsQueryHandler(IGenericRepository<Student> studentRepository, IMapper mapper) : IRequestHandler<GetStudentDetailsQuery, StudentDetailsDto>
+    public class GetStudentDetailsQueryHandler(IGenericRepository<Student> studentRepository) : IRequestHandler<GetStudentDetailsQuery, Student>
     {
-        public async Task<StudentDetailsDto> Handle(GetStudentDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<Student> Handle(GetStudentDetailsQuery request, CancellationToken cancellationToken)
         {
             var student = await studentRepository.GetByIdAsync(request.Id, cancellationToken);
             if(student is null)
             {
                 throw new NotFoundException(nameof(Student), request.Id);
             }
-            return mapper.Map<StudentDetailsDto>(student);
+            return student;
         }
     }
 }

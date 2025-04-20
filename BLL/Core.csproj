@@ -15,4 +15,9 @@
     <ProjectReference Include="..\DataMath\DataMath.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MR\TeacherMR\Command\UpdateTeacher\" />
+    <Folder Include="MR\TeacherMR\Queries\" />
+  </ItemGroup>
+
 </Project>

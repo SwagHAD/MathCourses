@@ -21,12 +21,12 @@ namespace BLL.Repository
             await _ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> FindAsync(Expression<Func<Student, bool>> predicate, CancellationToken cancellationToken = default)
+        public async Task<ICollection<Student>> FindAsync(Expression<Func<Student, bool>> predicate, CancellationToken cancellationToken = default)
         {
             return await _ctx.Students.Where(predicate).ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<ICollection<Student>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _ctx.Students.ToListAsync(cancellationToken);
         }

@@ -15,10 +15,4 @@
     </PackageReference>
   </ItemGroup>
 
-	<ItemGroup>
-		<Protobuf Include="Protos\group.proto" GrpcServices="Server" />
-		<Protobuf Include="Protos\student.proto" GrpcServices="Server" />
-		<Protobuf Include="Protos\entities.proto" GrpcServices="None" />
-	</ItemGroup>
-
 </Project>

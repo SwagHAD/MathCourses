@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "BLL\Core.csproj", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathgRPCServer", "MathgRPCServer\MathgRPCServer.csproj", "{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{F49F0529-F5E4-4F30-B8FD-D22CB3638249}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices", "WebServices\WebServices.csproj", "{5D43E681-1D19-4E35-9FB0-0AD8237D6C1E}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F49F0529-F5E4-4F30-B8FD-D22CB3638249}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D43E681-1D19-4E35-9FB0-0AD8237D6C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D43E681-1D19-4E35-9FB0-0AD8237D6C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D43E681-1D19-4E35-9FB0-0AD8237D6C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU

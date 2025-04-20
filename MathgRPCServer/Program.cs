@@ -30,8 +30,6 @@ internal class Program
         app.UseCors("AllowAll");
         app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
 
-        app.MapGrpcService<GroupServiceGrpc>().EnableGrpcWeb();
-        app.MapGrpcService<StudentServiceGrpc>().EnableGrpcWeb();
         app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client.");
 
         app.Run();

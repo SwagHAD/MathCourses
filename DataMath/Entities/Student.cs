@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using ProtoBuf;
 
 namespace DataMath.Entities
 {
+    [ProtoContract]
     public class Student
     {
-        public int Id { get; set; } // Уникальный идентификатор студента
+        [ProtoMember(1)]
+        public int Id { get; set; }
+
+        [ProtoMember(2)]
         [MaxLength(50)]
-        public string Name { get; set; } // Имя студента
+        public string Name { get; set; }
     }
 }

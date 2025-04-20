@@ -21,12 +21,12 @@ namespace BLL.Repository
             await _ctx.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Group>> FindAsync(Expression<Func<Group, bool>> predicate, CancellationToken cancellationToken = default)
+        public async Task<ICollection<Group>> FindAsync(Expression<Func<Group, bool>> predicate, CancellationToken cancellationToken = default)
         {
             return await _ctx.Groups.Where(predicate).ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Group>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<ICollection<Group>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             return await _ctx.Groups.ToListAsync(cancellationToken);
         }

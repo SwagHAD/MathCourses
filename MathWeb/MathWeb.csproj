@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Contracts\Contracts.csproj" />
     <ProjectReference Include="..\MathgRPCServer\MathgRPCServer.csproj" />
   </ItemGroup>
 	<ItemGroup>

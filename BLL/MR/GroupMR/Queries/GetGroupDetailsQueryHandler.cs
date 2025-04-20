@@ -7,9 +7,9 @@ using MediatR;
 
 namespace BLL.MR.GroupMR.Queries
 {
-    public class GetGroupDetailsQueryHandler(IGenericRepository<Group> groupRepository, IMapper mapper) : IRequestHandler<GetGroupDetailsQuery, GroupDetailsDto>
+    public class GetGroupDetailsQueryHandler(IGenericRepository<Group> groupRepository) : IRequestHandler<GetGroupDetailsQuery, Group>
     {
-        public async Task<GroupDetailsDto> Handle(GetGroupDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<Group> Handle(GetGroupDetailsQuery request, CancellationToken cancellationToken)
         {
             var group = await groupRepository.GetByIdAsync(request.Id, cancellationToken);
 
@@ -18,7 +18,7 @@ namespace BLL.MR.GroupMR.Queries
                 throw new NotFoundException(nameof(Group), request.Id);
             }
 
-            return mapper.Map<GroupDetailsDto>(group); 
+            return group;
         }
 
     }
