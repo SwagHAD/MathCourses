@@ -12,5 +12,8 @@ namespace DataMath.Entities
         [ProtoMember(2)]
         [MaxLength(50)]
         public string Name { get; set; }
+
+        [ProtoMember(3)]
+        public ICollection<Group> Groups { get; set; }
     }
 }

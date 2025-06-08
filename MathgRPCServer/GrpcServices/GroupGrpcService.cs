@@ -7,6 +7,7 @@ using DataMath.Entities;
 using DataMath.ServerVariables;
 using MathgRPCServer.GrpcServices.Interfaces;
 using MediatR;
+using Shared.Math.Commons;
 
 namespace MathgRPCServer.GrpcServices
 {
@@ -14,15 +15,15 @@ namespace MathgRPCServer.GrpcServices
     {
         private readonly IMediator mediator = mediator;
 
-        public async Task<ServerResult<Group>> Create(Group common)
+        public async Task<ServerResult<Group>> Create(RequestItem<Group> Request)
         {
             try
             {
                 var group = await mediator.Send(new CreateGroupCommand
                 {
-                    Name = common.Name,
-                    Teacher = common.Teacher,
-                    Students = common.Students,
+                    Name = Request.Item.Name,
+                    Teacher = Request.Item.Teacher,
+                    Students = Request.Item.Students,
                 });
                 return new ServerResult<Group>
                 {
@@ -40,13 +41,13 @@ namespace MathgRPCServer.GrpcServices
             }
         }
 
-        public async Task<ServerResult<Group>> Delete(int id)
+        public async Task<ServerResult<Group>> Delete(IdRequest IdPar)
         {
             try
             {
                 await mediator.Send(new DeleteGroupCommand
                 {
-                    Id = id
+                    Id = IdPar.ID ?? -1
                 });
                 return new ServerResult<Group>
                 {
@@ -63,13 +64,13 @@ namespace MathgRPCServer.GrpcServices
             }
         }
 
-        public async Task<ServerResult<Group>> Get(int Id)
+        public async Task<ServerResult<Group>> Get(IdRequest IdPar)
         {
             try
             {
                 var group = await mediator.Send(new GetGroupDetailsQuery
                 {
-                    Id = Id
+                    Id = IdPar.ID ?? -1,
                 });
                 return new ServerResult<Group>
                 {
@@ -87,7 +88,7 @@ namespace MathgRPCServer.GrpcServices
             }
         }
 
-        public async Task<ServerResult<ICollection<Group>>> GetAll()
+        public async Task<ServerResult<ICollection<Group>>> GetAll(IdRequest IdPar)
         {
             try
             {
@@ -108,14 +109,14 @@ namespace MathgRPCServer.GrpcServices
             }
         }
 
-        public async Task<ServerResult<Group>> Update(Group common)
+        public async Task<ServerResult<Group>> Update(RequestItem<Group> Request)
         {
             try
             {
                 await mediator.Send(new UpdateGroupCommand
                 {
-                    Name = common.Name,
-                    Students = common.Students,
+                    Name = Request.Item.Name,
+                    Students = Request.Item.Students,
                 });
                 return new ServerResult<Group>
                 {
