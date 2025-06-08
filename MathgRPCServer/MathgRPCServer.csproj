@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BLL\Core.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DataMath\DataMath.csproj" />
     <ProjectReference Include="..\Shared.Math\Shared.Math.csproj" />
   </ItemGroup>
