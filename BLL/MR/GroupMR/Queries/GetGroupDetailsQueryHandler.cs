@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using BLL.Common.Exceptions;
-using BLL.MR.GroupMR.Queries.Dto;
-using BLL.Repository;
+﻿using BLL.Common.Exceptions;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.GroupMR.Queries
+namespace Core.MR.GroupMR.Queries
 {
     public class GetGroupDetailsQueryHandler(IGenericRepository<Group> groupRepository) : IRequestHandler<GetGroupDetailsQuery, Group>
     {

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using BLL.Common.Exceptions;
-using BLL.MR.StudentMR.Queries.Dto;
-using BLL.Repository;
+﻿using BLL.Common.Exceptions;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.StudentMR.Queries
+namespace Core.MR.StudentMR.Queries
 {
     public class GetStudentDetailsQueryHandler(IGenericRepository<Student> studentRepository) : IRequestHandler<GetStudentDetailsQuery, Student>
     {

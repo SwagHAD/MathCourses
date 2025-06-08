@@ -1,7 +1,6 @@
-﻿using BLL.MR.GroupMR.Commands.CreateGroup;
-using BLL.MR.GroupMR.Commands.DeleteGroup;
-using BLL.MR.GroupMR.Commands.UpdateGroup;
-using BLL.MR.GroupMR.Queries;
+﻿using Core.MR.GroupMR.Commands.CreateGroup;
+using Core.MR.GroupMR.Commands.DeleteGroup;
+using Core.MR.GroupMR.Commands.UpdateGroup;
 using Core.MR.GroupMR.Queries;
 using DataMath.Entities;
 using DataMath.ServerVariables;

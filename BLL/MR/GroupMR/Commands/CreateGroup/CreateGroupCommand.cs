@@ -1,7 +1,7 @@
 ﻿using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.GroupMR.Commands.CreateGroup
+namespace Core.MR.GroupMR.Commands.CreateGroup
 {
     public class CreateGroupCommand : IRequest<Group>
     {

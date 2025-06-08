@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BLL.MR.StudentMR.Command.DeleteStudent
+namespace Core.MR.StudentMR.Command.DeleteStudent
 {
     public class DeleteStudentCommand : IRequest<Unit>
     {

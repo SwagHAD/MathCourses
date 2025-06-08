@@ -1,5 +1,4 @@
-﻿using DataMath.Entities;
-using MediatR;
+﻿using MediatR;
 
 namespace Core.MR.TeacherMR.Command.DeleteTeacher
 {

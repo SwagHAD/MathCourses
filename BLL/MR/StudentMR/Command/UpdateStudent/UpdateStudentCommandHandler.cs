@@ -1,14 +1,9 @@
 ﻿using BLL.Common.Exceptions;
-using BLL.Repository;
 using DataMath.Entities;
+using Core.Repository;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BLL.MR.StudentMR.Command.UpdateStudent
+namespace Core.MR.StudentMR.Command.UpdateStudent
 {
     public class UpdateStudentCommandHandler(IGenericRepository<Student> studentRepository) : IRequestHandler<UpdateStudentCommand, Unit>
     {

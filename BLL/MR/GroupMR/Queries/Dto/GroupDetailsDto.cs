@@ -2,7 +2,7 @@
 using BLL.Mapping;
 using DataMath.Entities;
 
-namespace BLL.MR.GroupMR.Queries.Dto
+namespace Core.MR.GroupMR.Queries.Dto
 {
     public class GroupDetailsDto : IMapWith<Group>
     {

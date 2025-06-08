@@ -1,9 +1,9 @@
 ﻿using BLL.Common.Exceptions;
-using BLL.Repository;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.GroupMR.Commands.DeleteGroup
+namespace Core.MR.GroupMR.Commands.DeleteGroup
 {
     public class DeleteGroupCommandHandler(IGenericRepository<Group> groupRepository) : IRequestHandler<DeleteGroupCommand, Unit>
     {

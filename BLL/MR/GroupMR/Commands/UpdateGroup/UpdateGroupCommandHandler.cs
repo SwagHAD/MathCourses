@@ -1,9 +1,9 @@
 ﻿using BLL.Common.Exceptions;
-using BLL.Repository;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.GroupMR.Commands.UpdateGroup
+namespace Core.MR.GroupMR.Commands.UpdateGroup
 {
     public class UpdateGroupCommandHandler(IGenericRepository<Group> groupRepository) : IRequestHandler<UpdateGroupCommand, Unit>
     {

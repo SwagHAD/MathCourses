@@ -1,5 +1,5 @@
 ﻿using BLL.Common.Exceptions;
-using BLL.Repository;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 

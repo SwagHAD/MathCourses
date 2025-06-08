@@ -1,10 +1,10 @@
 ﻿using BLL.Common.Exceptions;
-using BLL.Repository;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 
 
-namespace BLL.MR.GroupMR.Commands.CreateGroup
+namespace Core.MR.GroupMR.Commands.CreateGroup
 {
     public class CreateGroupCommandHandler(IGenericRepository<Group> groupRepository) : IRequestHandler<CreateGroupCommand, Group>
     {

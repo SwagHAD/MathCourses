@@ -1,7 +1,7 @@
 ﻿using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.GroupMR.Commands.UpdateGroup
+namespace Core.MR.GroupMR.Commands.UpdateGroup
 {
     public class UpdateGroupCommand : IRequest<Unit>
     {

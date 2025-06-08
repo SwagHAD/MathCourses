@@ -1,14 +1,9 @@
 ﻿using BLL.Common.Exceptions;
-using BLL.Repository;
+using Core.Repository;
 using DataMath.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BLL.MR.StudentMR.Command.DeleteStudent
+namespace Core.MR.StudentMR.Command.DeleteStudent
 {
     public class DeleteStudentCommandHandler(IGenericRepository<Student> studentRepository) : IRequestHandler<DeleteStudentCommand, Unit>
     {

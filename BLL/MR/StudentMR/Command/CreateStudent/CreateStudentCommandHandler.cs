@@ -1,8 +1,8 @@
-﻿using BLL.Repository;
+﻿using Core.Repository;
 using DataMath.Entities;
 using MediatR;
 
-namespace BLL.MR.StudentMR.Command.CreateStudent
+namespace Core.MR.StudentMR.Command.CreateStudent
 {
     public class CreateStudentCommandHandler(IGenericRepository<Student> studentRepository) : IRequestHandler<CreateStudentCommand, Student>
     {

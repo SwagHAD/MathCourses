@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using BLL.MR.StudentMR.Command.CreateStudent;
-using BLL.MR.StudentMR.Command.DeleteStudent;
-using BLL.MR.StudentMR.Command.UpdateStudent;
-using BLL.MR.StudentMR.Queries;
+using Core.MR.StudentMR.Command.CreateStudent;
+using Core.MR.StudentMR.Command.DeleteStudent;
+using Core.MR.StudentMR.Command.UpdateStudent;
 using Core.MR.StudentMR.Queries;
 using DataMath.Entities;
 using DataMath.ServerVariables;

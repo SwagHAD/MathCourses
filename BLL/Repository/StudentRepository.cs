@@ -3,7 +3,7 @@ using DataMath.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace BLL.Repository
+namespace Core.Repository
 {
     public class StudentRepository(IMathContext ctx) : IGenericRepository<Student>
     {

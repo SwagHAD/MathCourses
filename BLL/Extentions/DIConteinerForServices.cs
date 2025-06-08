@@ -1,10 +1,9 @@
-﻿using BLL.Mapping;
-using BLL.Repository;
+﻿using Core.Repository;
 using DataMath.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace BLL.Extentions
+namespace Core.Extentions
 {
     public static class DIConteinerForServices
     {

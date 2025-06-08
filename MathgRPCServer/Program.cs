@@ -1,4 +1,4 @@
-using BLL.Extentions;
+using Core.Extentions;
 using DataMath.Extensions;
 internal class Program
 {
