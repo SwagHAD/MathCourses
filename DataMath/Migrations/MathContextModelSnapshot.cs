@@ -17,7 +17,7 @@ namespace DataMath.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -53,9 +53,6 @@ namespace DataMath.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -63,39 +60,28 @@ namespace DataMath.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
-
                     b.ToTable("Students");
                 });
 
             modelBuilder.Entity("DataMath.Entities.StudentGroup", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("StudentId")
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("GroupId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("JoinedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
+                    b.HasKey("StudentId", "GroupId");
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("StudentId", "GroupId")
-                        .IsUnique();
-
-                    b.ToTable("StudentGroups");
+                    b.ToTable("Student_Group", (string)null);
                 });
 
             modelBuilder.Entity("DataMath.Entities.Teacher", b =>
@@ -121,28 +107,21 @@ namespace DataMath.Migrations
                     b.HasOne("DataMath.Entities.Teacher", "Teacher")
                         .WithMany("Groups")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Teacher");
-                });
-
-            modelBuilder.Entity("DataMath.Entities.Student", b =>
-                {
-                    b.HasOne("DataMath.Entities.Group", null)
-                        .WithMany("Students")
-                        .HasForeignKey("GroupId");
                 });
 
             modelBuilder.Entity("DataMath.Entities.StudentGroup", b =>
                 {
                     b.HasOne("DataMath.Entities.Group", "Group")
-                        .WithMany()
+                        .WithMany("StudentGroups")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataMath.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("StudentGroups")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -154,7 +133,12 @@ namespace DataMath.Migrations
 
             modelBuilder.Entity("DataMath.Entities.Group", b =>
                 {
-                    b.Navigation("Students");
+                    b.Navigation("StudentGroups");
+                });
+
+            modelBuilder.Entity("DataMath.Entities.Student", b =>
+                {
+                    b.Navigation("StudentGroups");
                 });
 
             modelBuilder.Entity("DataMath.Entities.Teacher", b =>

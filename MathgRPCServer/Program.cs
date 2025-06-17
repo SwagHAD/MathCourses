@@ -5,10 +5,10 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        DotNetEnv.Env.Load();
         builder.Logging.AddConsole();
 
-        builder.Services.AddDataAccess(builder.Configuration);
+        builder.Services.AddDataAccess();
         builder.Services.AddServices();
         builder.Services.AddGrpc(options =>
         {

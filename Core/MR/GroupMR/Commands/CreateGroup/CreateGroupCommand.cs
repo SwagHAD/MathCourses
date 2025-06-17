@@ -7,6 +7,6 @@ namespace Core.MR.GroupMR.Commands.CreateGroup
     {
         public string Name { get; set; }
         public Teacher Teacher { get; set; }
-        public ICollection<Student> Students { get; set; } = new List<Student>();
+        public List<Student> Students { get; set; } = [];
     }
 }

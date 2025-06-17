@@ -9,6 +9,6 @@ namespace Core.MR.GroupMR.Commands.UpdateGroup
         public string Name { get; set; }
         public Teacher Teacher { get; set; }
 
-        public ICollection<Student> Students = new List<Student>();
+        public List<Student> Students = [];
     }
 }

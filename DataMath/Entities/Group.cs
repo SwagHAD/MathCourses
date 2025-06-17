@@ -1,4 +1,6 @@
-﻿using ProtoBuf;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ProtoBuf;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataMath.Entities
@@ -10,7 +12,6 @@ namespace DataMath.Entities
         public int Id { get; set; }
 
         [ProtoMember(2)]
-        [MaxLength(10)]
         public string Name { get; set; }
 
         [ProtoMember(3)]
@@ -18,6 +19,11 @@ namespace DataMath.Entities
 
         [ProtoMember(4)]
         public int? TeacherId { get; set; }
-        public ICollection<Student> Students { get; set; } = new List<Student>();
+
+        [ProtoMember(5)]
+        public List<Student> Students { get; set; } = [];
+
+        [ProtoMember(6)]
+        public List<StudentGroup> StudentGroups { get; set; } = [];
     }
 }
