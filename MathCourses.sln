@@ -3,37 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataMath", "DataMath\DataMath.csproj", "{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathgRPCServer", "MathgRPCServer\MathgRPCServer.csproj", "{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Math", "Shared.Math\Shared.Math.csproj", "{4B36E98E-A86C-40A2-AD50-BAAD0C7750D4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{20A794BD-22E5-480E-9363-F10518E7EB4A}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B81E8DED-0DDF-4023-BE86-9F22A9E74D39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5896AF8-5E63-4CB4-BA7A-11B35DB2CE7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B36E98E-A86C-40A2-AD50-BAAD0C7750D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B36E98E-A86C-40A2-AD50-BAAD0C7750D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B36E98E-A86C-40A2-AD50-BAAD0C7750D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B36E98E-A86C-40A2-AD50-BAAD0C7750D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20A794BD-22E5-480E-9363-F10518E7EB4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20A794BD-22E5-480E-9363-F10518E7EB4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20A794BD-22E5-480E-9363-F10518E7EB4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20A794BD-22E5-480E-9363-F10518E7EB4A}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
