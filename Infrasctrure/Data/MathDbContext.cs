@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -14,6 +15,7 @@ namespace Infrastructure.Data
         public MathDbContext(DbContextOptions<MathDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(BaseEntity).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(MathDbContext).Assembly);
         }
     }

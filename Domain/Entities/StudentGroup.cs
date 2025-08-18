@@ -10,12 +10,17 @@ namespace Domain.Entities
     /// Промежуточная таблица для связи Student-Group (многие-ко-многим)
     /// </summary>
     [Table("StudentGroups")]
-    public class StudentGroup : BaseEntity4M2M<Student, Group>
+    public class StudentGroup : BaseManyToManyEntity<Student, Group>
     {
-        public StudentStatus StudentStatus { get; set; }
-        protected override void CustomCofigure(EntityTypeBuilder<BaseEntity4M2M<Student, Group>> builder)
+        public StudentStatus? StudentStatus { get; set; }
+    }
+    public class StudentGroupConfiguration : BaseManyToManyConfiguration<StudentGroup, Student, Group>
+    {
+        protected override void ConfigureMore(EntityTypeBuilder<StudentGroup> builder)
         {
-            throw new NotImplementedException();
+            builder.Property(x => x.StudentStatus)
+                .IsRequired()
+                .HasDefaultValue(StudentStatus.Studying);
         }
     }
 }
