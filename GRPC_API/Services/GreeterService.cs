@@ -1,8 +1,9 @@
 using Grpc.Core;
-using GRPC_API;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GRPC_API.Services
 {
+    [Authorize]
     public class GreeterService : Greeter.GreeterBase
     {
         private readonly ILogger<GreeterService> _logger;
