@@ -32,16 +32,6 @@ namespace Domain.Entities.Base
         {
             builder.HasKey(x => new { x.FirstEntityId, x.SecondEntityId });
 
-            builder.HasOne(x => x.FirstEntity)
-                .WithMany()
-                .HasForeignKey(x => x.FirstEntityId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(x => x.SecondEntity)
-                .WithMany()
-                .HasForeignKey(x => x.SecondEntityId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.Property(x => x.CreatedAt)
                 .IsRequired()
                 .HasDefaultValueSql("NOW()");

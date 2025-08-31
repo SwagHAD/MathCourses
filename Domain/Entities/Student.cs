@@ -9,7 +9,7 @@ namespace Domain.Entities
     {
         public string Name { get; set; }
 
-        public ICollection<StudentGroup> StudentGroups { get; set; }
+        public List<StudentGroup> StudentGroups { get; set; } = new();
         protected override void CustomConfigure(EntityTypeBuilder<Student> builder)
         {
             builder.Property(x => x.Name)

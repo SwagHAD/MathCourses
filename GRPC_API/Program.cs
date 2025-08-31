@@ -16,7 +16,8 @@ namespace GRPC_API
                 .AddDotNetEnv();
             builder.Services
                 .AddInfrastructure(builder.Configuration)
-                .AddGrpcServices(builder.Configuration);
+                .AddGrpcServices(builder.Configuration)
+                .AddAuthServices(builder.Configuration);
             var app = builder.Build();
             app.UseAuthServices();
             app.UseGrpcServices();

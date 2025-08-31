@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitTypes : Migration
+    public partial class InitEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -129,17 +129,11 @@ namespace Infrastructure.Migrations
                     FirstEntityId = table.Column<int>(type: "integer", nullable: false),
                     SecondEntityId = table.Column<int>(type: "integer", nullable: false),
                     StudentStatus = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
-                    GroupID = table.Column<int>(type: "integer", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StudentGroups", x => new { x.FirstEntityId, x.SecondEntityId });
-                    table.ForeignKey(
-                        name: "FK_StudentGroups_Groups_GroupID",
-                        column: x => x.GroupID,
-                        principalTable: "Groups",
-                        principalColumn: "ID");
                     table.ForeignKey(
                         name: "FK_StudentGroups_Groups_SecondEntityId",
                         column: x => x.SecondEntityId,
@@ -174,11 +168,6 @@ namespace Infrastructure.Migrations
                 table: "StudentGroups",
                 columns: new[] { "FirstEntityId", "SecondEntityId" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StudentGroups_GroupID",
-                table: "StudentGroups",
-                column: "GroupID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentGroups_SecondEntityId",

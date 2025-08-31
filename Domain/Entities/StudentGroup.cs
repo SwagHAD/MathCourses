@@ -21,6 +21,14 @@ namespace Domain.Entities
             builder.Property(x => x.StudentStatus)
                 .IsRequired()
                 .HasDefaultValue(StudentStatus.Studying);
+            builder.HasOne(x => x.FirstEntity)
+                .WithMany(x => x.StudentGroups)
+                .HasForeignKey(x => x.FirstEntityId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.SecondEntity)
+                .WithMany(x => x.StudentGroups)
+                .HasForeignKey(x => x.SecondEntityId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

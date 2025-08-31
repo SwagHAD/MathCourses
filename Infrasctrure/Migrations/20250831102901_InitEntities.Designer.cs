@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(MathDbContext))]
-    [Migration("20250818182337_InitTypes")]
-    partial class InitTypes
+    [Migration("20250831102901_InitEntities")]
+    partial class InitEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,17 +180,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<int?>("GroupID")
-                        .HasColumnType("integer");
-
                     b.Property<int>("StudentStatus")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1);
 
                     b.HasKey("FirstEntityId", "SecondEntityId");
-
-                    b.HasIndex("GroupID");
 
                     b.HasIndex("SecondEntityId");
 
@@ -256,17 +251,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.StudentGroup", b =>
                 {
                     b.HasOne("Domain.Entities.Student", "FirstEntity")
-                        .WithMany()
+                        .WithMany("StudentGroups")
                         .HasForeignKey("FirstEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Group", null)
-                        .WithMany("StudentGroups")
-                        .HasForeignKey("GroupID");
-
                     b.HasOne("Domain.Entities.Group", "SecondEntity")
-                        .WithMany()
+                        .WithMany("StudentGroups")
                         .HasForeignKey("SecondEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -277,6 +268,11 @@ namespace Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Domain.Entities.Group", b =>
+                {
+                    b.Navigation("StudentGroups");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Student", b =>
                 {
                     b.Navigation("StudentGroups");
                 });

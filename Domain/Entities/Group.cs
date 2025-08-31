@@ -26,7 +26,7 @@ namespace Domain.Entities
         /// </summary>
         public int? CourseID { get; set; }
         public Course Course { get; set; }
-        public ICollection<StudentGroup> StudentGroups { get; set; }
+        public List<StudentGroup> StudentGroups { get; set; } = new();
 
         protected override void CustomConfigure(EntityTypeBuilder<Group> builder)
         {

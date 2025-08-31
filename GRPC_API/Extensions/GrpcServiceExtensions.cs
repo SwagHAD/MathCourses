@@ -10,8 +10,10 @@ namespace GRPC_API.Extensions
         {
             services.AddGrpc();
             services.AddSingleton<GreeterService>();
-
-            // Добавляем аутентификацию (пример с JWT)
+            return services;
+        }
+        public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -25,21 +27,15 @@ namespace GRPC_API.Extensions
                         ValidateIssuerSigningKey = true
                     };
                 });
-
-            // Добавляем авторизацию
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAuthenticatedUser", policy =>
                     policy.RequireAuthenticatedUser());
-
-                // Можно добавить дополнительные политики
                 options.AddPolicy("AdminOnly", policy =>
                     policy.RequireRole("Admin"));
             });
-
             return services;
         }
-
         public static IApplicationBuilder UseGrpcServices(this IApplicationBuilder app)
         {
             app.UseEndpoints(endpoints =>
