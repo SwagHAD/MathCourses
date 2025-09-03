@@ -21,6 +21,7 @@ namespace Infrastructure.Extensions
         {
             services.AddDbContext<IMathDbContext, MathDbContext>(options =>
                 options.UseNpgsql(_connectionstring));
+            services.AddRepositories();
             return services;
         }
         public static IServiceCollection AddRepositories(this IServiceCollection services)

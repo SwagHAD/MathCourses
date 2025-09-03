@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Pagination;
 using Domain.Interfaces;
 using Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,12 @@ namespace Infrastructure.RepositoryServices
     public class StudentService(IServiceProvider services) : ICoreRepository<Student>
     {
         private readonly IMathDbContext _dbcontext = services.GetRequiredService<IMathDbContext>();
+
+        public Task<int> CountAsync(IQueryable<Student> query, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Student> CreateAsync(Student entity, CancellationToken ct = default)
         {
             try
@@ -40,6 +47,11 @@ namespace Infrastructure.RepositoryServices
             }
         }
 
+        public Task<Student?> FirstOrDefaultAsync(IQueryable<Student> query, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Student> GetByIdAsync(int id, CancellationToken ct = default)
         {
             try
@@ -51,6 +63,16 @@ namespace Infrastructure.RepositoryServices
             {
                 throw;
             }
+        }
+
+        public Task<List<Student>> ToListAsync(IQueryable<Student> query, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedResult<Student>> ToPagedAsync(IQueryable<Student> query, int page, int pageSize, CancellationToken ct = default)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UpdateAsync(Student entity, CancellationToken ct = default)
