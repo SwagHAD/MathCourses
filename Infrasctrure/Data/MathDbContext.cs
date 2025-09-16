@@ -10,7 +10,6 @@ namespace Infrastructure.Data
     {
         private IDbContextTransaction? _currentTransaction;
         public MathDbContext(DbContextOptions<MathDbContext> options) : base(options) { }
-
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<StudentGroup> StudentGroups { get; set; }
@@ -18,43 +17,62 @@ namespace Infrastructure.Data
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
 
-        public async Task BeginTransaction()
+        public new DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity
         {
-            if(_currentTransaction == null)
+            return base.Set<TEntity>();
+        }
+        public async Task BeginTransactionAsync()
+        {
+            if(_currentTransaction == null || Database.CurrentTransaction == null)
             {
-                _currentTransaction = await Database.BeginTransactionAsync();
+                _currentTransaction = Database.CurrentTransaction ?? await Database.BeginTransactionAsync();
             }
         }
 
-        public async Task CommitTransaction()
+        public async Task CommitTransactionAsync()
         {
             try
             {
-                await SaveChangesAsync();
                 if (_currentTransaction != null)
                 {
                     await _currentTransaction.CommitAsync();
                     await _currentTransaction.DisposeAsync();
                     _currentTransaction = null;
                 }
+                else
+                {
+                    throw new Exception("Transaction was not started");
+                }
             }
             catch
             {
-                await RollbackTransaction();
+                await RollbackTransactionAsync();
                 throw;
             }
         }
 
-        public async Task RollbackTransaction()
+        public async Task RollbackTransactionAsync()
         {
-            if(_currentTransaction != null)
+            if (_currentTransaction != null)
             {
                 await _currentTransaction.RollbackAsync();
                 await _currentTransaction.DisposeAsync();
                 _currentTransaction = null;
             }
+            else
+            {
+                throw new Exception("Transaction was not started");
+            }
+        }
+        public async Task MigrateAsync(CancellationToken cancellationToken)
+        {
+            await Database.MigrateAsync(cancellationToken);
         }
 
+        async Task IMathDbContext.AddAsync(object entity, CancellationToken cancellationToken)
+        {
+            await base.AddAsync(entity, cancellationToken);
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BaseEntity).Assembly);

@@ -16,33 +16,33 @@ namespace Infrastructure.RepositoryServices
             throw new NotImplementedException();
         }
 
-        public async Task<Lesson> CreateAsync(Lesson entity, CancellationToken ct = default)
+        public async Task<Lesson> CreateItemAsync(Lesson entity, CancellationToken ct = default)
         {
             try
             {
-                await _dbcontext.BeginTransaction();
+                await _dbcontext.BeginTransactionAsync();
                 await _dbcontext.Lessons.AddAsync(entity, ct);
-                await _dbcontext.CommitTransaction();
+                await _dbcontext.CommitTransactionAsync();
                 return entity;
             }
             catch
             {
-                await _dbcontext.RollbackTransaction();
+                await _dbcontext.RollbackTransactionAsync();
                 throw;
             }
         }
 
-        public async Task DeleteAsync(int id, CancellationToken ct = default)
+        public async Task DeleteItemAsync(int id, CancellationToken ct = default)
         {
             try
             {
-                await _dbcontext.BeginTransaction();
+                await _dbcontext.BeginTransactionAsync();
                 await _dbcontext.Lessons.Where(f => f.ID == id).ExecuteDeleteAsync(ct);
-                await _dbcontext.CommitTransaction();
+                await _dbcontext.CommitTransactionAsync();
             }
             catch
             {
-                await _dbcontext.RollbackTransaction();
+                await _dbcontext.RollbackTransactionAsync();
                 throw;
             }
         }
@@ -75,17 +75,17 @@ namespace Infrastructure.RepositoryServices
             throw new NotImplementedException();
         }
 
-        public async Task UpdateAsync(Lesson entity, CancellationToken ct = default)
+        public async Task UpdateItemAsync(Lesson entity, CancellationToken ct = default)
         {
             try
             {
-                await _dbcontext.BeginTransaction();
+                await _dbcontext.BeginTransactionAsync();
                 _dbcontext.Lessons.Update(entity);
-                await _dbcontext.CommitTransaction();
+                await _dbcontext.CommitTransactionAsync();
             }
             catch
             {
-                await _dbcontext.RollbackTransaction();
+                await _dbcontext.RollbackTransactionAsync();
                 throw;
             }
         }

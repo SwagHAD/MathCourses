@@ -13,8 +13,11 @@ namespace Domain.Interfaces.Data
         DbSet<Lesson> Lessons { get; set; }
         DbSet<Teacher> Teachers { get; set; }
         Task<int> SaveChangesAsync(CancellationToken ct = default);
-        Task BeginTransaction();
-        Task CommitTransaction();
-        Task RollbackTransaction();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
+        Task MigrateAsync(CancellationToken cancellationToken = default);
+        Task AddAsync(object entity, CancellationToken cancellationToken = default);
+        DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;
     }
 }
