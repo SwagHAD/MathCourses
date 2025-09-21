@@ -13,9 +13,9 @@ namespace Domain.Interfaces.Data
         DbSet<Lesson> Lessons { get; set; }
         DbSet<Teacher> Teachers { get; set; }
         Task<int> SaveChangesAsync(CancellationToken ct = default);
-        Task BeginTransactionAsync();
-        Task CommitTransactionAsync();
-        Task RollbackTransactionAsync();
+        Task BeginTransactionAsync(CancellationToken cancellation = default);
+        Task CommitTransactionAsync(CancellationToken cancellation = default);
+        Task RollbackTransactionAsync(CancellationToken cancellation = default);
         Task MigrateAsync(CancellationToken cancellationToken = default);
         Task AddAsync(object entity, CancellationToken cancellationToken = default);
         DbSet<TEntity> Set<TEntity>() where TEntity : BaseEntity;

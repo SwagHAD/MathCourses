@@ -21,21 +21,21 @@ namespace Infrastructure.Data
         {
             return base.Set<TEntity>();
         }
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(CancellationToken cancellation = default)
         {
             if(_currentTransaction == null || Database.CurrentTransaction == null)
             {
-                _currentTransaction = Database.CurrentTransaction ?? await Database.BeginTransactionAsync();
+                _currentTransaction = Database.CurrentTransaction ?? await Database.BeginTransactionAsync(cancellation);
             }
         }
 
-        public async Task CommitTransactionAsync()
+        public async Task CommitTransactionAsync(CancellationToken cancellation = default)
         {
             try
             {
                 if (_currentTransaction != null)
                 {
-                    await _currentTransaction.CommitAsync();
+                    await _currentTransaction.CommitAsync(cancellation);
                     await _currentTransaction.DisposeAsync();
                     _currentTransaction = null;
                 }
@@ -51,11 +51,11 @@ namespace Infrastructure.Data
             }
         }
 
-        public async Task RollbackTransactionAsync()
+        public async Task RollbackTransactionAsync(CancellationToken cancellation = default)
         {
             if (_currentTransaction != null)
             {
-                await _currentTransaction.RollbackAsync();
+                await _currentTransaction.RollbackAsync(cancellation);
                 await _currentTransaction.DisposeAsync();
                 _currentTransaction = null;
             }

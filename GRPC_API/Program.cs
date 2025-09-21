@@ -1,7 +1,6 @@
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using GRPC_API.Extensions;
-using GRPC_API.Services;
 using Infrastructure.Extensions;
 
 namespace GRPC_API
