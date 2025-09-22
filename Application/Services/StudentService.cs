@@ -1,4 +1,5 @@
-﻿using Application.DTO.StudentDto;
+﻿using Application.DTO.Base;
+using Application.DTO.StudentDTO;
 using Application.Responses;
 using Application.Services.Base;
 using Domain.Entities;
@@ -54,6 +55,21 @@ namespace Application.Services
             {
                 return Response<StudentDto>.Error(ex.Message);
             }
+        }
+
+        protected override Task<Response<IDataTransferObjectBase<Student>>> Create(IDataTransferObjectBase<Student> DTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task<Response<IDataTransferObjectBase<Student>>> Update(IDataTransferObjectBase<Student> DTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Task<Response<IDataTransferObjectBase<Student>>> Delete(IDataTransferObjectBase<Student> DTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,37 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Base
 {
-    public abstract class ApplicationServiceBase<TEntity>(IServiceProvider services) : IApplicationServiceBase<TEntity> where TEntity : BaseEntity
+    public abstract class ApplicationServiceBase<TEntity, TDto>(IServiceProvider services) : IApplicationServiceBase<TEntity> where TEntity : BaseEntity where TDto : IDataTransferObjectBase<TEntity>
     {
         protected ICoreRepository<TEntity> CoreService {  get; } = services.GetRequiredService<ICoreRepository<TEntity>>();
         protected IValidatorFactoryBase ValidatorFactory { get; } = services.GetRequiredService<IValidatorFactoryBase>();
-
-        public async Task<Response<IDataTransferObjectBase<TEntity>>> Create(IDataTransferObjectBase<TEntity> DTO)
-        {
-            try
-            {
-                var createValidator = ValidatorFactory.GetValidator<IDataTransferObjectBase<TEntity>>();
-                var result = await createValidator.ValidateAsync(DTO);
-                if(!result.IsValid)
-                    return Response<IDataTransferObjectBase<TEntity>>.Fail(result.Errors.Select(e => e.ErrorMessage).ToList());
-                
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        public Task<Response<IDataTransferObjectBase<TEntity>>> Delete(IDataTransferObjectBase<TEntity> DTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Response<IDataTransferObjectBase<TEntity>>> Update(IDataTransferObjectBase<TEntity> DTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public
+        protected abstract Task<Response<IDataTransferObjectBase<TEntity>>> Create(IDataTransferObjectBase<TEntity> DTO);
+        protected abstract Task<Response<IDataTransferObjectBase<TEntity>>> Update(IDataTransferObjectBase<TEntity> DTO);
+        protected abstract Task<Response<IDataTransferObjectBase<TEntity>>> Delete(IDataTransferObjectBase<TEntity> DTO);
     }
 }

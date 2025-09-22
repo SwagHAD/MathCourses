@@ -3,7 +3,7 @@ using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.DTO.StudentDto
+namespace Application.DTO.StudentDTO
 {
     public class UpdateStudentDto : IDataTransferObjectBase<Student>, IMapWith<Student>
     {
