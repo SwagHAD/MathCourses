@@ -7,7 +7,7 @@ namespace Domain.Interfaces
     {
         #region Select
         Task<TEntity?> GetByIdAsync(int id, CancellationToken ct = default);
-        Task<int> CountAsync(IQueryable<TEntity> query, CancellationToken ct = default);
+        ValueTask<int> CountAsync(IQueryable<TEntity> query, CancellationToken ct = default);
         #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace Infrastructure.RepositoryServices.Base
     public class CoreServiceBase<T>(IServiceProvider services) : ICoreRepository<T> where T : BaseEntity
     {
         protected IMathDbContext mathDbContext = services.GetRequiredService<IMathDbContext>();
-        public async Task<int> CountAsync(IQueryable<T> query, CancellationToken ct = default)
+        public async ValueTask<int> CountAsync(IQueryable<T> query, CancellationToken ct = default)
         {
             return await query.CountAsync(ct);
         }
@@ -26,7 +26,7 @@ namespace Infrastructure.RepositoryServices.Base
 
         public async Task<T> CreateItemNoTransactionAsync(T entity, CancellationToken ct = default)
         {
-            await mathDbContext.Set<T>().AddAsync(entity);
+            await mathDbContext.Set<T>().AddAsync(entity, ct);
             await mathDbContext.SaveChangesAsync(ct);
             return entity;
         }

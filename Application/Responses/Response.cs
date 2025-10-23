@@ -3,32 +3,22 @@ using Application.Enums;
 
 namespace Application.Responses
 {
-    public class Response<T> where T : IDataTransferObjectBase
+    public sealed class Response<T>
     {
         public ResponseStatus Status { get; set; }
         public T? Data { get; set; }
-
         public List<string>? Errors { get; set; }
-
         public string? SuccesMessege { get; set; }
-
-        protected Response(ResponseStatus status)
-        {
-            Status = status;
-        }
-        protected Response(ResponseStatus status, List<string>? erorrs) : this(status)
+        private Response(ResponseStatus status, List<string>? erorrs)
         {
             Errors = erorrs;
         }
-        protected Response(ResponseStatus status, T? data, string? succesmessege) : this(status)
+        private Response(ResponseStatus status, T? data, string? succesmessege)
         {
             Data = data;
             SuccesMessege = succesmessege;
         }
-        public Response()
-        {
-
-        }
+        public Response() {}
         public static Response<T> Ok(T? data, string succesmessege) => 
             new(ResponseStatus.Ok, data, succesmessege);
         public static Response<T> Fail(List<string>? errors) => 
