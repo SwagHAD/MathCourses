@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace Application.Validation.Create
 {
-    public class CourseCreateActionValidation : BaseValidator<CreateCourseDto>
+    public class CourseCreateActionValidator : BaseValidator<CreateCourseDto>
     {
-        public CourseCreateActionValidation()
+        public CourseCreateActionValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Название обязательно")
