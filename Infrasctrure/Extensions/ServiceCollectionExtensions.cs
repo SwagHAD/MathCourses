@@ -1,9 +1,6 @@
-﻿using Domain.Entities;
-using Domain.Interfaces;
-using Domain.Interfaces.Data;
+﻿using Domain.Interfaces.Data;
 using DotNetEnv;
 using Infrastructure.Data;
-using Infrastructure.RepositoryServices.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,11 +23,6 @@ namespace Infrastructure.Extensions
         }
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ICoreRepository<Student>, CoreServiceBase<Student>>();
-            services.AddScoped<ICoreRepository<Teacher>, CoreServiceBase<Teacher>>();
-            services.AddScoped<ICoreRepository<Group>, CoreServiceBase<Group>>();
-            services.AddScoped<ICoreRepository<Lesson>, CoreServiceBase<Lesson>>();
-            services.AddScoped<ICoreRepository<Course>, CoreServiceBase<Course>>();
             return services;
         }
     }

@@ -10,14 +10,25 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Base
 {
+    /// <summary>
+    /// Базовый класс по создание бизнес кейсов
+    /// </summary>
+    /// <typeparam name="TEntity">Сущность базы</typeparam>
+    /// <typeparam name="TDtoBase">Базовая ДТО</typeparam>
+    /// <param name="services">Базовый сервис</param>
     public abstract class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase> 
         where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
     {
         protected IMathDbContext DbContext { get; } = services.GetRequiredService<IMathDbContext>();
-        protected ICoreRepository<TEntity> CoreService { get; } = services.GetRequiredService<ICoreRepository<TEntity>>();
         protected IValidatorFactoryBase ValidatorFactory { get; } = services.GetRequiredService<IValidatorFactoryBase>();
         protected IMapper Mapper { get; } = services.GetRequiredService<IMapper>();
 
+        protected virtual Task BeforeAction<TDto>(TDto dto, ValidationResult args) where TDto : IDataTransferObjectBase<TEntity>
+            => Task.CompletedTask;
+        protected virtual Task AfterAction()
+            => Task.CompletedTask;
+        protected virtual Task Validate()
+            => Task.CompletedTask;
         public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseCreate<TEntity>
         {
             try
@@ -81,11 +92,12 @@ namespace Application.Services.Base
             }
         }
 
-        private Task<ValidationResult> ValidateItem<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
+        private async ValueTask<ValidationResult> ValidateItem<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
         {
             var validator = ValidatorFactory.GetValidator<TDto>();
-            var validationresult = validator.Validate(dto);
-            return Task.FromResult(validationresult);
+            return await validator.ValidateAsync(dto);
         }
+
+        
     }
 }
