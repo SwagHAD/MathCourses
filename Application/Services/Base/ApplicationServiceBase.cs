@@ -1,9 +1,9 @@
-﻿using Application.DTO.Base;
+﻿using Application.Builder;
+using Application.DTO.Base;
 using Application.Factory.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities.Base;
-using Domain.Interfaces;
 using Domain.Interfaces.Data;
 using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,21 +22,19 @@ namespace Application.Services.Base
         protected IMathDbContext DbContext { get; } = services.GetRequiredService<IMathDbContext>();
         protected IValidatorFactoryBase ValidatorFactory { get; } = services.GetRequiredService<IValidatorFactoryBase>();
         protected IMapper Mapper { get; } = services.GetRequiredService<IMapper>();
-
-        protected virtual Task BeforeAction<TDto>(TDto dto, ValidationResult args) where TDto : IDataTransferObjectBase<TEntity>
+        protected virtual Task CustomValidate<TDto>(TDto dto, ValidationResult args) where TDto : IDataTransferObjectBase
             => Task.CompletedTask;
-        protected virtual Task AfterAction()
-            => Task.CompletedTask;
-        protected virtual Task Validate()
-            => Task.CompletedTask;
-        public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseCreate<TEntity>
+        public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseCreate<TEntity>
         {
             try
             {
-                var validationResult = await ValidateItem<TDto>(dto);
+                var validationResult = await ValidateItemAsync<TDto>(dto);
                 if (!validationResult.IsValid)
                     return Response<TDtoBase>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
-                var entity = await CoreService.CreateItemAsync(Mapper.Map<TEntity>(dto));
+                else
+                {
+                    
+                }
                 return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(entity), "Успешно");
             }
             catch (Exception ex)
@@ -45,14 +43,13 @@ namespace Application.Services.Base
             }
         }
 
-        public async Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseDelete<TEntity>
+        public async Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseDelete<TEntity>
         {
             try
             {
-                var validationResult = await ValidateItem<TDto>(dto);
+                var validationResult = await ValidateItemAsync<TDto>(dto);
                 if (!validationResult.IsValid)
                     return Response<bool>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
-                await CoreService.DeleteItemAsync(Mapper.Map<TEntity>(dto).ID);
                 return Response<bool>.Ok(true , "Успешно");
             }
             catch (Exception ex)
@@ -65,7 +62,6 @@ namespace Application.Services.Base
         {
             try
             {
-                var entity = await CoreService.GetByIdAsync(ID ?? default);
                 if (entity != null)
                     return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(entity), "Успешно");
                 return Response<TDtoBase>.NotFound("Ресурс не найден");
@@ -76,11 +72,11 @@ namespace Application.Services.Base
             }
         }
 
-        public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseUpdate<TEntity>
+        public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseUpdate<TEntity>
         {
             try
             {
-                var validationResult = await ValidateItem<TDto>(dto);
+                var validationResult = await ValidateItemAsync<TDto>(dto);
                 if (!validationResult.IsValid)
                     return Response<TDtoBase>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
                 var entity = await CoreService.UpdateItemAsync(Mapper.Map<TEntity>(dto));
@@ -92,12 +88,19 @@ namespace Application.Services.Base
             }
         }
 
-        private async ValueTask<ValidationResult> ValidateItem<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
+        private async ValueTask<ValidationResult> ValidateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
         {
-            var validator = ValidatorFactory.GetValidator<TDto>();
-            return await validator.ValidateAsync(dto);
+            return await ValidationBuilder<TDto, TEntity>
+                .For(dto)
+                .WithStructuralValidation(ValidatorFactory.GetValidator<TDto>())
+                .WithBusinessValidation(CustomValidate)
+                .ValidateAsync();
         }
 
-        
+        private async Task AtomicOperation(Func<Task> operation, bool IsAtomicOperation)
+        {
+            if (!IsAtomicOperation)
+                await operation.Invoke();
+        }
     }
 }

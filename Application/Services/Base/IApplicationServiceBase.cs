@@ -8,8 +8,8 @@ namespace Application.Services.Base
         where TDtoBase : IDataTransferObjectBase<TEntity>
     {
         Task<Response<TDtoBase>> GetItemAsync(int? ID);
-        Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseCreate<TEntity>;
-        Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseDelete<TEntity>;
-        Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBaseUpdate<TEntity>;
+        Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto, bool IsAtomicOperation) where TDto : IDataTransferObjectBaseCreate<TEntity>;
+        Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto, bool IsAtomicOperation) where TDto : IDataTransferObjectBaseDelete<TEntity>;
+        Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation) where TDto : IDataTransferObjectBaseUpdate<TEntity>;
     }
 }
