@@ -88,7 +88,7 @@ namespace Application.Services.Base
             }
         }
 
-        private async ValueTask<ValidationResult> ValidateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
+        protected virtual async ValueTask<ValidationResult> ValidateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
         {
             return await ValidationBuilder<TDto, TEntity>
                 .For(dto)

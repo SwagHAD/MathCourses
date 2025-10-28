@@ -1,9 +1,11 @@
-﻿namespace Application.Services.UnitOfWork
+﻿using Application.DTO.Base;
+using Domain.Entities.Base;
+
+namespace Application.Services.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork<TEntity, TDto> where TEntity : BaseEntity
+        where TDto : IDataTransferObjectBase<TEntity>
     {
-        Task Commit(CancellationToken ct);
-        Task RollBack(CancellationToken ct);
-        Task BeginTransaction(CancellationToken ct);
+        ValueTask<TEntity> ExecuteAsync(Func<TDto, Task<TEntity>> Action, bool IsAtomicOperation = true);
     }
 }

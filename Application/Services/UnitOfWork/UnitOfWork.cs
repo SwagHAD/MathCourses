@@ -1,28 +1,26 @@
-﻿using Domain.Interfaces.Data;
+﻿using Application.DTO.Base;
+using Domain.Entities.Base;
+using Domain.Interfaces.Data;
 
 namespace Application.Services.UnitOfWork
 {
-    public sealed class UnitOfWork(IMathDbContext dbContext) : IUnitOfWork
+    public class UnitOfWork<TEntity, TDto>(IMathDbContext dbContext) : IUnitOfWork<TEntity, TDto> where TEntity : BaseEntity
+        where TDto : IDataTransferObjectBase<TEntity>
     {
-        private readonly IMathDbContext _dbContext = dbContext;
-        public async Task BeginTransaction(CancellationToken ct)
+        public async ValueTask<TEntity> ExecuteAsync(Func<TDto, Task<TEntity>> Action, bool IsAtomicOperation = true)
         {
+            if (Action is null)
+                throw new ArgumentException("Операция не определена");
+            try
+            {
+                if (IsAtomicOperation)
+                    await dbContext.BeginTransactionAsync();
+                var entity = await Action();
+            }
+            catch (Exception ex)
+            {
+            }
             
-        }
-
-        public Task Commit(CancellationToken ct)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RollBack(CancellationToken ct)
-        {
-            throw new NotImplementedException();
         }
     }
 }
