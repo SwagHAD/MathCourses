@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.StudentDTO
 {
-    public class CreateStudentDto : IDataTransferObjectBase<Student>, IMapWith<Student>
+    public class CreateStudentDto : IDataTransferObjectBaseCreate<Student>, IMapWith<Student>
     {
         public string Name { get; set; }
 

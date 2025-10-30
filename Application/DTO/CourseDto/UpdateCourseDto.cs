@@ -4,16 +4,16 @@ using Domain.Entities;
 
 namespace Application.DTO.CourseDTO
 {
-    public class UpdateCourseDto : IDataTransferObjectBase<Course> , IMapWith<Course>
+    public class UpdateCourseDto : IDataTransferObjectBaseUpdate<Course> , IMapWith<Course>
     {
-        public int Id { get; set; }
+        public int? ID { get; set; }
         public string Name { get; set; }
 
         public void Mapping(AutoMapper.Profile profile)
         {
             profile.CreateMap<UpdateCourseDto, Course>()
                 .ForMember(course => course.ID,
-                    entity => entity.MapFrom(coursedto => coursedto.Id))
+                    entity => entity.MapFrom(coursedto => coursedto.ID))
                 .ForMember(course => course.Name,
                     entity => entity.MapFrom(coursedto => coursedto.Name));
         }

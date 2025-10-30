@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class AddInfrastructureServices
     {
         private static string _connectionstring = $"Host={Env.GetString("DB_Host")};Port={Env.GetString("DB_Port")};" +
                   $"Database={Env.GetString("DB_Name")};Username={Env.GetString("DB_User")};" +
@@ -18,11 +18,6 @@ namespace Infrastructure.Extensions
         {
             services.AddDbContext<IMathDbContext, MathDbContext>(options =>
                 options.UseNpgsql(_connectionstring));
-            services.AddRepositories();
-            return services;
-        }
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
             return services;
         }
     }

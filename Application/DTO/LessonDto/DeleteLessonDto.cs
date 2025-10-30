@@ -5,15 +5,15 @@ using Domain.Entities;
 
 namespace Application.DTO.LessonDTO
 {
-    public class DeleteLessonDto : IDataTransferObjectBase<Lesson>, IMapWith<Lesson>
+    public class DeleteLessonDto : IDataTransferObjectBaseDelete<Lesson>, IMapWith<Lesson>
     {
-        public int Id { get; set; }
+        public int? ID { get; set; }
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<DeleteLessonDto, Lesson>()
                 .ForMember(lesson => lesson.ID,
-                    entity => entity.MapFrom(lessondto => lessondto.Id));
+                    entity => entity.MapFrom(lessondto => lessondto.ID));
         }
     }
 }

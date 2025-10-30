@@ -2,10 +2,12 @@
 using Application.DTO.Base;
 using Application.Factory.Base;
 using Application.Responses;
+using Application.Services.UnitOfWork;
 using AutoMapper;
 using Domain.Entities.Base;
 using Domain.Interfaces.Data;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Base
@@ -20,6 +22,7 @@ namespace Application.Services.Base
         where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
     {
         protected IMathDbContext DbContext { get; } = services.GetRequiredService<IMathDbContext>();
+        private IUnitOfWork<TEntity, TDtoBase> UnitOfWork { get; } = services.GetRequiredService<IUnitOfWork<TEntity, TDtoBase>>();
         protected IValidatorFactoryBase ValidatorFactory { get; } = services.GetRequiredService<IValidatorFactoryBase>();
         protected IMapper Mapper { get; } = services.GetRequiredService<IMapper>();
         protected virtual Task CustomValidate<TDto>(TDto dto, ValidationResult args) where TDto : IDataTransferObjectBase
@@ -33,9 +36,15 @@ namespace Application.Services.Base
                     return Response<TDtoBase>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
                 else
                 {
-                    
+                    var result = await UnitOfWork.ExecuteAsync(async () => 
+                    {
+                        var newEntity = Mapper.Map<TEntity>(dto);
+                        await DbContext.AddAsync(newEntity);
+                        await DbContext.SaveChangesAsync();
+                        return newEntity;
+                    }, IsAtomicOperation);
+                    return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(Mapper.Map<TDtoBase>(result)), "Успешно");
                 }
-                return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(entity), "Успешно");
             }
             catch (Exception ex)
             {
@@ -50,28 +59,22 @@ namespace Application.Services.Base
                 var validationResult = await ValidateItemAsync<TDto>(dto);
                 if (!validationResult.IsValid)
                     return Response<bool>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
-                return Response<bool>.Ok(true , "Успешно");
+                else
+                {
+                    await UnitOfWork.ExecuteAsync(async () =>
+                    {
+                        await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
+                            .ExecuteDeleteAsync();
+                        await DbContext.SaveChangesAsync();
+                    });
+                    return Response<bool>.Ok(true, "Успешно");
+                }
             }
             catch (Exception ex)
             {
                 return Response<bool>.Error(ex.Message);
             }
         }
-
-        public async Task<Response<TDtoBase>> GetItemAsync(int? ID)
-        {
-            try
-            {
-                if (entity != null)
-                    return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(entity), "Успешно");
-                return Response<TDtoBase>.NotFound("Ресурс не найден");
-            }
-            catch(Exception ex) 
-            {
-                return Response<TDtoBase>.Error(ex.Message);
-            }
-        }
-
         public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseUpdate<TEntity>
         {
             try
@@ -79,8 +82,17 @@ namespace Application.Services.Base
                 var validationResult = await ValidateItemAsync<TDto>(dto);
                 if (!validationResult.IsValid)
                     return Response<TDtoBase>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
-                var entity = await CoreService.UpdateItemAsync(Mapper.Map<TEntity>(dto));
-                return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(entity), "Успешно");
+                else
+                {
+                    var result = await UnitOfWork.ExecuteAsync(async () =>
+                    {
+                        var updateEntity = Mapper.Map<TEntity>(dto);
+                        DbContext.Set<TEntity>().Update(updateEntity);
+                        await DbContext.SaveChangesAsync();
+                        return updateEntity;
+                    });
+                    return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(result), "Успешно");
+                }
             }
             catch (Exception ex)
             {
@@ -95,12 +107,6 @@ namespace Application.Services.Base
                 .WithStructuralValidation(ValidatorFactory.GetValidator<TDto>())
                 .WithBusinessValidation(CustomValidate)
                 .ValidateAsync();
-        }
-
-        private async Task AtomicOperation(Func<Task> operation, bool IsAtomicOperation)
-        {
-            if (!IsAtomicOperation)
-                await operation.Invoke();
         }
     }
 }

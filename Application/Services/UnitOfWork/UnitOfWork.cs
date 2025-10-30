@@ -7,20 +7,39 @@ namespace Application.Services.UnitOfWork
     public class UnitOfWork<TEntity, TDto>(IMathDbContext dbContext) : IUnitOfWork<TEntity, TDto> where TEntity : BaseEntity
         where TDto : IDataTransferObjectBase<TEntity>
     {
-        public async ValueTask<TEntity> ExecuteAsync(Func<TDto, Task<TEntity>> Action, bool IsAtomicOperation = true)
+        public async Task<TEntity> ExecuteAsync(Func<Task<TEntity>> Action, bool IsAtomicOperation = true)
         {
-            if (Action is null)
-                throw new ArgumentException("Операция не определена");
+            if (!IsAtomicOperation)
+              return await Action();
+            await dbContext.BeginTransactionAsync();
             try
             {
-                if (IsAtomicOperation)
-                    await dbContext.BeginTransactionAsync();
                 var entity = await Action();
+                await dbContext.CommitTransactionAsync();
+                return entity;
             }
-            catch (Exception ex)
+            catch
             {
+                await dbContext.RollbackTransactionAsync();
+                throw;
             }
-            
+        }
+
+        public async Task ExecuteAsync(Func<Task> Action, bool IsAtomicOperation = true)
+        {
+            if(!IsAtomicOperation)
+                await Action();
+            await dbContext.BeginTransactionAsync();
+            try
+            {
+                await Action();
+                await dbContext.CommitTransactionAsync();
+            }
+            catch
+            {
+                await dbContext.RollbackTransactionAsync();
+                throw;
+            }
         }
     }
 }
