@@ -5,6 +5,8 @@ namespace Application.Mapping.Base
 {
     public class AssemblyMappingProfile : Profile
     {
+        public AssemblyMappingProfile()
+        : this(Assembly.GetExecutingAssembly()) {}
         public AssemblyMappingProfile(Assembly assembly) => 
             ApplyMappingFromAssembly(assembly);
 

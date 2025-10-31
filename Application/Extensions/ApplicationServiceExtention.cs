@@ -5,6 +5,7 @@ using Application.DTO.StudentDTO;
 using Application.DTO.TeacherDTO;
 using Application.Factory;
 using Application.Factory.Base;
+using Application.Mapping.Base;
 using Application.Services.Base;
 using Application.Services.UnitOfWork;
 using Domain.Entities;
@@ -19,6 +20,7 @@ namespace Application.Extensions
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             AddValidation(services);
+            AddMapping(services);
             AddServices(services);
             return services;
         }
@@ -40,6 +42,11 @@ namespace Application.Extensions
             services.AddScoped<IApplicationServiceBase<Lesson, LessonDto>, ApplicationServiceBase<Lesson, LessonDto>>();
             services.AddScoped<IApplicationServiceBase<Group, GroupDto>, ApplicationServiceBase<Group, GroupDto>>();
             services.AddScoped<IApplicationServiceBase<Course, CourseDto>, ApplicationServiceBase<Course, CourseDto>>();
+            return services;
+        }
+        private static IServiceCollection AddMapping(IServiceCollection services)
+        {
+            services.AddAutoMapper(ctg => { } ,typeof(AssemblyMappingProfile));
             return services;
         }
     }

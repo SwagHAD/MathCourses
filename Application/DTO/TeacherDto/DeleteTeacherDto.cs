@@ -13,7 +13,7 @@ namespace Application.DTO.TeacherDTO
         {
             profile.CreateMap<DeleteTeacherDto, Teacher>()
                 .ForMember(teacher => teacher.ID,
-                    entity => entity.MapFrom(teacherdto => teacherdto.Id));
+                    entity => entity.MapFrom(teacherdto => teacherdto.ID));
         }
     }
 }

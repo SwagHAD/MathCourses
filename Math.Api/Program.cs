@@ -1,15 +1,14 @@
 using Application.Extensions;
-using Domain.Entities;
 using DotNetEnv;
 using Infrastructure.Extensions;
 
 public sealed class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         Env.Load();
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddInfrastructure("");
+        builder.Services.AddInfrastructure(GetConnectionStringFromEnv());
         builder.Services.AddApplication();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -22,6 +21,17 @@ public sealed class Program
         }
         app.UseHttpsRedirection();
         app.MapControllers();
-        app.Run();
+        await app.RunAsync();
+    }
+
+    private static string GetConnectionStringFromEnv()
+    {
+        var host = Env.GetString("db_host");
+        var port = Env.GetString("db_port");
+        var dbName = Env.GetString("db_name");
+        var user = Env.GetString("db_user");
+        var password = Env.GetString("db_password");
+
+        return $"Host={host};Port={port};Database={dbName};Username={user};Password={password}";
     }
 }

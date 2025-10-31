@@ -18,7 +18,7 @@ namespace Application.Services.Base
     /// <typeparam name="TEntity">Сущность базы</typeparam>
     /// <typeparam name="TDtoBase">Базовая ДТО</typeparam>
     /// <param name="services">Базовый сервис</param>
-    public abstract class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase> 
+    public class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase> 
         where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
     {
         protected IMathDbContext DbContext { get; } = services.GetRequiredService<IMathDbContext>();
