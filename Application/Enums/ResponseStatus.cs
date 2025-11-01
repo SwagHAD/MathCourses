@@ -2,9 +2,9 @@
 {
     public enum ResponseStatus
     {
-        Ok,
-        ValidationError,
-        NotFound,
-        Error
+        Ok = 1,
+        ValidationError = 2,
+        NotFound = 3,
+        Error = 4
     }
 }

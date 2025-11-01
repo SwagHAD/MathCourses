@@ -12,7 +12,7 @@ namespace Application.DTO.StudentDTO
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Student, UpdateStudentDto>()
+            profile.CreateMap<UpdateStudentDto, Student>()
                 .ForMember(studentdto => studentdto.ID,
                     entity => entity.MapFrom(student => student.ID))
                 .ForMember(studentdto => studentdto.Name,

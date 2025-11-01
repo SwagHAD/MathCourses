@@ -1,11 +1,10 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Domain.Interfaces.Data
 {
-    public interface IMathDbContext : IDisposable
+    public interface IMathDbContext : IAsyncDisposable
     {
         DbSet<Student> Students { get; set; }
         DbSet<Group> Groups { get; set; }

@@ -1,6 +1,7 @@
 using Application.Extensions;
 using DotNetEnv;
 using Infrastructure.Extensions;
+using Math.Api;
 
 public sealed class Program
 {
@@ -8,12 +9,13 @@ public sealed class Program
     {
         Env.Load();
         var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddInfrastructure(GetConnectionStringFromEnv());
+        builder.Services.AddInfrastructure(DatabaseInitializer.GetConnectionStringFromEnv());
         builder.Services.AddApplication();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         var app = builder.Build();
+        await DatabaseInitializer.MigrateAsync(app.Services);
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -22,16 +24,5 @@ public sealed class Program
         app.UseHttpsRedirection();
         app.MapControllers();
         await app.RunAsync();
-    }
-
-    private static string GetConnectionStringFromEnv()
-    {
-        var host = Env.GetString("db_host");
-        var port = Env.GetString("db_port");
-        var dbName = Env.GetString("db_name");
-        var user = Env.GetString("db_user");
-        var password = Env.GetString("db_password");
-
-        return $"Host={host};Port={port};Database={dbName};Username={user};Password={password}";
     }
 }

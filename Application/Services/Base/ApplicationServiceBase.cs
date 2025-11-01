@@ -22,7 +22,7 @@ namespace Application.Services.Base
         where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
     {
         protected IMathDbContext DbContext { get; } = services.GetRequiredService<IMathDbContext>();
-        private IUnitOfWork<TEntity, TDtoBase> UnitOfWork { get; } = services.GetRequiredService<IUnitOfWork<TEntity, TDtoBase>>();
+        protected IUnitOfWork<TEntity, TDtoBase> UnitOfWork { get; } = services.GetRequiredService<IUnitOfWork<TEntity, TDtoBase>>();
         protected IValidatorFactoryBase ValidatorFactory { get; } = services.GetRequiredService<IValidatorFactoryBase>();
         protected IMapper Mapper { get; } = services.GetRequiredService<IMapper>();
         protected virtual Task CustomValidate<TDto>(TDto dto, ValidationResult args) where TDto : IDataTransferObjectBase
@@ -43,7 +43,7 @@ namespace Application.Services.Base
                         await DbContext.SaveChangesAsync();
                         return newEntity;
                     }, IsAtomicOperation);
-                    return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(Mapper.Map<TDtoBase>(result)), "Успешно");
+                    return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(result), "Успешно");
                 }
             }
             catch (Exception ex)

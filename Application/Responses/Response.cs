@@ -1,5 +1,4 @@
-﻿using Application.DTO.Base;
-using Application.Enums;
+﻿using Application.Enums;
 
 namespace Application.Responses
 {

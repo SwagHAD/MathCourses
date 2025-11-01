@@ -11,9 +11,9 @@ namespace Application.DTO.StudentDTO
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Student, CreateStudentDto>()
+            profile.CreateMap<CreateStudentDto,Student>()
                 .ForMember(studentdto => studentdto.Name,
-                    entity => entity.MapFrom(student => student.Name));
+                    entity => entity.MapFrom(student => student.Name)).ReverseMap();
         }
     }
 }
