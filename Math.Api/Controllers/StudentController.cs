@@ -20,7 +20,7 @@ namespace Math.Api.Controllers
         [HttpPost("CreateStudent")]
         public async Task<ActionResult<Response<StudentDto>>> CreateStudent(CreateStudentDto studentDto)
         {
-            var result = await StudentService.CreateItemAsync<CreateStudentDto>(studentDto);
+            var result = await StudentService.CreateItemAsync(studentDto);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),

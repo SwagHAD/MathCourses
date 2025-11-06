@@ -86,10 +86,10 @@ namespace Application.Services.Base
                 {
                     var result = await UnitOfWork.ExecuteAsync(async () =>
                     {
-                        var updateEntity = Mapper.Map<TEntity>(dto);
-                        DbContext.Set<TEntity>().Update(updateEntity);
+                        await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
+                            .ExecuteUpdateAsync(setters => setters);
                         await DbContext.SaveChangesAsync();
-                        return updateEntity;
+                        return await DbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new Exception("Сущность не найдена");
                     });
                     return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(result), "Успешно");
                 }
