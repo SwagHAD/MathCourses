@@ -1,32 +1,21 @@
-﻿using Application.Builder;
-using Application.DTO.Base;
-using Application.Factory.Base;
+﻿using Application.DTO.Base;
+using Application.Extensions;
 using Application.Responses;
-using Application.Services.UnitOfWork;
-using AutoMapper;
 using Domain.Entities.Base;
-using Domain.Interfaces.Data;
-using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Services.Base
 {
     /// <summary>
     /// Базовый класс по создание бизнес кейсов
+    /// Классы наследники помечать как sealed
     /// </summary>
     /// <typeparam name="TEntity">Сущность базы</typeparam>
     /// <typeparam name="TDtoBase">Базовая ДТО</typeparam>
     /// <param name="services">Базовый сервис</param>
-    public class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase> 
+    public partial class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase> 
         where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
     {
-        protected IMathDbContext DbContext { get; } = services.GetRequiredService<IMathDbContext>();
-        protected IUnitOfWork<TEntity, TDtoBase> UnitOfWork { get; } = services.GetRequiredService<IUnitOfWork<TEntity, TDtoBase>>();
-        protected IValidatorFactoryBase ValidatorFactory { get; } = services.GetRequiredService<IValidatorFactoryBase>();
-        protected IMapper Mapper { get; } = services.GetRequiredService<IMapper>();
-        protected virtual Task CustomValidate<TDto>(TDto dto, ValidationResult args) where TDto : IDataTransferObjectBase
-            => Task.CompletedTask;
         public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseCreate<TEntity>
         {
             try
@@ -86,10 +75,10 @@ namespace Application.Services.Base
                 {
                     var result = await UnitOfWork.ExecuteAsync(async () =>
                     {
-                        await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
-                            .ExecuteUpdateAsync(setters => setters);
+                        var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
+                        updateentity.FillEntity(dto);
                         await DbContext.SaveChangesAsync();
-                        return await DbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new Exception("Сущность не найдена");
+                        return await DbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
                     });
                     return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(result), "Успешно");
                 }
@@ -98,15 +87,6 @@ namespace Application.Services.Base
             {
                 return Response<TDtoBase>.Error(ex.Message);
             }
-        }
-
-        protected virtual async ValueTask<ValidationResult> ValidateItemAsync<TDto>(TDto dto) where TDto : IDataTransferObjectBase<TEntity>
-        {
-            return await ValidationBuilder<TDto, TEntity>
-                .For(dto)
-                .WithStructuralValidation(ValidatorFactory.GetValidator<TDto>())
-                .WithBusinessValidation(CustomValidate)
-                .ValidateAsync();
         }
     }
 }

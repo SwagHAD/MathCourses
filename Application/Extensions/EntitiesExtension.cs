@@ -1,8 +1,11 @@
-﻿namespace Application.Extensions
+﻿using Application.DTO.Base;
+using Domain.Entities.Base;
+using Microsoft.EntityFrameworkCore.Query;
+
+namespace Application.Extensions
 {
     public static class EntitiesExtension
     {
-        public static
         public static void FillEntity<T,TDto>(this T targer, TDto sourse)
         {
             if (targer !=  null && sourse != null)
