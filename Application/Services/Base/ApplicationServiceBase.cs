@@ -13,7 +13,7 @@ namespace Application.Services.Base
     /// <typeparam name="TEntity">Сущность базы</typeparam>
     /// <typeparam name="TDtoBase">Базовая ДТО</typeparam>
     /// <param name="services">Базовый сервис</param>
-    public partial class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase> 
+    public partial class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase>
         where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
     {
         public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseCreate<TEntity>
@@ -25,7 +25,7 @@ namespace Application.Services.Base
                     return Response<TDtoBase>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
                 else
                 {
-                    var result = await UnitOfWork.ExecuteAsync(async () => 
+                    var result = await UnitOfWork.ExecuteAsync(async () =>
                     {
                         var newEntity = Mapper.Map<TEntity>(dto);
                         await DbContext.AddAsync(newEntity);
@@ -66,26 +66,31 @@ namespace Application.Services.Base
         }
         public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseUpdate<TEntity>
         {
+            return await Handle<TDto, TDtoBase>(async () =>
+            {
+                return await UnitOfWork.ExecuteAsync(async () =>
+                {
+                    var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
+                    updateentity.FillEntity(dto);
+                    await DbContext.SaveChangesAsync();
+                    return await DbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
+                });
+            },dto);
+        }
+
+        private async Task<Response<TOut>> Handle<TDto, TOut>(Func<Task<TEntity>> Action, TDto dto) where TDto : IDataTransferObjectBase<TEntity>
+        {
             try
             {
                 var validationResult = await ValidateItemAsync<TDto>(dto);
                 if (!validationResult.IsValid)
-                    return Response<TDtoBase>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
-                else
-                {
-                    var result = await UnitOfWork.ExecuteAsync(async () =>
-                    {
-                        var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
-                        updateentity.FillEntity(dto);
-                        await DbContext.SaveChangesAsync();
-                        return await DbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
-                    });
-                    return Response<TDtoBase>.Ok(Mapper.Map<TDtoBase>(result), "Успешно");
-                }
+                    return Response<TOut>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
+                var result = await Action();
+                return Response<TOut>.Ok(Mapper.Map<TOut>(result), "Успешно");
             }
             catch (Exception ex)
             {
-                return Response<TDtoBase>.Error(ex.Message);
+                return Response<TOut>.Error(ex.Message);
             }
         }
     }
