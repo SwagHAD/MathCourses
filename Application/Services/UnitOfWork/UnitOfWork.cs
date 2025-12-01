@@ -27,8 +27,11 @@ namespace Application.Services.UnitOfWork
 
         public async Task ExecuteAsync(Func<Task> Action, bool IsAtomicOperation = true)
         {
-            if(!IsAtomicOperation)
+            if (!IsAtomicOperation)
+            {
                 await Action();
+                return;
+            }
             await dbContext.BeginTransactionAsync();
             try
             {
