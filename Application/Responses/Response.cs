@@ -25,6 +25,6 @@ namespace Application.Responses
         public static Response<T> NotFound(string messege) => 
             new(ResponseStatus.NotFound, new List<string> { messege });
         public static Response<T> Error(string message) =>
-        new(ResponseStatus.Error, new List<string> { message });
+            new(ResponseStatus.Error, new List<string> { message });
     }
 }

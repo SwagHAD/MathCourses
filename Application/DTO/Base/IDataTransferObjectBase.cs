@@ -13,4 +13,5 @@ namespace Application.DTO.Base
     {
         public int? ID { get; set; }
     }
+    public interface  IDataTransferObjectBaseGet<T> : IDataTransferObjectBase<T> where T : BaseEntity { }
 }

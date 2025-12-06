@@ -22,6 +22,7 @@ namespace Application.Services.Base
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
+                    await CustomCreate(dto);
                     var newEntity = Mapper.Map<TEntity>(dto);
                     await DbContext.AddAsync(newEntity);
                     await DbContext.SaveChangesAsync();
@@ -35,6 +36,7 @@ namespace Application.Services.Base
             return await Handle<TDto>(async () =>
                 await UnitOfWork.ExecuteAsync(async () =>
                     {
+                        await CustomDelete(dto);
                         await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
                             .ExecuteDeleteAsync();
                         await DbContext.SaveChangesAsync();
@@ -47,10 +49,11 @@ namespace Application.Services.Base
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
+                    await CustomUpdate(dto);
                     var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
                     updateentity.FillEntity(dto);
                     await DbContext.SaveChangesAsync();
-                    return await DbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
+                    return updateentity;
                 });
             },dto);
         }
