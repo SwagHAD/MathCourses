@@ -52,6 +52,7 @@ namespace Application.Services.Base
                     await CustomUpdate(dto);
                     var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
                     updateentity.FillEntity(dto);
+                    await DbContext.Set<TEntity>().ExecuteUpdateAsync(setters => setters.SetProperty(f => f.ID, dto.ID));
                     await DbContext.SaveChangesAsync();
                     return updateentity;
                 });
