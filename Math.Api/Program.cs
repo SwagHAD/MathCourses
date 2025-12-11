@@ -3,7 +3,7 @@ using DotNetEnv;
 using Infrastructure.Extensions;
 using Math.Api;
 
-public sealed class Program
+internal sealed class Program
 {
     private static async Task Main(string[] args)
     {

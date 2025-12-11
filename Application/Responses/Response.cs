@@ -11,11 +11,13 @@ namespace Application.Responses
         private Response(ResponseStatus status, List<string>? erorrs)
         {
             Errors = erorrs;
+            Status = status;
         }
         private Response(ResponseStatus status, T? data, string? succesmessege)
         {
             Data = data;
             SuccesMessege = succesmessege;
+            Status = status;
         }
         public Response() {}
         public static Response<T> Ok(T? data, string succesmessege) => 

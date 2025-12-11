@@ -27,7 +27,7 @@ namespace Application.Services.Base
                     await DbContext.AddAsync(newEntity);
                     await DbContext.SaveChangesAsync();
                     return newEntity;
-                });
+                }, IsAtomicOperation);
             }, dto);
         }
 
@@ -40,9 +40,10 @@ namespace Application.Services.Base
                         await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
                             .ExecuteDeleteAsync();
                         await DbContext.SaveChangesAsync();
-                    })
+                    }, IsAtomicOperation)
                 ,dto);
         }
+
         public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseUpdate<TEntity>
         {
             return await Handle<TDto, TDtoBase>(async () =>
@@ -52,13 +53,13 @@ namespace Application.Services.Base
                     await CustomUpdate(dto);
                     var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
                     updateentity.FillEntity(dto);
-                    await DbContext.Set<TEntity>().ExecuteUpdateAsync(setters => setters.SetProperty(f => f.ID, dto.ID));
+                    await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
+                        .ExecuteUpdateAsync(s => s
+                            .SetProperty(b => b, updateentity));
                     await DbContext.SaveChangesAsync();
                     return updateentity;
-                });
+                }, IsAtomicOperation);
             },dto);
         }
-
-        
     }
 }

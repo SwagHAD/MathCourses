@@ -18,7 +18,7 @@ namespace Application.Services.GetBase
             try
             {
                 var data = DbContext.Set<TEntity>().Where(expression).ToArray();
-                return PageListResponse<T>.Ok(Mapper.Map<T>(data), "Data retrieved successfully");
+                return PageListResponse<T>.Ok(Mapper.Map<IEnumerable<T>>(data), "Data retrieved successfully");
             }
             catch (Exception ex)
             {

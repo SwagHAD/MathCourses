@@ -8,6 +8,6 @@ namespace Application.ExecuteActions
 {
     public interface IExecuteConstructor<TEntity, TDto> where TEntity : BaseEntity where TDto : IDataTransferObjectBaseUpdate<TEntity>
     {
-        Expression<Func<SetPropertyCalls<TEntity>, SetPropertyCalls<Student>>> Execute(TDto dto);
+        Expression<Func<UpdateSettersBuilder<TEntity>, UpdateSettersBuilder<Student>>> Execute(TDto dto);
     }
 }

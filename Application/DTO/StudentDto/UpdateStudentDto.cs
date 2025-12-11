@@ -10,6 +10,8 @@ namespace Application.DTO.StudentDTO
         public int? ID { get; set; }
         public string Name { get; set; }
 
+
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<UpdateStudentDto, Student>()

@@ -23,7 +23,9 @@ namespace Application.DTO.GroupDTO
                 .ForMember(group => group.TeacherID,
                     entity => entity.MapFrom(groupdto => groupdto.TeacherID))
                 .ForMember(group => group.CourseID,
-                    entity => entity.MapFrom(groupdto => groupdto.CourseID));
+                    entity => entity.MapFrom(groupdto => groupdto.CourseID))
+                .ForMember(group => group.StudentGroups,
+                    entity => entity.MapFrom(groupdto => groupdto.Students));
         }
     }
 }

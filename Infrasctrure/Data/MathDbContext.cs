@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Data
 {
-    public sealed class MathDbContext : DbContext, IMathDbContext
+    internal sealed class MathDbContext : DbContext, IMathDbContext
     {
         private IDbContextTransaction? _currentTransaction;
         public MathDbContext(DbContextOptions<MathDbContext> options) : base(options) { }

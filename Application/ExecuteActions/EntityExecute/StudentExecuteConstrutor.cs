@@ -7,7 +7,7 @@ namespace Application.ExecuteActions.EntityExecute
 {
     public sealed class StudentExecuteConstrutor() : IExecuteConstructor<Student, UpdateStudentDto>
     {
-        public Expression<Func<SetPropertyCalls<Student>, SetPropertyCalls<Student>>> Execute(UpdateStudentDto dto)
+        public Expression<Func<UpdateSettersBuilder<Student>, UpdateSettersBuilder<Student>>> Execute(UpdateStudentDto dto)
         {
             return setters => setters
                 .SetProperty(s => s.Name, dto.Name);
