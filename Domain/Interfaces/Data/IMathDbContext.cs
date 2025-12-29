@@ -9,6 +9,7 @@ namespace Domain.Interfaces.Data
         DbSet<Student> Students { get; set; }
         DbSet<Group> Groups { get; set; }
         DbSet<StudentGroup> StudentGroups { get; set; }
+        DbSet<TeacherGroup> TeacherGroups { get; set; }
         DbSet<Course> Courses { get; set; }
         DbSet<Lesson> Lessons { get; set; }
         DbSet<Teacher> Teachers { get; set; }

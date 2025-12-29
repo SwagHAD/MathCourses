@@ -14,7 +14,7 @@ namespace Domain.Entities
         /// Имя
         /// </summary>
         public string Name { get; set; }
-        public List<Group> Groups { get; set; }
+        public List<TeacherGroup> TeacherGroups { get; set; }
 
         protected override void CustomConfigure(EntityTypeBuilder<Teacher> builder)
         {

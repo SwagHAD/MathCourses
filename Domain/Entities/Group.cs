@@ -9,7 +9,7 @@ namespace Domain.Entities
     /// Группы
     /// </summary>
     [Table("Groups")]
-    public class Group : BaseEntity<Group>
+    public sealed class Group : BaseEntity<Group>
     {
         /// <summary>
         /// Имя группы
@@ -19,8 +19,7 @@ namespace Domain.Entities
         /// <summary>
         /// Учитель
         /// </summary>
-        public int? TeacherID { get; set; }
-        public Teacher Teacher { get; set; }
+        public List<TeacherGroup> TeacherGroups { get; set; } = new();
         /// <summary>
         /// Направление группы
         /// </summary>
@@ -32,8 +31,6 @@ namespace Domain.Entities
         {
             builder.Property(x => x.Name).IsRequired()
                 .HasMaxLength(50);
-            builder.HasOne(x => x.Teacher).WithMany(x => x.Groups).HasForeignKey(x => x.TeacherID)
-                .OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.Course).WithMany().HasForeignKey(x => x.CourseID)
                 .OnDelete(DeleteBehavior.Restrict);
         }

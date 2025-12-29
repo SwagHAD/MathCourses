@@ -13,6 +13,7 @@ namespace Infrastructure.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<StudentGroup> StudentGroups { get; set; }
+        public DbSet<TeacherGroup> TeacherGroups { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
