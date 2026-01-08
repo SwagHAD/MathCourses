@@ -1,8 +1,6 @@
 ﻿using Application.DTO.Base;
-using Application.Extensions;
 using Application.Responses;
 using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.Base
 {
@@ -14,52 +12,39 @@ namespace Application.Services.Base
     /// <typeparam name="TDtoBase">Базовая ДТО</typeparam>
     /// <param name="services">Базовый сервис</param>
     public partial class ApplicationServiceBase<TEntity, TDtoBase>(IServiceProvider services) : IApplicationServiceBase<TEntity, TDtoBase>
-        where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
+        where TEntity : BaseEntity where TDtoBase : IDTOBase<TEntity>
     {
-        public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseCreate<TEntity>
+        public async Task<Response<TDtoBase>> CreateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDTOBaseCreate<TEntity>
         {
             return await Handle<TDto, TDtoBase>(async() =>
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    await CustomCreate(dto);
-                    var newEntity = Mapper.Map<TEntity>(dto);
-                    await DbContext.AddAsync(newEntity);
-                    await DbContext.SaveChangesAsync();
-                    return newEntity;
+                    return await CustomCreate(dto);
                 }, IsAtomicOperation);
             }, dto);
         }
 
-        public async Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseDelete<TEntity>
+        public async Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDTOBaseDelete<TEntity>
         {
             return await Handle<TDto>(async () =>
+            {
                 await UnitOfWork.ExecuteAsync(async () =>
-                    {
-                        await CustomDelete(dto);
-                        await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
-                            .ExecuteDeleteAsync();
-                        await DbContext.SaveChangesAsync();
-                    }, IsAtomicOperation)
-                ,dto);
+                {
+                   await CustomDelete(dto);
+                }, IsAtomicOperation);
+            }, dto);
         }
 
-        public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDataTransferObjectBaseUpdate<TEntity>
+        public async Task<Response<TDtoBase>> UpdateItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDTOBaseUpdate<TEntity>
         {
             return await Handle<TDto, TDtoBase>(async () =>
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    await CustomUpdate(dto);
-                    var updateentity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ApplicationException("Сущность не найдена");
-                    updateentity.FillEntity(dto);
-                    await DbContext.Set<TEntity>().Where(f => f.ID == dto.ID)
-                        .ExecuteUpdateAsync(s => s
-                            .SetProperty(b => b, updateentity));
-                    await DbContext.SaveChangesAsync();
-                    return updateentity;
+                    return await CustomUpdate(dto);
                 }, IsAtomicOperation);
-            },dto);
+            }, dto);
         }
     }
 }

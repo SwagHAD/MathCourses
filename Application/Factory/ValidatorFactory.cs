@@ -5,9 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.Factory
 {
-    public class ValidatorFactory(IServiceProvider validationServices) : IValidatorFactoryBase
+    public sealed class ValidatorFactory(IServiceProvider validationServices) : IValidatorFactoryBase
     {
-        public IValidator<T> GetValidator<T>() where T : IDataTransferObjectBase
+        public IValidator<T> GetValidator<T>() where T : IDTOBase
         {
             var validator = validationServices.GetRequiredService<IValidator<T>>();
             if (validator == null)

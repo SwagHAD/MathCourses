@@ -5,13 +5,10 @@ using Domain.Entities;
 
 namespace Application.DTO.StudentDTO
 {
-    public class UpdateStudentDto : IDataTransferObjectBaseUpdate<Student>, IMapWith<Student>
+    public class UpdateStudentDto : IDTOBaseUpdate<Student>, IMapWith<Student>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-
-
-
         public void Mapping(Profile profile)
         {
             profile.CreateMap<UpdateStudentDto, Student>()

@@ -5,9 +5,9 @@ using Domain.Entities;
 
 namespace Application.DTO.TeacherDTO
 {
-    public class DeleteTeacherDto : IDataTransferObjectBaseDelete<Teacher> , IMapWith<Teacher>
+    public class DeleteTeacherDto : IDTOBaseDelete<Teacher> , IMapWith<Teacher>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
 
         public void Mapping(Profile profile)
         {

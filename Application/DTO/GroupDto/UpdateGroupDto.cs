@@ -3,9 +3,9 @@ using Domain.Entities;
 
 namespace Application.DTO.GroupDTO
 {
-    public class UpdateGroupDto : IDataTransferObjectBaseUpdate<Group>
+    public class UpdateGroupDto : IDTOBaseUpdate<Group>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
 
         public int? TeacherID { get; set; }

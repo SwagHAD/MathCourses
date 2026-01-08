@@ -5,9 +5,9 @@ using Domain.Entities.Base;
 namespace Application.Services.Base
 {
     public partial class ApplicationServiceBase<TEntity, TDtoBase> : IApplicationServiceBase<TEntity, TDtoBase>
-        where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
+        where TEntity : BaseEntity where TDtoBase : IDTOBase<TEntity>
     {
-        private async Task<Response<TOut>> Handle<TDto, TOut>(Func<Task<TEntity>> Action, TDto dto) where TDto : IDataTransferObjectBase<TEntity>
+        private async Task<Response<TOut>> Handle<TDto, TOut>(Func<Task<TEntity>> Action, TDto dto) where TDto : IDTOBase<TEntity>
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Application.Services.Base
                 return Response<TOut>.Error(ex.Message);
             }
         }
-        private async Task<Response<bool>> Handle<TDto>(Func<Task> Action, TDto dto) where TDto : IDataTransferObjectBase<TEntity>
+        private async Task<Response<bool>> Handle<TDto>(Func<Task> Action, TDto dto) where TDto : IDTOBase<TEntity>
         {
             try
             {

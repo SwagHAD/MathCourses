@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.GroupDTO
 {
-    public sealed class GroupDto : IDataTransferObjectBase<Group>, IMapWith<Group>
+    public sealed class GroupDto : IDTOBase<Group>, IMapWith<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }

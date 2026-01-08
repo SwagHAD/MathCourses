@@ -5,9 +5,9 @@ using Domain.Entities;
 
 namespace Application.DTO.GroupDTO
 {
-    public class DeleteGroupDto : IDataTransferObjectBaseDelete<Group> , IMapWith<Group>
+    public class DeleteGroupDto : IDTOBaseDelete<Group> , IMapWith<Group>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
 
         public void Mapping(Profile profile)
         {

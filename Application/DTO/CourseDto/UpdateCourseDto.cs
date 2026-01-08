@@ -4,9 +4,9 @@ using Domain.Entities;
 
 namespace Application.DTO.CourseDTO
 {
-    public class UpdateCourseDto : IDataTransferObjectBaseUpdate<Course> , IMapWith<Course>
+    public class UpdateCourseDto : IDTOBaseUpdate<Course> , IMapWith<Course>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
 
         public void Mapping(AutoMapper.Profile profile)

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Application.ExecuteActions
 {
-    public interface IExecuteConstructor<TEntity, TDto> where TEntity : BaseEntity where TDto : IDataTransferObjectBaseUpdate<TEntity>
+    public interface IExecuteConstructor<TEntity, TDto> where TEntity : BaseEntity where TDto : IDTOBaseUpdate<TEntity>
     {
         Expression<Func<UpdateSettersBuilder<TEntity>, UpdateSettersBuilder<Student>>> Execute(TDto dto);
     }

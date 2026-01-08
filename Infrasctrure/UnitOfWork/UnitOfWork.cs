@@ -1,11 +1,10 @@
-﻿using Application.DTO.Base;
-using Domain.Entities.Base;
+﻿using Domain.Entities.Base;
 using Domain.Interfaces.Data;
+using Domain.Interfaces.UnitOfWork;
 
-namespace Application.Services.UnitOfWork
+namespace Infrastructure.UnitOfWork
 {
-    public class UnitOfWork<TEntity, TDto>(IMathDbContext dbContext) : IUnitOfWork<TEntity, TDto> where TEntity : BaseEntity
-        where TDto : IDataTransferObjectBase<TEntity>
+    internal class UnitOfWork<TEntity>(IMathDbContext dbContext) : IUnitOfWork<TEntity> where TEntity : BaseEntity
     {
         public async Task<TEntity> ExecuteAsync(Func<Task<TEntity>> Action, bool IsAtomicOperation = true)
         {

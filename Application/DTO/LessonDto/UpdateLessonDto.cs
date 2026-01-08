@@ -5,9 +5,9 @@ using Domain.Entities;
 
 namespace Application.DTO.LessonDTO
 {
-    public class UpdateLessonDto : IDataTransferObjectBaseUpdate<Lesson>, IMapWith<Lesson>
+    public class UpdateLessonDto : IDTOBaseUpdate<Lesson>, IMapWith<Lesson>
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
 
         public int? GroupID { get; set; }

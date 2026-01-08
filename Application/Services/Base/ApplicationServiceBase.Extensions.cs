@@ -4,7 +4,7 @@ using Domain.Entities.Base;
 namespace Application.Services.Base
 {
     public partial class ApplicationServiceBase<TEntity, TDtoBase> : IApplicationServiceBase<TEntity, TDtoBase>
-        where TEntity : BaseEntity where TDtoBase : IDataTransferObjectBase<TEntity>
+        where TEntity : BaseEntity where TDtoBase : IDTOBase<TEntity>
     {
         /// <summary>
         /// Расширение логики создания объекта
@@ -12,23 +12,32 @@ namespace Application.Services.Base
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected virtual Task CustomCreate<TDto>(TDto dto) where TDto : IDataTransferObjectBaseCreate<TEntity>
-            => Task.CompletedTask;
+        protected async Task<TEntity> CustomCreate<TDto>(TDto dto) where TDto : IDTOBaseCreate<TEntity>
+        {
+            var service = HandlerFactory.GetHandle<TDto>();
+            return await service.Handle(dto);
+        }
         /// <summary>
         /// Расширение логики обновления объекта
         /// </summary>
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected virtual Task CustomUpdate<TDto>(TDto dto) where TDto : IDataTransferObjectBaseUpdate<TEntity>
-            => Task.CompletedTask;
+        protected Task<TEntity> CustomUpdate<TDto>(TDto dto) where TDto : IDTOBaseUpdate<TEntity>
+        {
+            var service = HandlerFactory.GetHandle<TDto>();
+            return service.Handle(dto);
+        }
         /// <summary>
         /// Расширение логики удаления
         /// </summary>
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected virtual Task CustomDelete<TDto>(TDto dto) where TDto : IDataTransferObjectBaseDelete<TEntity>
-            => Task.CompletedTask;
+        protected async Task CustomDelete<TDto>(TDto dto) where TDto : IDTOBaseDelete<TEntity>
+        {
+            var service = HandlerFactory.GetHandle<TDto>();
+            await service.Handle(dto);
+        }
     }
 }

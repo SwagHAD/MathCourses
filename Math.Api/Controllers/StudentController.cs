@@ -3,7 +3,6 @@ using Application.Enums;
 using Application.Responses;
 using Application.Services.Base;
 using Domain.Entities;
-using Domain.Interfaces.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Math.Api.Controllers

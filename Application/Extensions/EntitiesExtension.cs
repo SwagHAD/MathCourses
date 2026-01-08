@@ -1,8 +1,4 @@
-﻿using Application.DTO.Base;
-using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore.Query;
-
-namespace Application.Extensions
+﻿namespace Application.Extensions
 {
     public static class EntitiesExtension
     {

@@ -5,6 +5,6 @@ namespace Application.Factory.Base
 {
     public interface IValidatorFactoryBase
     {
-        IValidator<T> GetValidator<T>() where T : IDataTransferObjectBase;
+        IValidator<T> GetValidator<T>() where T : IDTOBase;
     }
 }
