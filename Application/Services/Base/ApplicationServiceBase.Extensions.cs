@@ -3,8 +3,8 @@ using Domain.Entities.Base;
 
 namespace Application.Services.Base
 {
-    public partial class ApplicationServiceBase<TEntity, TDtoBase> : IApplicationServiceBase<TEntity, TDtoBase>
-        where TEntity : BaseEntity where TDtoBase : IDTOBase<TEntity>
+    public partial class ApplicationServiceBase<TEntity> : IApplicationServiceBase<TEntity>
+        where TEntity : BaseEntity
     {
         /// <summary>
         /// Расширение логики создания объекта

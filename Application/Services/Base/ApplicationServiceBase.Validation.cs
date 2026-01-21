@@ -5,8 +5,8 @@ using FluentValidation.Results;
 
 namespace Application.Services.Base
 {
-    public partial class ApplicationServiceBase<TEntity, TDtoBase> : IApplicationServiceBase<TEntity, TDtoBase>
-        where TEntity : BaseEntity where TDtoBase : IDTOBase<TEntity>
+    public partial class ApplicationServiceBase<TEntity> : IApplicationServiceBase<TEntity>
+        where TEntity : BaseEntity
     {
         /// <summary>
         /// Расширение логики валидации

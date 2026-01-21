@@ -35,11 +35,11 @@ namespace Application.Extensions
         }
         private static void AddServices(IServiceCollection services)
         {
-            services.AddScoped<IApplicationServiceBase<Student, StudentDto>,ApplicationServiceBase<Student, StudentDto>>();
-            services.AddScoped<IApplicationServiceBase<Teacher, TeacherDto>, ApplicationServiceBase<Teacher, TeacherDto>>();
-            services.AddScoped<IApplicationServiceBase<Lesson, LessonDto>, ApplicationServiceBase<Lesson, LessonDto>>();
-            services.AddScoped<IApplicationServiceBase<Group, GroupDto>, ApplicationServiceBase<Group, GroupDto>>();
-            services.AddScoped<IApplicationServiceBase<Course, CourseDto>, ApplicationServiceBase<Course, CourseDto>>();
+            services.AddScoped<IApplicationServiceBase<Student>,ApplicationServiceBase<Student>>();
+            services.AddScoped<IApplicationServiceBase<Teacher>, ApplicationServiceBase<Teacher>>();
+            services.AddScoped<IApplicationServiceBase<Lesson>, ApplicationServiceBase<Lesson>>();
+            services.AddScoped<IApplicationServiceBase<Group>, ApplicationServiceBase<Group>>();
+            services.AddScoped<IApplicationServiceBase<Course>, ApplicationServiceBase<Course>>();
         }
         private static void AddHandlers(IServiceCollection services)
         {

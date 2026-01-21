@@ -4,8 +4,8 @@ using Domain.Entities.Base;
 
 namespace Application.Services.Base
 {
-    public partial class ApplicationServiceBase<TEntity, TDtoBase> : IApplicationServiceBase<TEntity, TDtoBase>
-        where TEntity : BaseEntity where TDtoBase : IDTOBase<TEntity>
+    public partial class ApplicationServiceBase<TEntity> : IApplicationServiceBase<TEntity>
+        where TEntity : BaseEntity
     {
         private async Task<Response<TOut>> Handle<TDto, TOut>(Func<Task<TEntity>> Action, TDto dto) where TDto : IDTOBase<TEntity>
         {

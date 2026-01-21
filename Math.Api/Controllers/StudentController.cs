@@ -9,7 +9,7 @@ namespace Math.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class StudentController(IApplicationServiceBase<Student, StudentDto> StudentService) : ControllerBase
+    public sealed class StudentController(IApplicationServiceBase<Student> StudentService) : ControllerBase
     {
         //[HttpGet("GetStudentById")]
         //public async Task<Response<StudentDto>> GetStudentById(int Id)
@@ -20,7 +20,7 @@ namespace Math.Api.Controllers
         [HttpPost("CreateStudent")]
         public async Task<ActionResult<Response<StudentDto>>> CreateStudent(CreateStudentDto studentDto)
         {
-            var result = await StudentService.CreateItemAsync(studentDto);
+            var result = await StudentService.CreateItemAsync<CreateStudentDto,StudentDto>(studentDto);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),

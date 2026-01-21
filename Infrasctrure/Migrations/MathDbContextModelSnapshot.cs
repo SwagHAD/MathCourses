@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -92,17 +92,12 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<int?>("TeacherID")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("ID");
 
                     b.HasIndex("CourseID");
-
-                    b.HasIndex("TeacherID");
 
                     b.ToTable("Groups");
                 });
@@ -218,6 +213,29 @@ namespace Infrastructure.Migrations
                     b.ToTable("Teachers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.TeacherGroup", b =>
+                {
+                    b.Property<int>("FirstEntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SecondEntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
+
+                    b.HasKey("FirstEntityId", "SecondEntityId");
+
+                    b.HasIndex("SecondEntityId");
+
+                    b.HasIndex("FirstEntityId", "SecondEntityId")
+                        .IsUnique();
+
+                    b.ToTable("TeacherGroups");
+                });
+
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
                     b.HasOne("Domain.Entities.Course", "Course")
@@ -225,14 +243,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CourseID")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Entities.Teacher", "Teacher")
-                        .WithMany("Groups")
-                        .HasForeignKey("TeacherID")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Course");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Domain.Entities.Lesson", b =>
@@ -264,9 +275,30 @@ namespace Infrastructure.Migrations
                     b.Navigation("SecondEntity");
                 });
 
+            modelBuilder.Entity("Domain.Entities.TeacherGroup", b =>
+                {
+                    b.HasOne("Domain.Entities.Teacher", "FirstEntity")
+                        .WithMany("TeacherGroups")
+                        .HasForeignKey("FirstEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Group", "SecondEntity")
+                        .WithMany("TeacherGroups")
+                        .HasForeignKey("SecondEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FirstEntity");
+
+                    b.Navigation("SecondEntity");
+                });
+
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
                     b.Navigation("StudentGroups");
+
+                    b.Navigation("TeacherGroups");
                 });
 
             modelBuilder.Entity("Domain.Entities.Student", b =>
@@ -276,7 +308,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Teacher", b =>
                 {
-                    b.Navigation("Groups");
+                    b.Navigation("TeacherGroups");
                 });
 #pragma warning restore 612, 618
         }
