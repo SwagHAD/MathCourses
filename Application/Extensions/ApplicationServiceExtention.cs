@@ -1,7 +1,4 @@
-﻿using Application.DTO.CourseDTO;
-using Application.DTO.GroupDTO;
-using Application.DTO.LessonDTO;
-using Application.DTO.StudentDTO;
+﻿using Application.DTO.StudentDTO;
 using Application.DTO.TeacherDTO;
 using Application.Factory;
 using Application.Factory.Base;
@@ -35,7 +32,7 @@ namespace Application.Extensions
         }
         private static void AddServices(IServiceCollection services)
         {
-            services.AddScoped<IApplicationServiceBase<Student>,ApplicationServiceBase<Student>>();
+            services.AddScoped<IApplicationServiceBase<Student>, ApplicationServiceBase<Student>>();
             services.AddScoped<IApplicationServiceBase<Teacher>, ApplicationServiceBase<Teacher>>();
             services.AddScoped<IApplicationServiceBase<Lesson>, ApplicationServiceBase<Lesson>>();
             services.AddScoped<IApplicationServiceBase<Group>, ApplicationServiceBase<Group>>();
@@ -46,6 +43,7 @@ namespace Application.Extensions
             services.AddScoped<IHandler<Student, CreateStudentDto>, CreateStudentHandler>();
             services.AddScoped<IHandler<Student, DeleteStudentDto>, DeleteStudentHandler>();
             services.AddScoped<IHandler<Student, UpdateStudentDto>, UpdateStudentHandler>();
+            services.AddScoped<IHandler<Teacher, CreateTeacherDto>, CreateTeacherHandler>();
         }
         private static void AddMapping(IServiceCollection services)
         {
