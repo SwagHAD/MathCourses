@@ -1,4 +1,6 @@
-﻿using Application.DTO.StudentDTO;
+﻿using Application.DTO.CourseDTO;
+using Application.DTO.GroupDTO;
+using Application.DTO.StudentDTO;
 using Application.DTO.TeacherDTO;
 using Application.Factory;
 using Application.Factory.Base;
@@ -40,10 +42,12 @@ namespace Application.Extensions
         }
         private static void AddHandlers(IServiceCollection services)
         {
-            services.AddScoped<IHandler<Student, CreateStudentDto>, CreateStudentHandler>();
-            services.AddScoped<IHandler<Student, DeleteStudentDto>, DeleteStudentHandler>();
-            services.AddScoped<IHandler<Student, UpdateStudentDto>, UpdateStudentHandler>();
+            services.AddScoped<IHandler<Student>, CreateStudentHandler>();
+            services.AddScoped<IHandler<Student>, DeleteStudentHandler>();
+            services.AddScoped<IHandler<Student>, UpdateStudentHandler>();
             services.AddScoped<IHandler<Teacher, CreateTeacherDto>, CreateTeacherHandler>();
+            services.AddScoped<IHandler<Group, CreateGroupDto>, CreateGroupHandler>();
+            services.AddScoped<IHandler<Course, CreateCourseDto>, CreateCourseHandler>();
         }
         private static void AddMapping(IServiceCollection services)
         {

@@ -1,7 +1,7 @@
 ﻿namespace Application.Handlers.Base
 {
-    public interface IHandler<TEntity, TDto>
+    public interface IHandler<TEntity>
     {
-        Task<TEntity> Handle(TDto dto);
+        Task<TEntity> Handle<TDto>(TDto dto);
     }
 }

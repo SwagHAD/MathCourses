@@ -6,7 +6,7 @@ using Domain.Interfaces.Data;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateStudentHandler(IMathDbContext DbContext, IMapper Mapper) : IHandler<Student, CreateStudentDto>
+    public sealed class CreateStudentHandler(IMathDbContext DbContext, IMapper Mapper) : IHandler<Student>
     {
         public async Task<Student> Handle(CreateStudentDto dto)
         {
@@ -14,6 +14,11 @@ namespace Application.Handlers.CreateHandlers
             await DbContext.AddAsync(student);
             await DbContext.SaveChangesAsync();
             return student;
+        }
+
+        public Task<Student> Handle<TDto>(TDto dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

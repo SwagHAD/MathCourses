@@ -10,10 +10,14 @@ namespace Application.Handlers.UpdateHandlers
     {
         public async Task<Student> Handle(UpdateStudentDto dto)
         {
-            var student = await DbContext.Set<Student>().FirstOrDefaultAsync(f => f.ID == dto.ID) ?? throw new ArgumentException("Студент не найден");
-            student.Name = dto.Name;
-            await DbContext.SaveChangesAsync();
-            return student;
+            if(!await DbContext.Set<Student>().AnyAsync(s => s.ID == dto.ID))
+            {
+                throw new InvalidOperationException($"Student with ID {dto.ID} not found.");
+            }
+            await DbContext.Set<Student>().Where(f => f.ID == dto.ID)
+                .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(f => f.Name, dto.Name));
+            return await DbContext.Set<Student>().AsNoTracking().FirstOrDefaultAsync(f => f.ID == dto.ID);
         }
     }
 }

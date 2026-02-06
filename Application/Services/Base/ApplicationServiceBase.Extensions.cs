@@ -23,10 +23,10 @@ namespace Application.Services.Base
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected Task<TEntity> CustomUpdate<TDto>(TDto dto) where TDto : IDTOBaseUpdate<TEntity>
+        protected async Task<TEntity> CustomUpdate<TDto>(TDto dto) where TDto : IDTOBaseUpdate<TEntity>
         {
             var service = HandlerFactory.GetHandle<TDto>();
-            return service.Handle(dto);
+            return await service.Handle(dto);
         }
         /// <summary>
         /// Расширение логики удаления
