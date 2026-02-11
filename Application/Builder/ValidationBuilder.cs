@@ -6,7 +6,7 @@ using FluentValidation.Results;
 namespace Application.Builder
 {
     public sealed class ValidationBuilder<TDto, TEntity>
-        where TEntity : BaseEntity where TDto : IDTOBase
+        where TEntity : BaseEntity where TDto : IDtoBase
     {
         private readonly TDto _dto;
         private IValidator<TDto> _structuralValidator { get; set; }

@@ -2,6 +2,6 @@
 {
     public interface IHandlerFactory<TEntity>
     {
-        IHandler<TEntity, TDto> GetHandle<TDto>();
+        IHandler<TEntity> GetHandle();
     }
 }

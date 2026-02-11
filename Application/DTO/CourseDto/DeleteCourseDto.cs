@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.CourseDTO
 {
-    public class DeleteCourseDto : IDTOBaseDelete<Course> , IMapWith<Course>
+    public class DeleteCourseDto : IDtoBaseDelete<Course> , IMapWith<Course>
     {
         public int ID { get; set; }
 

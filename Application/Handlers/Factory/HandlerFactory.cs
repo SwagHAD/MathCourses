@@ -6,9 +6,9 @@ namespace Application.Handlers.Factory
 {
     public sealed class HandlerFactory<TEntity>(IServiceProvider services) : IHandlerFactory<TEntity> where TEntity : BaseEntity
     {
-        public IHandler<TEntity, TDto> GetHandle<TDto>()
+        public IHandler<TEntity> GetHandle<TDto>()
         {
-            return services.GetRequiredService<IHandler<TEntity, TDto>>();
+            return services.GetRequiredService<IHandler<TEntity>>();
         }
     }
 }

@@ -3,5 +3,5 @@ using FluentValidation;
 
 namespace Application.Validation.Base
 {
-    public class BaseValidator<T> : AbstractValidator<T> where T : IDTOBase;
+    public class BaseValidator<T> : AbstractValidator<T> where T : IDtoBase;
 }

@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.StudentDTO
 {
-    public class DeleteStudentDto : IDTOBaseDelete<Student>, IMapWith<Student>
+    public class DeleteStudentDto : IDtoBaseDelete<Student>, IMapWith<Student>
     {
         public int ID { get; set; }
         public void Mapping(Profile profile)

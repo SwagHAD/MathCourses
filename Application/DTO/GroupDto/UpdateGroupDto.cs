@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace Application.DTO.GroupDTO
 {
-    public class UpdateGroupDto : IDTOBaseUpdate<Group>
+    public class UpdateGroupDto : IDtoBaseUpdate<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }

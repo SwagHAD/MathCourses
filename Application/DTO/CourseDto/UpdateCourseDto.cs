@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.DTO.CourseDTO
 {
-    public class UpdateCourseDto : IDTOBaseUpdate<Course> , IMapWith<Course>
+    public class UpdateCourseDto : IDtoBaseUpdate<Course> , IMapWith<Course>
     {
         public int ID { get; set; }
         public string Name { get; set; }

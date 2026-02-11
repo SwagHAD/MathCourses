@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.StudentDTO
 {
-    public class UpdateStudentDto : IDTOBaseUpdate<Student>, IMapWith<Student>
+    public class UpdateStudentDto : IDtoBaseUpdate<Student>, IMapWith<Student>
     {
         public int ID { get; set; }
         public string Name { get; set; }

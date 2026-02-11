@@ -7,26 +7,26 @@ namespace Application.Services.Base
     public partial class ApplicationServiceBase<TEntity> : IApplicationServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        private async Task<Response<TOut>> Handle<TDto, TOut>(Func<Task<TEntity>> Action, TDto dto) where TDto : IDTOBase<TEntity>
+        private async Task<Response<TEntity>> Handle(Func<Task<TEntity>> Action, IDtoBase<TEntity> dto)
         {
             try
             {
-                var validationResult = await ValidateItemAsync<TDto>(dto);
+                var validationResult = await ValidateItemAsync(dto);
                 if (!validationResult.IsValid)
-                    return Response<TOut>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
+                    return Response<TEntity>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
                 var result = await Action();
-                return Response<TOut>.Ok(Mapper.Map<TOut>(result), "Успешно");
+                return Response<TEntity>.Ok(Mapper.Map<TEntity>(result), "Успешно");
             }
             catch (Exception ex)
             {
-                return Response<TOut>.Error(ex.Message);
+                return Response<TEntity>.Error(ex.Message);
             }
         }
-        private async Task<Response<bool>> Handle<TDto>(Func<Task> Action, TDto dto) where TDto : IDTOBase<TEntity>
+        private async Task<Response<bool>> Handle(Func<Task> Action, IDtoBase<TEntity> dto)
         {
             try
             {
-                var validationResult = await ValidateItemAsync<TDto>(dto);
+                var validationResult = await ValidateItemAsync(dto);
                 if (!validationResult.IsValid)
                     return Response<bool>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
                 await Action();

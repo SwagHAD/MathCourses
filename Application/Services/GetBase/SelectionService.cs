@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Application.Services.GetBase
 {
-    public sealed class SelectionService<T, TEntity>(IServiceProvider services) : ISelectionService<T, TEntity> where T : IDTOBaseGet<TEntity> where TEntity : BaseEntity
+    public sealed class SelectionService<T, TEntity>(IServiceProvider services) : ISelectionService<T, TEntity> where T : IDtoBaseGet<TEntity> where TEntity : BaseEntity
     {
         private readonly IMathDbContext DbContext = services.GetRequiredService<IMathDbContext>();
         private readonly IMapper Mapper = services.GetRequiredService<IMapper>();

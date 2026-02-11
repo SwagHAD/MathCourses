@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.GroupDTO
 {
-    public class DeleteGroupDto : IDTOBaseDelete<Group> , IMapWith<Group>
+    public class DeleteGroupDto : IDtoBaseDelete<Group> , IMapWith<Group>
     {
         public int ID { get; set; }
 

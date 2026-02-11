@@ -15,10 +15,10 @@ namespace Application.Services.Base
         /// <param name="dto"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        protected virtual Task CustomValidate<TDto>(TDto dto, ValidationResult args) where TDto : IDTOBase
+        protected virtual Task CustomValidate<TDto>(TDto dto, ValidationResult args) where TDto : IDtoBase
             => Task.CompletedTask;
 
-        protected virtual async ValueTask<ValidationResult> ValidateItemAsync<TDto>(TDto dto) where TDto : IDTOBase<TEntity>
+        protected virtual async ValueTask<ValidationResult> ValidateItemAsync<TDto>(TDto dto) where TDto : IDtoBase<TEntity>
         {
             return await ValidationBuilder<TDto, TEntity>
                 .For(dto)

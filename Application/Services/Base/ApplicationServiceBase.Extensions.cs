@@ -12,10 +12,9 @@ namespace Application.Services.Base
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected async Task<TEntity> CustomCreate<TDto>(TDto dto) where TDto : IDTOBaseCreate<TEntity>
+        protected virtual Task<TEntity> CustomCreate(IDtoBaseCreate<TEntity> dto)
         {
-            var service = HandlerFactory.GetHandle<TDto>();
-            return await service.Handle(dto);
+            return null;
         }
         /// <summary>
         /// Расширение логики обновления объекта
@@ -23,10 +22,9 @@ namespace Application.Services.Base
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected async Task<TEntity> CustomUpdate<TDto>(TDto dto) where TDto : IDTOBaseUpdate<TEntity>
+        protected virtual Task<TEntity> CustomUpdate(IDtoBaseUpdate<TEntity> dto)
         {
-            var service = HandlerFactory.GetHandle<TDto>();
-            return await service.Handle(dto);
+
         }
         /// <summary>
         /// Расширение логики удаления
@@ -34,10 +32,9 @@ namespace Application.Services.Base
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected async Task CustomDelete<TDto>(TDto dto) where TDto : IDTOBaseDelete<TEntity>
+        protected virtual Task CustomDelete(IDtoBaseDelete<TEntity> dto)
         {
-            var service = HandlerFactory.GetHandle<TDto>();
-            await service.Handle(dto);
+            return Task.CompletedTask;
         }
     }
 }

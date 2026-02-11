@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.DTO.CourseDTO
 {
-    public class CreateCourseDto : IDTOBaseCreate<Course>, IMapWith<Course>
+    public class CreateCourseDto : IDtoBaseCreate<Course>, IMapWith<Course>
     {
         public string Name { get; set; }
 

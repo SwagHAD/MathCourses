@@ -14,9 +14,9 @@ namespace Application.Services.Base
     public partial class ApplicationServiceBase<TEntity>(IServiceProvider services) : IApplicationServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        public async Task<Response<TOut>> CreateItemAsync<TDto, TOut>(TDto dto, bool IsAtomicOperation = true) where TDto : IDTOBaseCreate<TEntity>
+        public async Task<Response<TEntity>> CreateItemAsync(IDtoBaseCreate<TEntity> dto, bool IsAtomicOperation = true)
         {
-            return await Handle<TDto, TOut>(async() =>
+            return await Handle(async() =>
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
@@ -25,9 +25,9 @@ namespace Application.Services.Base
             }, dto);
         }
 
-        public async Task<Response<bool>> DeleteItemAsync<TDto>(TDto dto, bool IsAtomicOperation = true) where TDto : IDTOBaseDelete<TEntity>
+        public async Task<Response<bool>> DeleteItemAsync(IDtoBaseDelete<TEntity> dto, bool IsAtomicOperation = true)
         {
-            return await Handle<TDto>(async () =>
+            return await Handle(async () =>
             {
                 await UnitOfWork.ExecuteAsync(async () =>
                 {
@@ -36,9 +36,9 @@ namespace Application.Services.Base
             }, dto);
         }
 
-        public async Task<Response<TOut>> UpdateItemAsync<TDto, TOut>(TDto dto, bool IsAtomicOperation = true) where TDto : IDTOBaseUpdate<TEntity>
+        public async Task<Response<TEntity>> UpdateItemAsync(IDtoBaseUpdate<TEntity> dto, bool IsAtomicOperation = true)
         {
-            return await Handle<TDto, TOut>(async () =>
+            return await Handle(async () =>
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {

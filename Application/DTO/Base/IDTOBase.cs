@@ -2,16 +2,16 @@
 
 namespace Application.DTO.Base
 {
-    public interface IDTOBase { }
-    public interface IDTOBase<T> : IDTOBase where T : BaseEntity { }
-    public interface IDTOBaseCreate<T> : IDTOBase<T> where T : BaseEntity { }
-    public interface IDTOBaseUpdate<T> : IDTOBase<T> where T : BaseEntity 
+    public interface IDtoBase { }
+    public interface IDtoBase<T> : IDtoBase where T : BaseEntity { }
+    public interface IDtoBaseCreate<T> : IDtoBase<T> where T : BaseEntity { }
+    public interface IDtoBaseUpdate<T> : IDtoBase<T> where T : BaseEntity 
     {
         public int ID { get; set; }
     }
-    public interface IDTOBaseDelete<T> : IDTOBase<T> where T : BaseEntity 
+    public interface IDtoBaseDelete<T> : IDtoBase<T> where T : BaseEntity 
     {
         public int ID { get; set; }
     }
-    public interface  IDTOBaseGet<T> : IDTOBase<T> where T : BaseEntity { }
+    public interface  IDtoBaseGet<T> : IDtoBase<T> where T : BaseEntity { }
 }
