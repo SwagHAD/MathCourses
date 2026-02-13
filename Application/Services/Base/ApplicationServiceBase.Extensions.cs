@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Base;
+using Application.Handlers.Base;
 using Domain.Entities.Base;
 
 namespace Application.Services.Base
@@ -12,9 +13,11 @@ namespace Application.Services.Base
         /// <typeparam name="TDto"></typeparam>
         /// <param name="dto"></param>
         /// <returns></returns>
-        protected virtual Task<TEntity> CustomCreate(IDtoBaseCreate<TEntity> dto)
+        protected async Task<TEntity> CustomCreate(IDtoBaseCreate<TEntity> dto)
         {
-            return null;
+            var dtoType = dto.GetType();
+            var handlerType = typeof(IHandler<,>).MakeGenericType(typeof(TEntity), dtoType);
+            var handler = services.GetService(handlerType);
         }
         /// <summary>
         /// Расширение логики обновления объекта

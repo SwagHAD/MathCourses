@@ -1,4 +1,5 @@
-﻿using Application.DTO.CourseDTO;
+﻿using Application.Commands;
+using Application.DTO.CourseDTO;
 using Application.DTO.GroupDTO;
 using Application.DTO.StudentDTO;
 using Application.DTO.TeacherDTO;
@@ -52,6 +53,11 @@ namespace Application.Extensions
         private static void AddMapping(IServiceCollection services)
         {
             services.AddAutoMapper(ctg => { } ,typeof(AssemblyMappingProfile));
+        }
+        private static void AddMediatR(IServiceCollection services)
+        {
+            services.AddMediatR(cfg =>
+                cfg.RegisterServicesFromAssembly(typeof(AssemblyMediatoRDI).Assembly));
         }
     }
 }

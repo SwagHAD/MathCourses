@@ -16,6 +16,8 @@
     <PackageReference Include="AutoMapper" Version="16.0.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Commands\CreateHandlers\" />
+    <Folder Include="Commands\UpdateHandlers\" />
+    <Folder Include="Commands\DeleteHandlers\" />
     <Folder Include="Validation\Delete\" />
   </ItemGroup>
 
