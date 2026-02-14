@@ -1,4 +1,4 @@
-﻿using Application.DTO.LessonDTO;
+﻿using Application.Commands.CreateCommands;
 using Application.Validation.Base;
 using Domain.Entities;
 using FluentValidation;

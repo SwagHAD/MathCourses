@@ -1,24 +1,19 @@
-﻿using Application.DTO.StudentDTO;
-using Application.Handlers.Base;
+﻿using Application.Commands.CreateCommands;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Data;
+using MediatR;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateStudentHandler(IMathDbContext DbContext, IMapper Mapper) : IHandler<Student>
+    public sealed class CreateStudentHandler(IMapper Mapper, IMathDbContext DbContext) : IRequestHandler<CreateStudentDto, Student>
     {
-        public async Task<Student> Handle(CreateStudentDto dto)
+        public async Task<Student> Handle(CreateStudentDto request, CancellationToken cancellationToken)
         {
-            var student = Mapper.Map<Student>(dto);
-            await DbContext.AddAsync(student);
-            await DbContext.SaveChangesAsync();
+            var student = Mapper.Map<Student>(request);
+            await DbContext.Set<Student>().AddAsync(student, cancellationToken);
+            await DbContext.SaveChangesAsync(cancellationToken);
             return student;
-        }
-
-        public Task<Student> Handle<TDto>(TDto dto)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.GroupDTO
+namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateGroupDto : IDtoBaseCreate<Group> , IMapWith<Group>
+    public sealed class CreateGroupDto : IDtoBaseCreate<Group> , IMapWith<Group>, IRequest<Group>
     {
         public string Name { get; set; }
         public int? CourseID { get; set; }

@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.CourseDTO
+namespace Application.Commands.CreateCommands
 {
-    public class CreateCourseDto : IDtoBaseCreate<Course>, IMapWith<Course>
+    public class CreateCourseDto : IDtoBaseCreate<Course>, IMapWith<Course>, IRequest<Course>
     {
         public string Name { get; set; }
 

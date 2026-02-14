@@ -1,8 +1,8 @@
 ﻿using Application.Commands;
+using Application.Commands.CreateCommands;
 using Application.DTO.CourseDTO;
 using Application.DTO.GroupDTO;
 using Application.DTO.StudentDTO;
-using Application.DTO.TeacherDTO;
 using Application.Factory;
 using Application.Factory.Base;
 using Application.Handlers.Base;

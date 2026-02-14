@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.StudentDTO
+namespace Application.Commands.DeleteCommands
 {
-    public class DeleteStudentDto : IDtoBaseDelete<Student>, IMapWith<Student>
+    public class DeleteStudentDto : IDtoBaseDelete<Student>, IMapWith<Student>, IRequest<Student>
     {
         public int ID { get; set; }
         public void Mapping(Profile profile)

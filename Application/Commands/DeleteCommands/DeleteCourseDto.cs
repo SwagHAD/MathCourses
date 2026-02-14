@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.CourseDTO
+namespace Application.Commands.DeleteCommands
 {
-    public class DeleteCourseDto : IDtoBaseDelete<Course> , IMapWith<Course>
+    public class DeleteCourseDto : IDtoBaseDelete<Course> , IMapWith<Course>, IRequest<Course>
     {
         public int ID { get; set; }
 

@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.LessonDTO
+namespace Application.Commands.UpdateCommands
 {
-    public class UpdateLessonDto : IDtoBaseUpdate<Lesson>, IMapWith<Lesson>
+    public class UpdateLessonDto : IDtoBaseUpdate<Lesson>, IMapWith<Lesson>, IRequest<Lesson>
     {
         public int ID { get; set; }
         public string Name { get; set; }

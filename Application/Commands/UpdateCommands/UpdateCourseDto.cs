@@ -1,10 +1,11 @@
 ﻿using Application.DTO.Base;
 using Application.Mapping.Base;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.CourseDTO
+namespace Application.Commands.UpdateCommands
 {
-    public class UpdateCourseDto : IDtoBaseUpdate<Course> , IMapWith<Course>
+    public class UpdateCourseDto : IDtoBaseUpdate<Course> , IMapWith<Course>, IRequest<Course>
     {
         public int ID { get; set; }
         public string Name { get; set; }

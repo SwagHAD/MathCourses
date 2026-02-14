@@ -1,4 +1,4 @@
-﻿using Application.DTO.StudentDTO;
+﻿using Application.Commands.CreateCommands;
 using Application.Enums;
 using Application.Responses;
 using Application.Services.Base;

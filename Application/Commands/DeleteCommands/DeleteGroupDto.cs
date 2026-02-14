@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.GroupDTO
+namespace Application.Commands.DeleteCommands
 {
-    public class DeleteGroupDto : IDtoBaseDelete<Group> , IMapWith<Group>
+    public class DeleteGroupDto : IDtoBaseDelete<Group> , IMapWith<Group>, IRequest<Group>
     {
         public int ID { get; set; }
 

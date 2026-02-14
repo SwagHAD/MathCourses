@@ -2,10 +2,11 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
-namespace Application.DTO.TeacherDTO
+namespace Application.Commands.CreateCommands
 {
-    public class CreateTeacherDto : IDtoBaseCreate<Teacher>, IMapWith<Teacher>
+    public class CreateTeacherDto : IDtoBaseCreate<Teacher>, IMapWith<Teacher>, IRequest<Teacher>
     {
         public string Name { get; set; }
 

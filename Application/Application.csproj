@@ -25,9 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\CreateHandlers\" />
-    <Folder Include="Commands\UpdateHandlers\" />
-    <Folder Include="Commands\DeleteHandlers\" />
+    <Folder Include="Handlers\DeleteHandlers\" />
+    <Folder Include="Handlers\UpdateHandlers\" />
     <Folder Include="Validation\Delete\" />
   </ItemGroup>
 
