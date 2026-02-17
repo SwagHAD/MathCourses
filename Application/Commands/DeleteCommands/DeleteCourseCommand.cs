@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
@@ -6,13 +6,13 @@ using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public class DeleteCourseDto : IDtoBaseDelete<Course> , IMapWith<Course>, IRequest<Course>
+    public sealed class DeleteCourseCommand : IDtoBaseDelete<Course> , IMapWith<Course>, IRequest<Course>
     {
         public int ID { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<DeleteCourseDto, Course>()
+            profile.CreateMap<DeleteCourseCommand, Course>()
                 .ForMember(course => course.ID,
                     entity => entity.MapFrom(coursedto => coursedto.ID));
         }

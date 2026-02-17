@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Application.Factory.Base;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;

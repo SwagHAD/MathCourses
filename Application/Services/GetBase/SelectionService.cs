@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities.Base;

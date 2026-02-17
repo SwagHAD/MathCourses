@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;

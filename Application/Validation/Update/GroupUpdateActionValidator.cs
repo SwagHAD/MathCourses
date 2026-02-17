@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Validation.Update
 {
-    public class GroupUpdateActionValidator : BaseValidator<UpdateGroupDto>
+    public class GroupUpdateActionValidator : BaseValidator<UpdateGroupCommand>
     {
         public GroupUpdateActionValidator() 
         {

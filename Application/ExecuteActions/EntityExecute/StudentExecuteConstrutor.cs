@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace Application.ExecuteActions.EntityExecute
 {
-    public sealed class StudentExecuteConstrutor() : IExecuteConstructor<Student, UpdateStudentDto>
+    public sealed class StudentExecuteConstrutor() : IExecuteConstructor<Student, UpdateStudentCommand>
     {
-        public Expression<Func<UpdateSettersBuilder<Student>, UpdateSettersBuilder<Student>>> Execute(UpdateStudentDto dto)
+        public Expression<Func<UpdateSettersBuilder<Student>, UpdateSettersBuilder<Student>>> Execute(UpdateStudentCommand dto)
         {
             return setters => setters
                 .SetProperty(s => s.Name, dto.Name);

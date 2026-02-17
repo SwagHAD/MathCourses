@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using FluentValidation;
 
 namespace Application.Validation.Base

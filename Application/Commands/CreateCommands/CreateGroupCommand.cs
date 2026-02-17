@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateGroupDto : IDtoBaseCreate<Group> , IMapWith<Group>, IRequest<Group>
+    public sealed class CreateGroupCommand : IDtoBaseCreate<Group> , IMapWith<Group>
     {
         public string Name { get; set; }
         public int? CourseID { get; set; }
@@ -15,7 +15,7 @@ namespace Application.Commands.CreateCommands
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<CreateGroupDto, Group>()
+            profile.CreateMap<CreateGroupCommand, Group>()
                 .ForMember(group => group.Name,
                     entity => entity.MapFrom(groupdto => groupdto.Name))
                 .ForMember(group => group.CourseID,

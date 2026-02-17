@@ -1,4 +1,4 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Application.Responses;
 using Domain.Entities.Base;
 
@@ -20,7 +20,7 @@ namespace Application.Services.Base
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    return await CustomCreate(dto);
+                    return Mediator.Send<TEntity>(dto);
                 }, IsAtomicOperation);
             }, dto);
         }
@@ -31,7 +31,6 @@ namespace Application.Services.Base
             {
                 await UnitOfWork.ExecuteAsync(async () =>
                 {
-                   await CustomDelete(dto);
                 }, IsAtomicOperation);
             }, dto);
         }
@@ -42,7 +41,7 @@ namespace Application.Services.Base
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    return await CustomUpdate(dto);
+
                 }, IsAtomicOperation);
             }, dto);
         }

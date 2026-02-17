@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Validation.Update
 {
-    public class TeacherUpdateActionValidator : BaseValidator<UpdateTeacherDto>
+    public class TeacherUpdateActionValidator : BaseValidator<UpdateTeacherCommand>
     {
         public TeacherUpdateActionValidator() 
         {

@@ -1,4 +1,4 @@
-﻿using Application.DTO.GroupDTO;
+﻿using Application.Command.GroupDTO;
 using Application.Enums;
 using Application.Services.Base;
 using Domain.Entities;

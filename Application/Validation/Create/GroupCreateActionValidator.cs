@@ -1,4 +1,4 @@
-﻿using Application.DTO.GroupDTO;
+﻿using Application.Command.GroupDTO;
 using Application.Validation.Base;
 using FluentValidation;
 

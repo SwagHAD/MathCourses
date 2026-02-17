@@ -1,11 +1,11 @@
-﻿using Application.DTO.Base;
+﻿using Application.Command.Base;
 using Application.Mapping.Base;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateGroupDto : IDtoBaseUpdate<Group> , IMapWith<Group>, IRequest<Group>
+    public sealed class UpdateGroupCommand : IDtoBaseUpdate<Group> , IMapWith<Group>, IRequest<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }
