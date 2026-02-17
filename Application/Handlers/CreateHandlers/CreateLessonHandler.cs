@@ -6,14 +6,14 @@ using MediatR;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateLessonHandler(IMapper Mapper, IMathDbContext DbContext) : IRequestHandler<CreateLessonCommand, int>
+    public sealed class CreateLessonHandler(IMapper Mapper, IMathDbContext DbContext) : IRequestHandler<CreateLessonCommand, Lesson>
     {
-        public async Task<int> Handle(CreateLessonCommand request, CancellationToken cancellationToken)
+        public async Task<Lesson> Handle(CreateLessonCommand request, CancellationToken cancellationToken)
         {
             var lesson = Mapper.Map<Lesson>(request);
             await DbContext.AddAsync(lesson);
             await DbContext.SaveChangesAsync();
-            return lesson.ID;
+            return lesson;
         }
     }
 }

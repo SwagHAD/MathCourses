@@ -20,7 +20,7 @@ namespace Application.Services.Base
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    return Mediator.Send<TEntity>(dto);
+                    return await Mediator.Send<TEntity>(dto);
                 }, IsAtomicOperation);
             }, dto);
         }

@@ -6,14 +6,14 @@ using MediatR;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateStudentHandler(IMapper Mapper, IMathDbContext DbContext) : IRequestHandler<CreateStudentCommand, int>
+    public sealed class CreateStudentHandler(IMapper Mapper, IMathDbContext DbContext) : IRequestHandler<CreateStudentCommand, Student>
     {
-        public async Task<int> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Student> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
             var student = Mapper.Map<Student>(request);
             await DbContext.Set<Student>().AddAsync(student, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
-            return student.ID;
+            return student;
         }
     }
 }
