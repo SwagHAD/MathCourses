@@ -1,4 +1,4 @@
-﻿using Application.Command.GroupDTO;
+﻿using Application.Commands.CreateCommands;
 using Application.Enums;
 using Application.Services.Base;
 using Domain.Entities;
@@ -11,9 +11,9 @@ namespace Math.Api.Controllers
     public sealed class GroupController(IApplicationServiceBase<Group> GroupService) : ControllerBase
     {
         [HttpPost("CreateGroup")]
-        public async Task<ActionResult<GroupDto>> CreateGroup(CreateGroupDto createGroup)
+        public async Task<ActionResult<Group>> CreateGroup(CreateGroupCommand createGroup)
         {
-            var result = await GroupService.CreateItemAsync<CreateGroupDto, GroupDto>(createGroup);
+            var result = await GroupService.CreateItemAsync(createGroup);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),

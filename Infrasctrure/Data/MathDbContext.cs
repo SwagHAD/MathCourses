@@ -77,7 +77,6 @@ namespace Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BaseEntity).Assembly);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(MathDbContext).Assembly);
         }
     }
 }

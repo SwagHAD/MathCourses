@@ -9,7 +9,6 @@ namespace Application.Services.Base
     /// Классы наследники помечать как sealed
     /// </summary>
     /// <typeparam name="TEntity">Сущность базы</typeparam>
-    /// <typeparam name="TDtoBase">Базовая ДТО</typeparam>
     /// <param name="services">Базовый сервис</param>
     public partial class ApplicationServiceBase<TEntity>(IServiceProvider services) : IApplicationServiceBase<TEntity>
         where TEntity : BaseEntity
@@ -31,6 +30,7 @@ namespace Application.Services.Base
             {
                 await UnitOfWork.ExecuteAsync(async () =>
                 {
+                    await Mediator.Send(dto);
                 }, IsAtomicOperation);
             }, dto);
         }
@@ -41,7 +41,7 @@ namespace Application.Services.Base
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-
+                    return await Mediator.Send<TEntity>(dto);
                 }, IsAtomicOperation);
             }, dto);
         }

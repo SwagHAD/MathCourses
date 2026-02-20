@@ -1,10 +1,10 @@
-﻿using Application.Command.GroupDTO;
+﻿using Application.Commands.CreateCommands;
 using Application.Validation.Base;
 using FluentValidation;
 
 namespace Application.Validation.Create
 {
-    public class GroupCreateActionValidator : BaseValidator<CreateGroupDto>
+    public class GroupCreateActionValidator : BaseValidator<CreateGroupCommand>
     {
         public GroupCreateActionValidator() 
         {

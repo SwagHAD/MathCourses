@@ -6,8 +6,8 @@ namespace Application.Services.Base
 {
     public interface IApplicationServiceBase<TEntity> where TEntity : BaseEntity
     {
-        Task<Response<int>> CreateItemAsync(IDtoBaseCreate<TEntity> dto, bool IsAtomicOperation = true);
+        Task<Response<TEntity>> CreateItemAsync(IDtoBaseCreate<TEntity> dto, bool IsAtomicOperation = true);
         Task<Response<bool>> DeleteItemAsync(IDtoBaseDelete<TEntity> dto, bool IsAtomicOperation = true);
-        Task<Response<int>> UpdateItemAsync(IDtoBaseUpdate<TEntity> dto, bool IsAtomicOperation = true);
+        Task<Response<TEntity>> UpdateItemAsync(IDtoBaseUpdate<TEntity> dto, bool IsAtomicOperation = true);
     }
 }
