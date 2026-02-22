@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Validation.Create
 {
-    public class CourseCreateActionValidator : BaseValidator<CreateCourseCommand>
+    public sealed class CourseCreateActionValidator : BaseValidator<CreateCourseCommand>
     {
         public CourseCreateActionValidator()
         {

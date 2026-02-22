@@ -7,7 +7,7 @@ namespace Application.Services.Base
     public partial class ApplicationServiceBase<TEntity> : IApplicationServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        private async Task<Response<TEntity>> Handle(Func<Task<TEntity>> Action, IDtoBase<TEntity> dto)
+        private async Task<Response<TEntity>> Handle<TCommand>(Func<Task<TEntity>> Action, TCommand dto) where TCommand : IDtoBase<TEntity>
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Application.Services.Base
                 return Response<TEntity>.Error(ex.Message);
             }
         }
-        private async Task<Response<bool>> Handle(Func<Task> Action, IDtoBase<TEntity> dto)
+        private async Task<Response<bool>> Handle<TCommand>(Func<Task> Action, TCommand dto) where TCommand : IDtoBase<TEntity>
         {
             try
             {

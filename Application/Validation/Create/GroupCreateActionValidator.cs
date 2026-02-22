@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Application.Validation.Create
 {
-    public class GroupCreateActionValidator : BaseValidator<CreateGroupCommand>
+    public sealed class GroupCreateActionValidator : BaseValidator<CreateGroupCommand>
     {
         public GroupCreateActionValidator() 
         {

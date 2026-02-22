@@ -16,6 +16,7 @@ namespace Application.Extensions
             AddValidation(services);
             AddMapping(services);
             AddServices(services);
+            AddMediatR(services);
             return services;
         }
         private static void AddValidation(IServiceCollection services)
