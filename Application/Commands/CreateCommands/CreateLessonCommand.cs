@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateLessonCommand : IDtoBaseCreate<Lesson>, IMapWith<Lesson>
+    public class CreateLessonCommand : ICommandBaseCreate<Lesson>, IMapWith<Lesson>
     {
         public string Name { get; set; }
 

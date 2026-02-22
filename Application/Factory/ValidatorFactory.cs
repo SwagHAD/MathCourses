@@ -7,7 +7,7 @@ namespace Application.Factory
 {
     public sealed class ValidatorFactory(IServiceProvider validationServices) : IValidatorFactoryBase
     {
-        public IValidator<T> GetValidator<T>() where T : IDtoBase
+        public IValidator<T> GetValidator<T>() where T : ICommandBase
         {
             var validator = validationServices.GetRequiredService<IValidator<T>>();
             if (validator == null)

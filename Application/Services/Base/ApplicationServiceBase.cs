@@ -13,7 +13,7 @@ namespace Application.Services.Base
     public partial class ApplicationServiceBase<TEntity>(IServiceProvider services) : IApplicationServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        public async Task<Response<TEntity>> CreateItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : IDtoBaseCreate<TEntity>
+        public async Task<Response<TEntity>> CreateItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : ICommandBaseCreate<TEntity>
         {
             return await Handle(async() =>
             {
@@ -24,7 +24,7 @@ namespace Application.Services.Base
             }, dto);
         }
 
-        public async Task<Response<bool>> DeleteItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : IDtoBaseDelete<TEntity>
+        public async Task<Response<bool>> DeleteItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : ICommandBaseDelete<TEntity>
         {
             return await Handle(async () =>
             {
@@ -35,7 +35,7 @@ namespace Application.Services.Base
             }, dto);
         }
 
-        public async Task<Response<TEntity>> UpdateItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : IDtoBaseUpdate<TEntity>
+        public async Task<Response<TEntity>> UpdateItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : ICommandBaseUpdate<TEntity>
         {
             return await Handle(async () =>
             {

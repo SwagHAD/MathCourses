@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateCourseCommand : IDtoBaseCreate<Course>, IMapWith<Course>
+    public class CreateCourseCommand : ICommandBaseCreate<Course>, IMapWith<Course>
     {
         public string Name { get; set; }
 

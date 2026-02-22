@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteLessonCommand : IDtoBaseDelete<Lesson>, IMapWith<Lesson>, IRequest<Lesson>
+    public sealed class DeleteLessonCommand : ICommandBaseDelete<Lesson>, IMapWith<Lesson>, IRequest<Lesson>
     {
         public int ID { get; set; }
 

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateGroupCommand : IDtoBaseUpdate<Group> , IMapWith<Group>, IRequest<Group>
+    public sealed class UpdateGroupCommand : ICommandBaseUpdate<Group> , IMapWith<Group>, IRequest<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateTeacherCommand : IDtoBaseUpdate<Teacher>, IMapWith<Teacher>, IRequest<Teacher>
+    public sealed class UpdateTeacherCommand : ICommandBaseUpdate<Teacher>, IMapWith<Teacher>, IRequest<Teacher>
     {
         public int ID { get; set; }
         public string Name { get; set; }
