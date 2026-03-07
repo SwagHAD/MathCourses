@@ -14,7 +14,7 @@ namespace Application.Builder
 
         private ValidationBuilder(TDto dto)
             => _dto = dto;
-        public static ValidationBuilder<TDto, TEntity> For(TDto dto)
+        public ValidationBuilder<TDto, TEntity> For(TDto dto)
             => new ValidationBuilder<TDto, TEntity>(dto);
         public ValidationBuilder<TDto, TEntity> WithStructuralValidation(IValidator<TDto> validator)
         {
