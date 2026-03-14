@@ -2,7 +2,6 @@
 using Application.Mapping.Base;
 using AutoMapper;
 using Domain.Entities;
-using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
