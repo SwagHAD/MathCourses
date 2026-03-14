@@ -10,7 +10,7 @@ namespace Domain.Entities
     /// Промежуточная таблица для связи Student-Group (многие-ко-многим)
     /// </summary>
     [Table("StudentGroups")]
-    public class StudentGroup : BaseManyToManyEntity<Student, Group>
+    public sealed class StudentGroup : BaseManyToManyEntity<Student, Group>
     {
         public StudentStatus? StudentStatus { get; set; }
     }

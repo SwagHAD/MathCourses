@@ -1,9 +1,9 @@
-﻿using Application.Factory;
-using Application.Factory.Base;
+using Application.Behaviors;
 using Application.Mapping.Base;
 using Application.Services.Base;
 using Domain.Entities;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -22,15 +22,14 @@ namespace Application.Extensions
         private static void AddValidation(IServiceCollection services)
         {
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddScoped<IValidatorFactoryBase, ValidatorFactory>();
         }
         private static void AddServices(IServiceCollection services)
         {
-            services.AddScoped<IApplicationServiceBase<Student>, ApplicationServiceBase<Student>>();
-            services.AddScoped<IApplicationServiceBase<Teacher>, ApplicationServiceBase<Teacher>>();
-            services.AddScoped<IApplicationServiceBase<Lesson>, ApplicationServiceBase<Lesson>>();
-            services.AddScoped<IApplicationServiceBase<Group>, ApplicationServiceBase<Group>>();
-            services.AddScoped<IApplicationServiceBase<Course>, ApplicationServiceBase<Course>>();
+            services.AddScoped<ICrudServiceBase<Student>, CrudServiceBase<Student>>();
+            services.AddScoped<ICrudServiceBase<Teacher>, CrudServiceBase<Teacher>>();
+            services.AddScoped<ICrudServiceBase<Lesson>, CrudServiceBase<Lesson>>();
+            services.AddScoped<ICrudServiceBase<Group>, CrudServiceBase<Group>>();
+            services.AddScoped<ICrudServiceBase<Course>, CrudServiceBase<Course>>();
         }
         private static void AddMapping(IServiceCollection services)
         {
@@ -40,6 +39,8 @@ namespace Application.Extensions
         {
             services.AddMediatR(cfg =>
                 cfg.RegisterServicesFromAssembly(typeof(AssemblyMediatoRDI).Assembly));
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
     }
 }

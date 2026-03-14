@@ -1,6 +1,7 @@
-﻿using Application.Command.Base;
+using Application.Command.Base;
 using Application.Responses;
 using Domain.Entities.Base;
+using MediatR;
 
 namespace Application.Services.Base
 {
@@ -10,39 +11,44 @@ namespace Application.Services.Base
     /// </summary>
     /// <typeparam name="TEntity">Сущность базы</typeparam>
     /// <param name="services">Базовый сервис</param>
-    public partial class ApplicationServiceBase<TEntity>(IServiceProvider services) : IApplicationServiceBase<TEntity>
+    public partial class CrudServiceBase<TEntity>(IServiceProvider services) : ICrudServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        public async Task<Response<TEntity>> CreateItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : ICommandBaseCreate<TEntity>
+        public async Task<Response<TResponse>> CreateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
+            where TRequest : ICommandBaseCreate<TEntity> 
+            where TResponse : ICommandBase<TEntity>
         {
-            return await Handle(async() =>
+            return await Handle<TRequest, TResponse>(async () =>
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    return await Mediator.Send<TEntity>(dto);
-                }, IsAtomicOperation);
+                    return await Mediator.Send(dto, cancellationToken);
+                }, isAtomicOperation);
             }, dto);
         }
 
-        public async Task<Response<bool>> DeleteItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : ICommandBaseDelete<TEntity>
+        public async Task<Response<TResponse>> DeleteItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
+            where TRequest : ICommandBaseDelete<TEntity> 
+            where TResponse: ICommandBase<TEntity>
         {
-            return await Handle(async () =>
-            {
-                await UnitOfWork.ExecuteAsync(async () =>
-                {
-                    await Mediator.Send(dto);
-                }, IsAtomicOperation);
-            }, dto);
-        }
-
-        public async Task<Response<TEntity>> UpdateItemAsync<TCommand>(TCommand dto, bool IsAtomicOperation = true) where TCommand : ICommandBaseUpdate<TEntity>
-        {
-            return await Handle(async () =>
+            return await Handle<TRequest, TResponse>(async () =>
             {
                 return await UnitOfWork.ExecuteAsync(async () =>
                 {
-                    return await Mediator.Send<TEntity>(dto);
-                }, IsAtomicOperation);
+                    return await Mediator.Send(dto, cancellationToken);
+                }, isAtomicOperation);
+            }, dto);
+        }
+        public async Task<Response<TResponse>> UpdateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default)
+            where TRequest : ICommandBaseUpdate<TEntity> 
+            where TResponse : ICommandBase<TEntity>
+        {
+            return await Handle<TRequest, TResponse>(async () =>
+            {
+                return await UnitOfWork.ExecuteAsync(async () =>
+                {
+                    return await Mediator.Send(dto, cancellationToken);
+                }, isAtomicOperation);
             }, dto);
         }
     }

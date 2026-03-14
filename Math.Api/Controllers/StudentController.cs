@@ -1,5 +1,5 @@
-﻿using Application.Commands.CreateCommands;
-using Application.Enums;
+using Application.Commands.CreateCommands;
+using Application.Commands.DeleteCommands;
 using Application.Responses;
 using Application.Services.Base;
 using Domain.Entities;
@@ -7,25 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Math.Api.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public sealed class StudentController(IApplicationServiceBase<Student> StudentService) : ControllerBase
+    public sealed class StudentController(IServiceProvider services) : CrudControllerBase<Student>(services)
     {
-        //[HttpGet("GetStudentById")]
-        //public async Task<Response<StudentDto>> GetStudentById(int Id)
-        //{
-        //    return Ok();
-        //}
 
         [HttpPost("CreateStudent")]
         public async Task<ActionResult<Response<Student>>> CreateStudent(CreateStudentCommand studentDto)
         {
-            var result = await StudentService.CreateItemAsync<CreateStudentCommand>(studentDto);
-            return result.Status switch
-            {
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            var result = await CrudService.CreateItemAsync(studentDto);
+            return ToActionResult(result);
+        }
+        [HttpDelete("DeleteStudent")]
+        public async Task<ActionResult<Response<Student>>> DeleteStudent(DeleteStudentCommand deletestudentDto)
+        {
+            var result = await CrudService.DeleteItemAsync(deletestudentDto);
+            return ToActionResult(result);
         }
     }
 }

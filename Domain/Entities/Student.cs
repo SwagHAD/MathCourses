@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Domain.Entities
 {
     [Table("Students")]
-    public class Student : BaseEntity<Student>
+    public sealed class Student : BaseEntity<Student>
     {
         public string Name { get; set; }
 

@@ -10,8 +10,6 @@ namespace Application.Commands.UpdateCommands
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
-        public List<int> Groups { get; set; } = [];
         public void Mapping(Profile profile)
         {
             profile.CreateMap<UpdateTeacherCommand, Teacher>()

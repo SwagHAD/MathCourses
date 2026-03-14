@@ -8,7 +8,7 @@ namespace Domain.Entities
     /// Учителя
     /// </summary>
     [Table("Teachers")]
-    public class Teacher : BaseEntity<Teacher>
+    public sealed class Teacher : BaseEntity<Teacher>
     {
         /// <summary>
         /// Имя

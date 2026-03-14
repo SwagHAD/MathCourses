@@ -1,40 +1,33 @@
-﻿using Application.Command.Base;
+using Application.Command.Base;
 using Application.Responses;
 using Domain.Entities.Base;
+using FluentValidation;
 
 namespace Application.Services.Base
 {
-    public partial class ApplicationServiceBase<TEntity> : IApplicationServiceBase<TEntity>
+    public partial class CrudServiceBase<TEntity> : ICrudServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        private async Task<Response<TEntity>> Handle<TCommand>(Func<Task<TEntity>> Action, TCommand dto) where TCommand : ICommadBase<TEntity>
+        private async Task<Response<TResponse>> Handle<TRequest, TResponse>(Func<Task<TEntity>> Action, TRequest dto) 
+            where TRequest : ICommandBase<TEntity> where TResponse : ICommandBase<TEntity>
         {
             try
             {
-                var validationResult = await ValidateItemAsync(dto);
-                if (!validationResult.IsValid)
-                    return Response<TEntity>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
                 var result = await Action();
-                return Response<TEntity>.Ok(Mapper.Map<TEntity>(result), "Успешно");
+                return Response<TResponse>.Ok(Mapper.Map<TResponse>(result), "Успешно");
+            }
+            catch (ValidationException ex)
+            {
+                var errors = ex.Errors
+                    .Where(e => e is not null)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                return Response<TResponse>.Fail(errors);
             }
             catch (Exception ex)
             {
-                return Response<TEntity>.Error(ex.Message);
-            }
-        }
-        private async Task<Response<bool>> Handle<TCommand>(Func<Task> Action, TCommand dto) where TCommand : ICommadBase<TEntity>
-        {
-            try
-            {
-                var validationResult = await ValidateItemAsync(dto);
-                if (!validationResult.IsValid)
-                    return Response<bool>.Fail(validationResult.Errors.Select(f => f.ErrorMessage).ToList());
-                await Action();
-                return Response<bool>.Ok(true, "Успешно");
-            }
-            catch (Exception ex)
-            {
-                return Response<bool>.Error(ex.Message);
+                return Response<TResponse>.Error(ex.Message);
             }
         }
     }

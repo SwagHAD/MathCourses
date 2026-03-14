@@ -9,7 +9,7 @@ namespace Domain.Entities
     /// Уроки
     /// </summary>
     [Table("Lessons")]
-    public class Lesson : BaseEntity<Lesson>
+    public sealed class Lesson : BaseEntity<Lesson>
     {
         /// <summary>
         /// Название урока

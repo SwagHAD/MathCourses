@@ -1,8 +1,10 @@
 ﻿using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
+    [Table("TeacherGroups")]
     public sealed class TeacherGroup : BaseManyToManyEntity<Teacher, Group>
     {
     }

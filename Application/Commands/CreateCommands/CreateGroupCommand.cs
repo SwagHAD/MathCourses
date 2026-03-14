@@ -10,8 +10,8 @@ namespace Application.Commands.CreateCommands
     {
         public string Name { get; set; }
         public int? CourseID { get; set; }
-        public List<int> StudentIDs { get; set; } = [];
-        public List<int> TeacherIDs { get; set; } = [];
+        public List<int> Students { get; set; } = [];
+        public List<int> Teachers { get; set; } = [];
 
         public void Mapping(Profile profile)
         {
@@ -22,13 +22,13 @@ namespace Application.Commands.CreateCommands
                     entity => entity.MapFrom(groupdto => groupdto.CourseID))
                 .ForMember(group => group.TeacherGroups,
                     opt => opt.MapFrom(dto =>
-                        dto.TeacherIDs.Select(id => new TeacherGroup
+                        dto.Teachers.Select(id => new TeacherGroup
                         {
                             FirstEntityId = id,
                         })))
                 .ForMember(g => g.StudentGroups,
                     opt => opt.MapFrom(dto =>
-                        dto.StudentIDs.Select(id => new StudentGroup
+                        dto.Students.Select(id => new StudentGroup
                         {
                             FirstEntityId = id,
                         })));
