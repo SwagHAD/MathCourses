@@ -1,11 +1,12 @@
 ﻿using Application.Command.Base;
 using Application.Mapping.Base;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateLessonCommand : ICommandBaseCreate<Lesson>, IMapWith<Lesson>
+    public sealed class CreateLessonCommand : IBaseRequestCreate<DefaultLessonResponse>, IMapWith<Lesson>
     {
         public string Name { get; set; }
 

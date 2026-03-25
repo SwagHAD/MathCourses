@@ -1,6 +1,6 @@
 ﻿using Application.Enums;
 
-namespace Application.Responses
+namespace Application.Base
 {
     public sealed class Response<T>
     {

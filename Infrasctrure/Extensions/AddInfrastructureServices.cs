@@ -1,8 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces.Data;
 using Domain.Interfaces.UnitOfWork;
-using Infrastructure.Data;
-using Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,16 +17,12 @@ namespace Infrastructure.Extensions
         }
         private static void AddDbContext(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<IMathDbContext, MathDbContext>(options =>
+            services.AddDbContext<ISwagDbContext, MathDbContext>(options =>
                 options.UseNpgsql(connectionString));
         }
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork<Student>, UnitOfWork<Student>>();
-            services.AddScoped<IUnitOfWork<Group>,  UnitOfWork<Group>>();
-            services.AddScoped<IUnitOfWork<Lesson>, UnitOfWork<Lesson>>();
-            services.AddScoped<IUnitOfWork<Teacher>, UnitOfWork<Teacher>>();
-            services.AddScoped<IUnitOfWork<Course>,  UnitOfWork<Course>>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

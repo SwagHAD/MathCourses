@@ -1,4 +1,5 @@
 ﻿using Application.Commands.DeleteCommands;
+using Application.Responses;
 using Domain.Entities;
 using Domain.Interfaces.Data;
 using MediatR;
@@ -6,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.DeleteHandlers
 {
-    public sealed class DeleteLessonHandler(IMathDbContext DbContext) : IRequestHandler<DeleteLessonCommand, Lesson>
+    public sealed class DeleteLessonHandler(ISwagDbContext DbContext) : IRequestHandler<DeleteLessonCommand, DefaultGroupResponse>
     {
-        public async Task<Lesson> Handle(DeleteLessonCommand request, CancellationToken cancellationToken)
+        public async Task<DefaultGroupResponse> Handle(DeleteLessonCommand request, CancellationToken cancellationToken)
         {
             if(!await DbContext.Set<Lesson>().AnyAsync(f => f.ID == request.ID))
                 throw new ArgumentException(nameof(request));

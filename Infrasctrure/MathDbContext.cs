@@ -4,9 +4,9 @@ using Domain.Interfaces.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Infrastructure.Data
+namespace Infrastructure
 {
-    internal sealed class MathDbContext : DbContext, IMathDbContext
+    internal sealed class MathDbContext : DbContext, ISwagDbContext
     {
         private IDbContextTransaction? _currentTransaction;
         public MathDbContext(DbContextOptions<MathDbContext> options) : base(options) { }
@@ -70,7 +70,7 @@ namespace Infrastructure.Data
             await Database.MigrateAsync(cancellationToken);
         }
 
-        async Task IMathDbContext.AddAsync(object entity, CancellationToken cancellationToken)
+        async Task ISwagDbContext.AddAsync(object entity, CancellationToken cancellationToken)
         {
             await base.AddAsync(entity, cancellationToken);
         }

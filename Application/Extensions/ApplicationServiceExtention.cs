@@ -38,7 +38,7 @@ namespace Application.Extensions
         private static void AddMediatR(IServiceCollection services)
         {
             services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(typeof(AssemblyMediatoRDI).Assembly));
+                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }

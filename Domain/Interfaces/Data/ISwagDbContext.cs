@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Interfaces.Data
 {
-    public interface IMathDbContext : IAsyncDisposable
+    public interface ISwagDbContext : IAsyncDisposable
     {
         DbSet<Student> Students { get; set; }
         DbSet<Group> Groups { get; set; }

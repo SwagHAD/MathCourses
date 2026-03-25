@@ -1,12 +1,13 @@
 ﻿using Application.Command.Base;
 using Application.Mapping.Base;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateStudentCommand : ICommandBaseCreate<Student>, IMapWith<Student>
+    public class CreateStudentCommand : IBaseRequestCreate<DefaultStudentResponse>, IMapWith<Student>
     {
         public string Name { get; set; }
 

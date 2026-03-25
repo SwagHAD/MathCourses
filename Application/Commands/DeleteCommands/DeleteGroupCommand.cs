@@ -1,12 +1,13 @@
 ﻿using Application.Command.Base;
 using Application.Mapping.Base;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteGroupCommand : ICommandBaseDelete<Group> , IMapWith<Group>, IRequest<Group>
+    public sealed class DeleteGroupCommand : IBaseRequestDelete<DefaultGroupResponse> , IMapWith<Group>, IRequest<Group>
     {
         public int ID { get; set; }
 

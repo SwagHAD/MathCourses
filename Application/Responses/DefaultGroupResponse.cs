@@ -1,0 +1,23 @@
+﻿using Application.Mapping.Base;
+using Application.Responses.Base;
+using AutoMapper;
+using Domain.Entities;
+
+namespace Application.Responses
+{
+    public sealed class DefaultGroupResponse : IMapWith<Group>, IBaseResponse<Group>
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+            profile.CreateMap<Group, DefaultGroupResponse>()
+                .ForMember(dto => dto.Id,
+                    entity => entity.MapFrom(group => group.ID))
+                .ForMember(dto => dto.Name,
+                    entity => entity.MapFrom(group => group.Name));
+        }
+
+    }
+}

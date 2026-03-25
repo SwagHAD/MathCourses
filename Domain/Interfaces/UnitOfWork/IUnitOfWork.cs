@@ -1,10 +1,8 @@
-﻿using Domain.Entities.Base;
-
-namespace Domain.Interfaces.UnitOfWork
+﻿namespace Domain.Interfaces.UnitOfWork
 {
-    public interface IUnitOfWork<TEntity>
+    public interface IUnitOfWork
     {
-        Task<TEntity> ExecuteAsync(Func<Task<TEntity>> Action, bool IsAtomicOperation = true);
+        Task<T> ExecuteAsync<T>(Func<Task<T>> Action, bool IsAtomicOperation = true);
         Task ExecuteAsync(Func<Task> Action, bool IsAtomicOperation = true);
     }
 }

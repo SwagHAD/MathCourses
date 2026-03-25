@@ -1,20 +1,20 @@
-using Application.Command.Base;
-using Application.Responses;
+using Application.Base;
+using Application.Responses.Base;
 using Domain.Entities.Base;
 using FluentValidation;
+using MediatR;
 
 namespace Application.Services.Base
 {
     public partial class CrudServiceBase<TEntity> : ICrudServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        private async Task<Response<TResponse>> Handle<TRequest, TResponse>(Func<Task<TEntity>> Action, TRequest dto) 
-            where TRequest : ICommandBase<TEntity> where TResponse : ICommandBase<TEntity>
+        private async Task<Response<TResponse>> Handle<TRequest, TResponse>(Func<Task<TResponse>> Action) 
+            where TRequest : IRequest<TResponse> where TResponse : IBaseResponse<TEntity>
         {
             try
             {
-                var result = await Action();
-                return Response<TResponse>.Ok(Mapper.Map<TResponse>(result), "Успешно");
+                return Response<TResponse>.Ok(await Action(), "Успешно");
             }
             catch (ValidationException ex)
             {

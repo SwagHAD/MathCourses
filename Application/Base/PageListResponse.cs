@@ -1,7 +1,6 @@
 ﻿using Application.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Application.Responses
+namespace Application.Base
 {
     public sealed class PageListResponse<T>
     {

@@ -6,11 +6,10 @@ using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateCourseCommand : ICommandBaseUpdate<Course> , IMapWith<Course>, IRequest<Course>
+    public sealed class UpdateCourseCommand : IBaseRequestUpdate<Course> , IMapWith<Course>, IRequest<Course>
     {
         public int ID { get; set; }
         public string Name { get; set; }
-
         public void Mapping(Profile profile)
         {
             profile.CreateMap<UpdateCourseCommand, Course>()

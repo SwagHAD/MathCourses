@@ -9,7 +9,7 @@ namespace Application.Services.Base
     public partial class CrudServiceBase<TEntity> : ICrudServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        protected IUnitOfWork<TEntity> UnitOfWork { get; } = services.GetRequiredService<IUnitOfWork<TEntity>>();
+        protected IUnitOfWork UnitOfWork { get; } = services.GetRequiredService<IUnitOfWork>();
         protected IMapper Mapper { get; } = services.GetRequiredService<IMapper>();
         protected IMediator Mediator = services.GetRequiredService<IMediator>();
     }

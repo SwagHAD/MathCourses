@@ -1,12 +1,11 @@
-﻿using Domain.Entities.Base;
-using Domain.Interfaces.Data;
+﻿using Domain.Interfaces.Data;
 using Domain.Interfaces.UnitOfWork;
 
-namespace Infrastructure.UnitOfWork
+namespace Infrastructure
 {
-    internal class UnitOfWork<TEntity>(IMathDbContext dbContext) : IUnitOfWork<TEntity> where TEntity : BaseEntity
+    internal class UnitOfWork(ISwagDbContext dbContext) : IUnitOfWork
     {
-        public async Task<TEntity> ExecuteAsync(Func<Task<TEntity>> Action, bool IsAtomicOperation = true)
+        public async Task<T> ExecuteAsync<T>(Func<Task<T>> Action, bool IsAtomicOperation = true)
         {
             if (!IsAtomicOperation)
               return await Action();

@@ -1,12 +1,12 @@
 ﻿using Application.Command.Base;
 using Application.Mapping.Base;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateCourseCommand : ICommandBaseCreate<Course>, IMapWith<Course>
+    public sealed class CreateCourseCommand : IBaseRequestCreate<DefaultCourseResponse>, IMapWith<Course>
     {
         public string Name { get; set; }
 

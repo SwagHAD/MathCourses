@@ -9,7 +9,7 @@ namespace Math.Api
         public static async Task MigrateAsync(IServiceProvider services)
         {
             await using var scope = services.CreateAsyncScope();
-            var dbcontext = scope.ServiceProvider.GetRequiredService<IMathDbContext>();
+            var dbcontext = scope.ServiceProvider.GetRequiredService<ISwagDbContext>();
             await dbcontext.MigrateAsync();
         }
         public static string GetConnectionStringFromEnv()

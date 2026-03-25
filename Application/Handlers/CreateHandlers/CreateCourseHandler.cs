@@ -1,4 +1,5 @@
 ﻿using Application.Commands.CreateCommands;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Data;
@@ -6,14 +7,14 @@ using MediatR;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateCourseHandler(IMapper Mapper, IMathDbContext DbContext) : IRequestHandler<CreateCourseCommand, Course>
+    public sealed class CreateCourseHandler(IMapper Mapper, ISwagDbContext DbContext) : IRequestHandler<CreateCourseCommand, DefaultCourseResponse>
     {
-        public async Task<Course> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
+        public async Task<DefaultCourseResponse> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
             var course = Mapper.Map<Course>(request);
             await DbContext.AddAsync(course, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
-            return course;
+            return Mapper.Map<DefaultCourseResponse>(course);
         }
     }
 }

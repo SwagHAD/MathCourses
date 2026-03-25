@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.UpdateHandlers
 {
-    public sealed class UpdateTeacherHandler(IMathDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateTeacherCommand, Teacher>
+    public sealed class UpdateTeacherHandler(ISwagDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateTeacherCommand, Teacher>
     {
         public async Task<Teacher> Handle(UpdateTeacherCommand request, CancellationToken cancellationToken)
         {

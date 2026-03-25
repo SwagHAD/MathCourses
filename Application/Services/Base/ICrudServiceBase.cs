@@ -1,5 +1,6 @@
+using Application.Base;
 using Application.Command.Base;
-using Application.Responses;
+using Application.Responses.Base;
 using Domain.Entities.Base;
 
 namespace Application.Services.Base
@@ -7,10 +8,10 @@ namespace Application.Services.Base
     public interface ICrudServiceBase<TEntity> where TEntity : BaseEntity
     {
         Task<Response<TResponse>> CreateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : ICommandBaseCreate<TEntity> where TResponse : ICommandBase<TEntity>;
+            where TRequest : IBaseRequestCreate<TResponse> where TResponse : IBaseResponse<TEntity>;
         Task<Response<TResponse>> DeleteItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : ICommandBaseDelete<TEntity> where TResponse : ICommandBase<TEntity>;
+            where TRequest : IBaseRequestDelete<TResponse> where TResponse : IBaseResponse<TEntity>;
         Task<Response<TResponse>> UpdateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : ICommandBaseUpdate<TEntity> where TResponse : ICommandBase<TEntity>;
+            where TRequest : IBaseRequestUpdate<TResponse> where TResponse : IBaseResponse<TEntity>;
     }
 }
