@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateTeacherCommand : IBaseRequestCreate<DefaultTeacherResponse>, IMapWith<Teacher>
+    public class CreateTeacherCommand : IBaseRequestCreate<Teacher>, IMapWith<Teacher>
     {
         public string Name { get; set; }
 

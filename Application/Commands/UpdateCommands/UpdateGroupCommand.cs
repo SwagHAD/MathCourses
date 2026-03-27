@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateGroupCommand : IBaseRequestUpdate<GroupResponse>, IMapWith<Group>
+    public sealed class UpdateGroupCommand : IBaseRequestUpdate<Group>, IMapWith<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }

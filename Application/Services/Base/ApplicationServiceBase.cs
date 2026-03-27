@@ -16,12 +16,12 @@ namespace Application.Services.Base
         where TEntity : BaseEntity
     {
         public async Task<Response<TResponse>> CreateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : IBaseRequestCreate<TResponse> 
+            where TRequest : IBaseRequestCreate<TEntity> 
             where TResponse : IBaseResponse<TEntity>
         {
             return await Handle<TRequest, TResponse>(async () =>
             {
-                return await UnitOfWork.ExecuteAsync<TResponse>(async () =>
+                return await UnitOfWork.ExecuteAsync<TEntity>(async () =>
                 {
                     return await Mediator.Send(dto, cancellationToken);
                 }, isAtomicOperation);
@@ -29,24 +29,24 @@ namespace Application.Services.Base
         }
 
         public async Task<Response<TResponse>> DeleteItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : IBaseRequestDelete<TResponse> 
+            where TRequest : IBaseRequestDelete<TEntity> 
             where TResponse: IBaseResponse<TEntity>
         {
             return await Handle<TRequest, TResponse>(async () =>
             {
-                return await UnitOfWork.ExecuteAsync(async () =>
+                return await UnitOfWork.ExecuteAsync<TEntity>(async () =>
                 {
                     return await Mediator.Send(dto, cancellationToken);
                 }, isAtomicOperation);
             });
         }
         public async Task<Response<TResponse>> UpdateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default)
-            where TRequest : IBaseRequestUpdate<TResponse> 
+            where TRequest : IBaseRequestUpdate<TEntity> 
             where TResponse : IBaseResponse<TEntity>
         {
             return await Handle<TRequest, TResponse>(async () =>
             {
-                return await UnitOfWork.ExecuteAsync<TResponse>(async () =>
+                return await UnitOfWork.ExecuteAsync<TEntity>(async () =>
                 {
                     return await Mediator.Send(dto, cancellationToken);
                 }, isAtomicOperation);

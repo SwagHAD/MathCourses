@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.DeleteHandlers
 {
-    public sealed class DeleteCourseHandler(ISwagDbContext DbContext) : IRequestHandler<DeleteCourseCommand, DefaultCourseResponse>
+    public sealed class DeleteCourseHandler(ISwagDbContext DbContext) : IRequestHandler<DeleteCourseCommand, Course>
     {
-        public async Task<DefaultCourseResponse> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
+        public async Task<Course> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
         {
             if(!await DbContext.Set<Course>().AnyAsync(f => f.ID == request.ID))
                 throw new ArgumentException(nameof(request), nameof(request));

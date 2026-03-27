@@ -6,7 +6,7 @@ using Domain.Entities;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateGroupCommand : IBaseRequestCreate<GroupResponse> , IMapWith<Group>
+    public sealed class CreateGroupCommand : IBaseRequestCreate<Group> , IMapWith<Group>
     {
         public string Name { get; set; }
         public int? CourseID { get; set; }
@@ -25,13 +25,13 @@ namespace Application.Commands.CreateCommands
                         dto.Teachers.Select(id => new TeacherGroup
                         {
                             FirstEntityId = id,
-                        })))
+                        }).ToArray()))
                 .ForMember(g => g.StudentGroups,
                     opt => opt.MapFrom(dto =>
                         dto.Students.Select(id => new StudentGroup
                         {
                             FirstEntityId = id,
-                        })));
+                        }).ToArray()));
         }
     }
 }

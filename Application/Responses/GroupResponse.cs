@@ -25,14 +25,14 @@ namespace Application.Responses
                         {
                             Id = group.FirstEntityId,
                             Name = group.FirstEntity.Name
-                        })))
+                        }).ToArray()))
                 .ForMember(dto => dto.Teachers,
                     entity => entity.MapFrom(group => 
                         group.TeacherGroups.Select(teacher => new DefaultTeacherResponse
                         {
                             Id = teacher.FirstEntityId,
                             Name = teacher.FirstEntity.Name
-                        })));
+                        }).ToArray()));
         }
     }
 }

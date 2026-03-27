@@ -8,10 +8,10 @@ namespace Application.Services.Base
     public interface ICrudServiceBase<TEntity> where TEntity : BaseEntity
     {
         Task<Response<TResponse>> CreateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : IBaseRequestCreate<TResponse> where TResponse : IBaseResponse<TEntity>;
+            where TRequest : IBaseRequestCreate<TEntity> where TResponse : IBaseResponse<TEntity>;
         Task<Response<TResponse>> DeleteItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : IBaseRequestDelete<TResponse> where TResponse : IBaseResponse<TEntity>;
+            where TRequest : IBaseRequestDelete<TEntity> where TResponse : IBaseResponse<TEntity>;
         Task<Response<TResponse>> UpdateItemAsync<TRequest, TResponse>(TRequest dto, bool isAtomicOperation = true, CancellationToken cancellationToken = default) 
-            where TRequest : IBaseRequestUpdate<TResponse> where TResponse : IBaseResponse<TEntity>;
+            where TRequest : IBaseRequestUpdate<TEntity> where TResponse : IBaseResponse<TEntity>;
     }
 }

@@ -6,7 +6,7 @@ using Domain.Entities;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateLessonCommand : IBaseRequestCreate<DefaultLessonResponse>, IMapWith<Lesson>
+    public sealed class CreateLessonCommand : IBaseRequestCreate<Lesson>, IMapWith<Lesson>
     {
         public string Name { get; set; }
 

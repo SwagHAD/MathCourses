@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.UpdateHandlers
 {
-    public sealed class UpdateGroupHandler(ISwagDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateGroupCommand, GroupResponse>
+    public sealed class UpdateGroupHandler(ISwagDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateGroupCommand, Group>
     {
-        public async Task<GroupResponse> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
+        public async Task<Group> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
         {
             var group = await DbContext.Set<Group>()
                 .Include(g => g.TeacherGroups)
@@ -23,7 +23,7 @@ namespace Application.Handlers.UpdateHandlers
             Mapper.Map(request, group);
 
             await DbContext.SaveChangesAsync(cancellationToken);
-            return Mapper.Map<GroupResponse>(group);
+            return group;
         }
     }
 }

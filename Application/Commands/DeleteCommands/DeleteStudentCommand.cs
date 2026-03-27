@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteStudentCommand : IBaseRequestDelete<DefaultStudentResponse>, IMapWith<Student>
+    public sealed class DeleteStudentCommand : IBaseRequestDelete<Student>, IMapWith<Student>
     {
         public int ID { get; set; }
         public void Mapping(Profile profile)
