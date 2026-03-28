@@ -2,7 +2,6 @@ using Application.Base;
 using Application.Command.Base;
 using Application.Responses.Base;
 using Domain.Entities.Base;
-using MediatR;
 
 namespace Application.Services.Base
 {
@@ -21,7 +20,7 @@ namespace Application.Services.Base
         {
             return await Handle<TRequest, TResponse>(async () =>
             {
-                return await UnitOfWork.ExecuteAsync<TEntity>(async () =>
+                return await UnitOfWork.ExecuteAsync(async () =>
                 {
                     return await Mediator.Send(dto, cancellationToken);
                 }, isAtomicOperation);
@@ -34,7 +33,7 @@ namespace Application.Services.Base
         {
             return await Handle<TRequest, TResponse>(async () =>
             {
-                return await UnitOfWork.ExecuteAsync<TEntity>(async () =>
+                return await UnitOfWork.ExecuteAsync(async () =>
                 {
                     return await Mediator.Send(dto, cancellationToken);
                 }, isAtomicOperation);
@@ -46,7 +45,7 @@ namespace Application.Services.Base
         {
             return await Handle<TRequest, TResponse>(async () =>
             {
-                return await UnitOfWork.ExecuteAsync<TEntity>(async () =>
+                return await UnitOfWork.ExecuteAsync(async () =>
                 {
                     return await Mediator.Send(dto, cancellationToken);
                 }, isAtomicOperation);
