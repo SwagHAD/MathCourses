@@ -1,12 +1,12 @@
-﻿using Application.Command.Base;
-using Application.Mapping.Base;
+﻿using Application.Mapping.Base;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateTeacherCommand : IBaseRequestUpdate<Teacher>, IMapWith<Teacher>
+    public sealed class UpdateTeacherCommand : IRequest<DefaultTeacherResponse>, IMapWith<Teacher>
     {
         public int ID { get; set; }
         public string Name { get; set; }

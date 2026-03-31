@@ -5,7 +5,7 @@ using Domain.Entities;
 
 namespace Application.Responses
 {
-    public sealed class StudentWithGroupsResponse : IMapWith<Student>, IBaseResponse<Group>
+    public sealed class StudentWithGroupsResponse : IMapWith<Student>, IResponse<Group>
     {
         public int Id { get; set; }
         public string Name { get; set; }

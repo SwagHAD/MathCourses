@@ -1,5 +1,4 @@
-﻿using Application.Command.Base;
-using Application.Mapping.Base;
+﻿using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
@@ -7,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public class CreateTeacherCommand : IBaseRequestCreate<Teacher>, IMapWith<Teacher>
+    public sealed class CreateTeacherCommand : IRequest<DefaultTeacherResponse>, IMapWith<Teacher>
     {
         public string Name { get; set; }
 

@@ -1,4 +1,3 @@
-using Application.Command.Base;
 using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
@@ -7,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateGroupCommand : IBaseRequestUpdate<Group>, IMapWith<Group>
+    public sealed class UpdateGroupCommand : IRequest<GroupResponse>, IMapWith<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }

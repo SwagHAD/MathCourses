@@ -15,7 +15,7 @@ namespace Math.Api.Controllers
         [HttpPost("CreateGroup")]
         public async Task<ActionResult<Response<DefaultGroupResponse>>> CreateGroup(CreateGroupCommand createGroup)
         {
-            var result = await GroupService.CreateItemAsync<CreateGroupCommand, GroupResponse>(createGroup);
+            var result = await GroupService.ExecuteAsync<CreateGroupCommand, GroupResponse>(createGroup);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),
@@ -25,7 +25,7 @@ namespace Math.Api.Controllers
         [HttpDelete("DeleteGroup")]
         public async Task<ActionResult<Response<DefaultGroupResponse>>> DeleteStudent(DeleteGroupCommand deletegroupDto)
         {
-            var result = await GroupService.DeleteItemAsync<DeleteGroupCommand, DefaultGroupResponse>(deletegroupDto);
+            var result = await GroupService.ExecuteAsync<DeleteGroupCommand, DefaultGroupResponse>(deletegroupDto);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),

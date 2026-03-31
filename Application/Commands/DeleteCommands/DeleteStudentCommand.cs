@@ -1,5 +1,4 @@
-﻿using Application.Command.Base;
-using Application.Mapping.Base;
+﻿using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
@@ -7,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteStudentCommand : IBaseRequestDelete<Student>, IMapWith<Student>
+    public sealed class DeleteStudentCommand : IRequest<DefaultStudentResponse>, IMapWith<Student>
     {
         public int ID { get; set; }
         public void Mapping(Profile profile)

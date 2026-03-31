@@ -1,5 +1,4 @@
-﻿using Application.Command.Base;
-using Application.Mapping.Base;
+﻿using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
@@ -7,7 +6,7 @@ using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteLessonCommand : IBaseRequestDelete<Lesson>, IMapWith<Lesson>, IRequest<Lesson>
+    public sealed class DeleteLessonCommand : IRequest<DefaultLessonResponse>, IMapWith<Lesson>
     {
         public int ID { get; set; }
 

@@ -1,4 +1,5 @@
 using Application.Commands.UpdateCommands;
+using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Data;
@@ -7,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.UpdateHandlers
 {
-    public sealed class UpdateTeacherHandler(ISwagDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateTeacherCommand, Teacher>
+    public sealed class UpdateTeacherHandler(ISwagDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateTeacherCommand, DefaultTeacherResponse>
     {
-        public async Task<Teacher> Handle(UpdateTeacherCommand request, CancellationToken cancellationToken)
+        public async Task<DefaultTeacherResponse> Handle(UpdateTeacherCommand request, CancellationToken cancellationToken)
         {
             var teacher = await DbContext.Set<Teacher>()
                 .FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken);
@@ -20,7 +21,7 @@ namespace Application.Handlers.UpdateHandlers
             Mapper.Map(request, teacher);
 
             await DbContext.SaveChangesAsync(cancellationToken);
-            return teacher;
+            return Mapper.Map<DefaultTeacherResponse>(teacher);
         }
     }
 }

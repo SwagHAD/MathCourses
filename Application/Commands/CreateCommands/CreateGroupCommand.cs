@@ -1,12 +1,12 @@
-﻿using Application.Command.Base;
-using Application.Mapping.Base;
+﻿using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateGroupCommand : IBaseRequestCreate<Group> , IMapWith<Group>
+    public sealed class CreateGroupCommand : IRequest<GroupResponse> , IMapWith<Group>
     {
         public string Name { get; set; }
         public int? CourseID { get; set; }

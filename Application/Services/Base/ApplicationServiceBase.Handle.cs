@@ -9,12 +9,12 @@ namespace Application.Services.Base
     public partial class CrudServiceBase<TEntity> : ICrudServiceBase<TEntity>
         where TEntity : BaseEntity
     {
-        private async Task<Response<TResponse>> Handle<TRequest, TResponse>(Func<Task<TEntity>> Action) 
-            where TRequest : IRequest<TEntity> where TResponse : IBaseResponse<TEntity>
+        private async Task<Response<TResponse>> Handle<TRequest, TResponse>(Func<Task<TResponse>> Action) 
+            where TRequest : IRequest<TResponse> where TResponse : IResponse<TEntity>
         {
             try
             {
-                return Response<TResponse>.Ok(Mapper.Map<TResponse>(await Action()), "Успешно");
+                return Response<TResponse>.Ok(await Action(), "Успешно");
             }
             catch (ValidationException ex)
             {

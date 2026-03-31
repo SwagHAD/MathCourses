@@ -16,7 +16,7 @@ namespace Math.Api.Controllers
         [HttpPost("CreateStudent")]
         public async Task<ActionResult<Response<DefaultStudentResponse>>> CreateStudent(CreateStudentCommand studentDto)
         {
-            var result = await StudentService.CreateItemAsync<CreateStudentCommand, DefaultStudentResponse>(studentDto);
+            var result = await StudentService.ExecuteAsync<CreateStudentCommand, DefaultStudentResponse>(studentDto);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),
@@ -26,7 +26,7 @@ namespace Math.Api.Controllers
         [HttpDelete("DeleteStudent")]
         public async Task<ActionResult<Response<DefaultStudentResponse>>> DeleteStudent(DeleteStudentCommand deletestudentDto)
         {
-            var result = await StudentService.DeleteItemAsync<DeleteStudentCommand, DefaultStudentResponse>(deletestudentDto);
+            var result = await StudentService.ExecuteAsync<DeleteStudentCommand, DefaultStudentResponse>(deletestudentDto);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),

@@ -15,7 +15,7 @@ namespace Math.Api.Controllers
         [HttpPost("CreateCourse")]
         public async Task<ActionResult<Response<DefaultCourseResponse>>> CreateCourse(CreateCourseCommand createCourseCommand)
         {
-            var result = await CourseService.CreateItemAsync<CreateCourseCommand, DefaultCourseResponse>(createCourseCommand);
+            var result = await CourseService.ExecuteAsync<CreateCourseCommand, DefaultCourseResponse>(createCourseCommand);
             return result.Status switch
             { 
                 ResponseStatus.Ok => Ok(result),
@@ -25,7 +25,7 @@ namespace Math.Api.Controllers
         [HttpDelete("DeleteCourse")]
         public async Task<ActionResult<Response<DefaultCourseResponse>>> DeleteCoures(DeleteCourseCommand deleteCourseCommand)
         {
-            var result = await CourseService.DeleteItemAsync<DeleteCourseCommand, DefaultCourseResponse>(deleteCourseCommand);
+            var result = await CourseService.ExecuteAsync<DeleteCourseCommand, DefaultCourseResponse>(deleteCourseCommand);
             return result.Status switch
             {
                 ResponseStatus.Ok => Ok(result),
