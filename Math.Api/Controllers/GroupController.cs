@@ -1,36 +1,47 @@
-﻿using Application.Base;
-using Application.Commands.CreateCommands;
+﻿using Application.Commands.CreateCommands;
 using Application.Commands.DeleteCommands;
-using Application.Enums;
+using Application.Commands.UpdateCommands;
+using Application.Queries.DefaultQueries;
 using Application.Responses;
-using Application.Services.Base;
+using Domain.Attributes;
 using Domain.Entities;
+using Domain.Enums;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Math.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public sealed class GroupController(ICrudServiceBase<Group> GroupService) : ControllerBase
+    [Authorize]
+    [Route("api/core")]
+    public sealed class GroupController(IMediator mediator) : ControllerBase
     {
         [HttpPost("CreateGroup")]
-        public async Task<ActionResult<Response<DefaultGroupResponse>>> CreateGroup(CreateGroupCommand createGroup)
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Create)]
+        public async Task<ActionResult<GroupResponse>> CreateGroup(CreateGroupCommand createGroup)
         {
-            var result = await GroupService.ExecuteAsync<CreateGroupCommand, GroupResponse>(createGroup);
-            return result.Status switch
-            {
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            return await mediator.Send(createGroup);
         }
+
         [HttpDelete("DeleteGroup")]
-        public async Task<ActionResult<Response<DefaultGroupResponse>>> DeleteStudent(DeleteGroupCommand deletegroupDto)
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Delete)]
+        public async Task<ActionResult<DefaultGroupResponse>> DeleteStudent(DeleteGroupCommand deletegroupDto)
         {
-            var result = await GroupService.ExecuteAsync<DeleteGroupCommand, DefaultGroupResponse>(deletegroupDto);
-            return result.Status switch
-            {
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            return await mediator.Send(deletegroupDto);
+        }
+
+        [HttpGet("GetGroup")]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
+        public async Task<ActionResult<GroupResponse>> GetGroup(GetGroupQuery getGroupCommand)
+        {
+            return await mediator.Send(getGroupCommand);
+        }
+
+        [HttpPut("UpdateGroup")]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Update)]
+        public async Task<ActionResult<GroupResponse>> UpdateGroup(UpdateGroupCommand updateGroupCommand)
+        {
+            return await mediator.Send(updateGroupCommand);
         }
     }
 }

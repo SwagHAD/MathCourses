@@ -1,16 +1,15 @@
-﻿using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Domain.Attributes;
+using Domain.Entities.Base;
 
 namespace Domain.Entities
 {
     /// <summary>
     /// Уроки
     /// </summary>
-    [Table("Lessons")]
-    public sealed class Lesson : BaseEntity<Lesson>
+    [Title("Урок")]
+    public sealed class Lesson : BaseEntity
     {
+        public int ID { get; set; }
         /// <summary>
         /// Название урока
         /// </summary>
@@ -19,14 +18,6 @@ namespace Domain.Entities
         /// Группа
         /// </summary>
         public int? GroupID { get; set; }
-        public Group Group { get; set; }
-
-        protected override void CustomConfigure(EntityTypeBuilder<Lesson> builder)
-        {
-            builder.Property(x => x.Name).IsRequired()
-                .HasMaxLength(150);
-            builder.HasOne(x  => x.Group).WithMany().HasForeignKey(x => x.GroupID)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
+        public Group GroupRef { get; set; }
     }
 }

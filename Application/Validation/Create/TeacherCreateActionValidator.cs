@@ -1,10 +1,9 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Validation.Base;
 using FluentValidation;
 
 namespace Application.Validation.Create
 {
-    public sealed class TeacherCreateActionValidator : BaseValidator<CreateTeacherCommand>
+    public sealed class TeacherCreateActionValidator : AbstractValidator<CreateTeacherCommand>
     {
         public TeacherCreateActionValidator() 
         {

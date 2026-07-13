@@ -1,28 +1,44 @@
-using Application.Extensions;
-using DotNetEnv;
-using Infrastructure.Extensions;
 using Math.Api;
+using Math.Api.MiddleWares;
+using Microsoft.OpenApi;
 
-internal sealed class Program
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddServices(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<ErrorHandlingMiddleWare>();
+builder.Services.AddScoped<PermissionCheckerMiddleWare>();
+builder.Services.AddSwaggerGen(options =>
 {
-    private static async Task Main(string[] args)
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Env.Load();
-        var builder = WebApplication.CreateBuilder(args);
-        builder.Services.AddInfrastructure(DatabaseInitializer.GetConnectionStringFromEnv());
-        builder.Services.AddApplication();
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        var app = builder.Build();
-        await DatabaseInitializer.MigrateAsync(app.Services);
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-        app.UseHttpsRedirection();
-        app.MapControllers();
-        await app.RunAsync();
-    }
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Введите токен без префикса 'Bearer ' — он подставится автоматически"
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+    });
+});
+
+var app = builder.Build();
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseMiddleware<ErrorHandlingMiddleWare>();
+app.UseMiddleware<PermissionCheckerMiddleWare>();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.MapControllers();
+await GeneralConfiguration.MigrateAsync(app.Services);
+await app.RunAsync();

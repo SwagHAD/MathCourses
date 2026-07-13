@@ -1,16 +1,15 @@
-﻿using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Domain.Attributes;
+using Domain.Entities.Base;
 
 namespace Domain.Entities
 {
     /// <summary>
     /// Группы
     /// </summary>
-    [Table("Groups")]
-    public sealed class Group : BaseEntity<Group>
+    [Title("Группа")]
+    public sealed class Group : BaseEntity
     {
+        public int ID { get; set; }
         /// <summary>
         /// Имя группы
         /// </summary>
@@ -26,13 +25,5 @@ namespace Domain.Entities
         public int? CourseID { get; set; }
         public Course Course { get; set; }
         public List<StudentGroup> StudentGroups { get; set; } = new();
-
-        protected override void CustomConfigure(EntityTypeBuilder<Group> builder)
-        {
-            builder.Property(x => x.Name).IsRequired()
-                .HasMaxLength(50);
-            builder.HasOne(x => x.Course).WithMany().HasForeignKey(x => x.CourseID)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
     }
 }

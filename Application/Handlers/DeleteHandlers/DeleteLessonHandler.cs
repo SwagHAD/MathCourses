@@ -1,7 +1,7 @@
 ﻿using Application.Commands.DeleteCommands;
 using Application.Responses;
 using Domain.Entities;
-using Domain.Interfaces.Data;
+using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

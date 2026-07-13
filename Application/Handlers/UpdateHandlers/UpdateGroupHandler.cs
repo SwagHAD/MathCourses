@@ -2,9 +2,11 @@ using Application.Commands.UpdateCommands;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.Data;
 using MediatR;
+using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Application.Tools;
+using Application.Interfaces;
 
 namespace Application.Handlers.UpdateHandlers
 {
@@ -15,9 +17,8 @@ namespace Application.Handlers.UpdateHandlers
             var group = await DbContext.Set<Group>()
                 .Include(g => g.TeacherGroups)
                 .Include(g => g.StudentGroups)
-                .FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken);
-            if (group is null)
-                throw new ArgumentException(nameof(request));
+                .FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken) 
+                ?? throw new NotFoundException(typeof(Group).GetDescription(), request.ID);
             Mapper.Map(request, group);
             await DbContext.SaveChangesAsync(cancellationToken);
             return Mapper.Map<GroupResponse>(group);

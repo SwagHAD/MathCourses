@@ -1,10 +1,9 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Validation.Base;
 using FluentValidation;
 
 namespace Application.Validation.Create
 {
-    public sealed class GroupCreateActionValidator : BaseValidator<CreateGroupCommand>
+    public sealed class GroupCreateActionValidator : AbstractValidator<CreateGroupCommand>
     {
         public GroupCreateActionValidator() 
         {

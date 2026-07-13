@@ -1,10 +1,9 @@
 ﻿using Application.Commands.UpdateCommands;
-using Application.Validation.Base;
 using FluentValidation;
 
 namespace Application.Validation.Update
 {
-    public sealed class TeacherUpdateActionValidator : BaseValidator<UpdateTeacherCommand>
+    public sealed class TeacherUpdateActionValidator : AbstractValidator<UpdateTeacherCommand>
     {
         public TeacherUpdateActionValidator() 
         {

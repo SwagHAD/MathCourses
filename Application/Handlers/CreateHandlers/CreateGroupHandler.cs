@@ -1,8 +1,8 @@
 ﻿using Application.Commands.CreateCommands;
+using Application.Interfaces;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,13 +21,13 @@ namespace Application.Handlers.CreateHandlers
                 Name = f.Name,
                 Students = f.StudentGroups.Select(f => new DefaultStudentResponse
                 {
-                    Id = f.FirstEntityId,
-                    Name = f.FirstEntity.Name,
+                    Id = f.StudentID,
+                    Name = f.StudentRef.Name,
                 }).ToArray(),
                 Teachers = f.TeacherGroups.Select(f => new DefaultTeacherResponse
                 {
-                    Id = f.FirstEntityId,
-                    Name = f.FirstEntity.Name,
+                    Id = f.TeacherID,
+                    Name = f.TeacherRef.Name,
                 }).ToArray(),
             }).Where(f => f.Id == group.ID).FirstOrDefaultAsync() ?? throw new ArgumentException(nameof(group));
         }

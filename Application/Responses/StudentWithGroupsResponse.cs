@@ -22,8 +22,8 @@ namespace Application.Responses
                     entity => entity.MapFrom(student => 
                         student.StudentGroups.Select(group => new DefaultGroupResponse
                         {
-                            Id = group.SecondEntityId,
-                            Name = group.SecondEntity.Name,
+                            Id = group.GroupID,
+                            Name = group.GroupRef.Name,
                         })));
         }
 

@@ -1,8 +1,8 @@
 ﻿using Application.Commands.CreateCommands;
+using Application.Interfaces;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.Data;
 using MediatR;
 
 namespace Application.Handlers.CreateHandlers

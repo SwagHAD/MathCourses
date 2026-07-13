@@ -1,37 +1,39 @@
-using Application.Base;
 using Application.Commands.CreateCommands;
 using Application.Commands.DeleteCommands;
-using Application.Enums;
+using Application.Queries.DefaultQueries;
 using Application.Responses;
-using Application.Services.Base;
+using Domain.Attributes;
 using Domain.Entities;
+using Domain.Enums;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Math.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public sealed class StudentController(ICrudServiceBase<Student> StudentService) : ControllerBase
+    [Authorize]
+    [Route("api/core")]
+    public sealed class StudentController(IMediator mediator) : ControllerBase
     {
-
         [HttpPost("CreateStudent")]
-        public async Task<ActionResult<Response<DefaultStudentResponse>>> CreateStudent(CreateStudentCommand studentDto)
+        [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Create)]
+        public async Task<ActionResult<DefaultStudentResponse>> CreateStudent(CreateStudentCommand studentDto)
         {
-            var result = await StudentService.ExecuteAsync<CreateStudentCommand, DefaultStudentResponse>(studentDto);
-            return result.Status switch
-            {
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            return await mediator.Send(studentDto);
         }
+
         [HttpDelete("DeleteStudent")]
-        public async Task<ActionResult<Response<DefaultStudentResponse>>> DeleteStudent(DeleteStudentCommand deletestudentDto)
+        [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Delete)]
+        public async Task<ActionResult<DefaultStudentResponse>> DeleteStudent(DeleteStudentCommand deletestudentDto)
         {
-            var result = await StudentService.ExecuteAsync<DeleteStudentCommand, DefaultStudentResponse>(deletestudentDto);
-            return result.Status switch
-            {
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            return await mediator.Send(deletestudentDto);
+        }
+
+        [HttpGet("GetStudent")]
+        [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Read)]
+        public async Task<ActionResult<DefaultStudentResponse>> GetStudent(GetStudentQuery getStudentCommand)
+        {
+            return await mediator.Send(getStudentCommand);
         }
     }
 }

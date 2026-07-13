@@ -1,10 +1,9 @@
 ﻿using Application.Commands.DeleteCommands;
-using Application.Validation.Base;
 using FluentValidation;
 
 namespace Application.Validation.Delete
 {
-    public sealed class StudentDeleteActionValidator : BaseValidator<DeleteStudentCommand>
+    public sealed class StudentDeleteActionValidator : AbstractValidator<DeleteStudentCommand>
     {
         public StudentDeleteActionValidator()
         {

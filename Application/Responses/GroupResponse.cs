@@ -23,15 +23,15 @@ namespace Application.Responses
                     entity => entity.MapFrom(student =>
                         student.StudentGroups.Select(group => new DefaultStudentResponse
                         {
-                            Id = group.FirstEntityId,
-                            Name = group.FirstEntity.Name
+                            Id = group.StudentID,
+                            Name = group.StudentRef.Name
                         }).ToArray()))
                 .ForMember(dto => dto.Teachers,
                     entity => entity.MapFrom(group => 
                         group.TeacherGroups.Select(teacher => new DefaultTeacherResponse
                         {
-                            Id = teacher.FirstEntityId,
-                            Name = teacher.FirstEntity.Name
+                            Id = teacher.TeacherID,
+                            Name = teacher.TeacherRef.Name
                         }).ToArray()));
         }
     }

@@ -1,25 +1,15 @@
-﻿using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Domain.Attributes;
+using Domain.Entities.Base;
 
 namespace Domain.Entities
 {
     /// <summary>
     /// Направление
     /// </summary>
-    [Table("Courses")]
-    public sealed class Course : BaseEntity<Course>
+    [Title("Направление")]
+    public sealed class Course : BaseEntity
     {
-        /// <summary>
-        /// Название направления
-        /// </summary>
+        public int ID { get; set; }
         public string Name { get; set; }
-
-        protected override void CustomConfigure(EntityTypeBuilder<Course> builder)
-        {
-            builder.Property(f => f.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-        }
     }
 }

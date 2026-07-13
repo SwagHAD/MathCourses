@@ -2,9 +2,11 @@
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.Data;
+using Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Application.Tools;
+using Application.Interfaces;
 
 namespace Application.Handlers.UpdateHandlers
 {
@@ -12,10 +14,8 @@ namespace Application.Handlers.UpdateHandlers
     {
         public async Task<DefaultStudentResponse> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
         {
-            if(!await DbContext.Set<Student>().AnyAsync(f => f.ID == request.ID, cancellationToken))
-                throw new ArgumentException(nameof(request));
-            
-            var student = await DbContext.Set<Student>().FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken);
+            var student = await DbContext.Set<Student>().FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken) 
+                ?? throw new NotFoundException(typeof(Student).GetDescription(), request.ID);
             Mapper.Map(request, student);
             await DbContext.SaveChangesAsync(cancellationToken);
             return Mapper.Map<DefaultStudentResponse>(student);

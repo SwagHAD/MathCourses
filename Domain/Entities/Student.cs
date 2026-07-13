@@ -1,19 +1,14 @@
-﻿using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Domain.Attributes;
+using Domain.Entities.Base;
 
 namespace Domain.Entities
 {
-    [Table("Students")]
-    public sealed class Student : BaseEntity<Student>
+    [Title("Студент")]
+    public sealed class Student : BaseEntity
     {
+        public int ID { get; set; }
         public string Name { get; set; }
-
+        public int? UserId { get; set; }
         public List<StudentGroup> StudentGroups { get; set; } = new();
-        protected override void CustomConfigure(EntityTypeBuilder<Student> builder)
-        {
-            builder.Property(x => x.Name)
-                .IsRequired().HasMaxLength(100);
-        }
     }
 }

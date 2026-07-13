@@ -2,7 +2,7 @@
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.Data;
+using Application.Interfaces;
 using MediatR;
 
 namespace Application.Handlers.CreateHandlers

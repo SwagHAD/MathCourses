@@ -1,14 +1,18 @@
-﻿using Application.Mapping.Base;
+﻿using Application.Commands.Base;
+using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateTeacherCommand : IRequest<DefaultTeacherResponse>, IMapWith<Teacher>
+    public sealed record CreateTeacherCommand : ICommand<DefaultTeacherResponse>, IMapWith<Teacher>
     {
-        public string Name { get; set; }
+        public string Name { get; init; }
+
+        public string Login { get; init; }
+        public string Password { get; init; }
+        public int Role { get; init; }
 
         public void Mapping(Profile profile)
         {

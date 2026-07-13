@@ -1,36 +1,44 @@
-using Application.Base;
 using Application.Commands.CreateCommands;
 using Application.Commands.DeleteCommands;
-using Application.Enums;
+using Application.Commands.UpdateCommands;
+using Application.Queries.DefaultQueries;
 using Application.Responses;
-using Application.Services.Base;
+using Domain.Attributes;
 using Domain.Entities;
+using Domain.Enums;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Math.Api.Controllers
 {
-    [Route("api/[controller]")]
-    public sealed class TeacherController(ICrudServiceBase<Teacher> TeacherService) : ControllerBase
+    [Authorize]
+    [Route("api/core")]
+    public sealed class TeacherController(IMediator mediator) : ControllerBase
     {
         [HttpPost("CreateTeacher")]
-        public async Task<ActionResult<Response<DefaultTeacherResponse>>> CreateTeacher(CreateTeacherCommand teacherCommand)
+        [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Create)]
+        public async Task<ActionResult<DefaultTeacherResponse>> CreateTeacher(CreateTeacherCommand teacherCommand)
         {
-            var result = await TeacherService.ExecuteAsync<CreateTeacherCommand, DefaultTeacherResponse>(teacherCommand);
-            return result.Status switch
-            { 
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            return await mediator.Send(teacherCommand);
         }
         [HttpDelete("DeleteTeacher")]
-        public async Task<ActionResult<Response<DefaultTeacherResponse>>> DeleteTeacher(DeleteTeacherCommand deleteTeacherCommand)
+        [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Delete)]
+        public async Task<ActionResult<DefaultTeacherResponse>> DeleteTeacher(DeleteTeacherCommand deleteTeacherCommand)
         {
-            var result = await TeacherService.ExecuteAsync<DeleteTeacherCommand, DefaultTeacherResponse>(deleteTeacherCommand);
-            return result.Status switch
-            {
-                ResponseStatus.Ok => Ok(result),
-                _ => BadRequest(result)
-            };
+            return await mediator.Send(deleteTeacherCommand);
+        }
+        [HttpGet("GetTeacher")]
+        [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Read)]
+        public async Task<ActionResult<DefaultTeacherResponse>> GetTeacher(GetTeacherQuery getTeacherCommand)
+        {
+            return await mediator.Send(getTeacherCommand);
+        }
+        [HttpPut("UpdateTeacher")]
+        [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Update)]
+        public async Task<ActionResult<DefaultTeacherResponse>> UpdateTeacher(UpdateTeacherCommand updateTeacherCommand)
+        {
+            return await mediator.Send(updateTeacherCommand);
         }
     }
 }

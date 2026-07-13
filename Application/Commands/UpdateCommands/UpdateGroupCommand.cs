@@ -1,12 +1,12 @@
+using Application.Commands.Base;
 using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using MediatR;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateGroupCommand : IRequest<GroupResponse>, IMapWith<Group>
+    public sealed class UpdateGroupCommand : ICommand<GroupResponse>, IMapWith<Group>
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -27,13 +27,13 @@ namespace Application.Commands.UpdateCommands
                     opt => opt.MapFrom(dto =>
                         dto.Teachers.Select(id => new TeacherGroup
                         {
-                            FirstEntityId = id,
+                            TeacherID = id,
                         })))
                 .ForMember(g => g.StudentGroups,
                     opt => opt.MapFrom(dto =>
                         dto.Students.Select(id => new StudentGroup
                         {
-                            FirstEntityId = id,
+                            StudentID = id,
                         })));
         }
     }

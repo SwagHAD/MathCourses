@@ -1,25 +1,13 @@
-﻿using Domain.Entities.Base;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Domain.Attributes;
 
 namespace Domain.Entities
 {
-    [Table("TeacherGroups")]
-    public sealed class TeacherGroup : BaseManyToManyEntity<Teacher, Group>
+    [Title("УчительГруппа")]
+    public sealed class TeacherGroup
     {
-    }
-    public sealed class TeacherGroupConfiguration : BaseManyToManyConfiguration<TeacherGroup, Teacher, Group>
-    {
-        protected override void ConfigureMore(EntityTypeBuilder<TeacherGroup> builder)
-        {
-            builder.HasOne(x => x.FirstEntity)
-                .WithMany(x => x.TeacherGroups)
-                .HasForeignKey(x => x.FirstEntityId)
-                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
-            builder.HasOne(x => x.SecondEntity)
-                .WithMany(x => x.TeacherGroups)
-                .HasForeignKey(x => x.SecondEntityId)
-                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
-        }
+        public int TeacherID { get; set; }
+        public Teacher TeacherRef { get; set; }
+        public int GroupID { get; set; }
+        public Group GroupRef { get; set; }
     }
 }
