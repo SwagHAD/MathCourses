@@ -7,14 +7,14 @@ using MediatR;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateCourseHandler(IMapper Mapper, ISwagDbContext DbContext) : IRequestHandler<CreateCourseCommand, DefaultCourseResponse>
+    public sealed class CreateCourseHandler(IMapper Mapper, ISwagDbContext DbContext) : IRequestHandler<CreateCourseCommand, Unit>
     {
-        public async Task<DefaultCourseResponse> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
             var course = Mapper.Map<Course>(request);
             await DbContext.AddAsync(course, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
-            return Mapper.Map<DefaultCourseResponse>(course);
+            return Unit.Value;
         }
     }
 }

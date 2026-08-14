@@ -1,12 +1,12 @@
 ﻿using Application.Commands.Base;
 using Application.Mapping.Base;
-using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed record CreateTeacherCommand : ICommand<DefaultTeacherResponse>, IMapWith<Teacher>
+    public sealed record CreateTeacherCommand : ICommand<Unit>, IMapWith<Teacher>
     {
         public string Name { get; init; }
 

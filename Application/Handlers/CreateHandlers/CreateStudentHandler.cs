@@ -9,9 +9,9 @@ using System.Text.Json;
 
 namespace Application.Handlers.CreateHandlers
 {
-    public sealed class CreateStudentHandler(IMapper Mapper, ISwagDbContext DbContext) : IRequestHandler<CreateStudentCommand, DefaultStudentResponse>
+    public sealed class CreateStudentHandler(IMapper Mapper, ISwagDbContext DbContext) : IRequestHandler<CreateStudentCommand, Unit>
     {
-        public async Task<DefaultStudentResponse> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
             var student = Mapper.Map<Student>(request);
             await DbContext.Set<Student>().AddAsync(student, cancellationToken);
@@ -31,7 +31,7 @@ namespace Application.Handlers.CreateHandlers
             };
             await DbContext.Set<OutboxMessage>().AddAsync(outboxMessage, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
-            return Mapper.Map<DefaultStudentResponse>(student);
+            return Unit.Value;
         }
     }
 }

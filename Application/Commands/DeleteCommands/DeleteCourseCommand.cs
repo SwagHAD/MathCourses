@@ -3,10 +3,11 @@ using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
+using MediatR;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteCourseCommand : ICommand<DefaultCourseResponse> , IMapWith<Course>
+    public sealed class DeleteCourseCommand : ICommand<Unit> , IMapWith<Course>
     {
         public int ID { get; set; }
 

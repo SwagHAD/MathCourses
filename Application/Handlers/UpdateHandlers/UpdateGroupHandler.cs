@@ -10,9 +10,10 @@ using Application.Interfaces;
 
 namespace Application.Handlers.UpdateHandlers
 {
-    public sealed class UpdateGroupHandler(ISwagDbContext DbContext, IMapper Mapper) : IRequestHandler<UpdateGroupCommand, GroupResponse>
+    public sealed class UpdateGroupHandler(ISwagDbContext DbContext, IMapper Mapper) 
+        : IRequestHandler<UpdateGroupCommand, Unit>
     {
-        public async Task<GroupResponse> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
         {
             var group = await DbContext.Set<Group>()
                 .Include(g => g.TeacherGroups)
@@ -21,7 +22,7 @@ namespace Application.Handlers.UpdateHandlers
                 ?? throw new NotFoundException(typeof(Group).GetDescription(), request.ID);
             Mapper.Map(request, group);
             await DbContext.SaveChangesAsync(cancellationToken);
-            return Mapper.Map<GroupResponse>(group);
+            return Unit.Value;
         }
     }
 }

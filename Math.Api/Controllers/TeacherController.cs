@@ -18,15 +18,15 @@ namespace Math.Api.Controllers
     {
         [HttpPost("CreateTeacher")]
         [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Create)]
-        public async Task<ActionResult<DefaultTeacherResponse>> CreateTeacher(CreateTeacherCommand teacherCommand)
+        public async Task<ActionResult> CreateTeacher(CreateTeacherCommand teacherCommand)
         {
-            return await mediator.Send(teacherCommand);
+            return Ok(await mediator.Send(teacherCommand));
         }
         [HttpDelete("DeleteTeacher")]
         [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Delete)]
-        public async Task<ActionResult<DefaultTeacherResponse>> DeleteTeacher(DeleteTeacherCommand deleteTeacherCommand)
+        public async Task<ActionResult> DeleteTeacher(DeleteTeacherCommand deleteTeacherCommand)
         {
-            return await mediator.Send(deleteTeacherCommand);
+            return Ok(await mediator.Send(deleteTeacherCommand));
         }
         [HttpGet("GetTeacher")]
         [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Read)]
@@ -36,9 +36,16 @@ namespace Math.Api.Controllers
         }
         [HttpPut("UpdateTeacher")]
         [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Update)]
-        public async Task<ActionResult<DefaultTeacherResponse>> UpdateTeacher(UpdateTeacherCommand updateTeacherCommand)
+        public async Task<ActionResult> UpdateTeacher(UpdateTeacherCommand updateTeacherCommand)
         {
-            return await mediator.Send(updateTeacherCommand);
+            return Ok(await mediator.Send(updateTeacherCommand));
+        }
+
+        [HttpGet("GetCountOfTeachers")]
+        [Permission(ObjectTypeName = nameof(Teacher), ActionType = ActionType.Read)]
+        public async Task<ActionResult<int>> GetCountOfTeachers(GetCountOfTeachersQuery getCountOfTeachersQuery)
+        {
+            return await mediator.Send(getCountOfTeachersQuery);
         }
     }
 }

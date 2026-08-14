@@ -8,14 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers.DeleteHandlers
 {
-    public sealed class DeleteTeacherHandler(ISwagDbContext DbContext) : IRequestHandler<DeleteTeacherCommand, DefaultTeacherResponse>
+    public sealed class DeleteTeacherHandler(ISwagDbContext DbContext) : IRequestHandler<DeleteTeacherCommand, Unit>
     {
-        public async Task<DefaultTeacherResponse> Handle(DeleteTeacherCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteTeacherCommand request, CancellationToken cancellationToken)
         {
             if(!await DbContext.Set<Teacher>().AnyAsync(f => f.ID == request.ID))
                 throw new NotFoundException(nameof(Teacher), request.ID);
             await DbContext.Set<Teacher>().Where(f => f.ID == request.ID).ExecuteDeleteAsync(cancellationToken);
-            return null;
+            return Unit.Value;
         }
     }
 }

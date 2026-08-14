@@ -1,6 +1,8 @@
 using Application.Commands.CreateCommands;
 using Application.Commands.DeleteCommands;
+using Application.Commands.UpdateCommands;
 using Application.Queries.DefaultQueries;
+using Application.Queries.PaginationQueries;
 using Application.Responses;
 using Domain.Attributes;
 using Domain.Entities;
@@ -17,16 +19,23 @@ namespace Math.Api.Controllers
     {
         [HttpPost("CreateStudent")]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Create)]
-        public async Task<ActionResult<DefaultStudentResponse>> CreateStudent(CreateStudentCommand studentDto)
+        public async Task<ActionResult> CreateStudent(CreateStudentCommand studentDto)
         {
-            return await mediator.Send(studentDto);
+            return Ok(await mediator.Send(studentDto));
         }
 
         [HttpDelete("DeleteStudent")]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Delete)]
-        public async Task<ActionResult<DefaultStudentResponse>> DeleteStudent(DeleteStudentCommand deletestudentDto)
+        public async Task<ActionResult> DeleteStudent(DeleteStudentCommand deletestudentDto)
         {
-            return await mediator.Send(deletestudentDto);
+            return Ok(await mediator.Send(deletestudentDto));
+        }
+
+        [HttpPut("UpdateStudent")]
+        [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Update)]
+        public async Task<ActionResult> UpdateStudent(UpdateStudentCommand updateCommand)
+        {
+            return Ok(await mediator.Send(updateCommand));
         }
 
         [HttpGet("GetStudent")]
@@ -34,6 +43,21 @@ namespace Math.Api.Controllers
         public async Task<ActionResult<DefaultStudentResponse>> GetStudent(GetStudentQuery getStudentCommand)
         {
             return await mediator.Send(getStudentCommand);
+        }
+
+        [HttpGet("GetAll")]
+        [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Read)]
+        public async Task<ActionResult<DefaultStudentResponse[]>> GetAllStudents(GetStudentsPaginationQuery query)
+        
+        {
+            return await mediator.Send(query);
+        }
+
+        [HttpGet("GetCountOfStudents")]
+        [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Read)]
+        public async Task<ActionResult<int>> GetCountOfStudents(GetCountOfStudentsQuery getCountOfStudentsQuery)
+        {
+            return await mediator.Send(getCountOfStudentsQuery);
         }
     }
 }

@@ -18,16 +18,16 @@ namespace Math.Api.Controllers
     {
         [HttpPost("CreateGroup")]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Create)]
-        public async Task<ActionResult<GroupResponse>> CreateGroup(CreateGroupCommand createGroup)
+        public async Task<ActionResult> CreateGroup(CreateGroupCommand createGroup)
         {
-            return await mediator.Send(createGroup);
+            return Ok(await mediator.Send(createGroup));
         }
 
         [HttpDelete("DeleteGroup")]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Delete)]
-        public async Task<ActionResult<DefaultGroupResponse>> DeleteStudent(DeleteGroupCommand deletegroupDto)
+        public async Task<ActionResult> DeleteStudent(DeleteGroupCommand deletegroupDto)
         {
-            return await mediator.Send(deletegroupDto);
+            return  Ok(await mediator.Send(deletegroupDto));
         }
 
         [HttpGet("GetGroup")]
@@ -39,9 +39,16 @@ namespace Math.Api.Controllers
 
         [HttpPut("UpdateGroup")]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Update)]
-        public async Task<ActionResult<GroupResponse>> UpdateGroup(UpdateGroupCommand updateGroupCommand)
+        public async Task<ActionResult> UpdateGroup(UpdateGroupCommand updateGroupCommand)
         {
-            return await mediator.Send(updateGroupCommand);
+            return Ok(await mediator.Send(updateGroupCommand));
+        }
+
+        [HttpGet("GetCountOfGroups")]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
+        public async Task<ActionResult<int>> GetCountOfGroups(GetCountOfGroupsQuery getCountOfGroupsQuery)
+        {
+            return await mediator.Send(getCountOfGroupsQuery);
         }
     }
 }
