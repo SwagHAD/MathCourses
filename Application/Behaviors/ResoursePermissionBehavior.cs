@@ -4,8 +4,8 @@ using MediatR;
 
 namespace Application.Behaviors
 {
-    public sealed class ResoursePermissionBehavior<TRequest, TResponse>(ISwagDbContext swagDbContext, IUserProvider userProvider) : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IQuery<TRequest>
+    public sealed class ResoursePermissionBehavior<TRequest, TResponse>(ISwagDbContext swagDbContext, IUserProvider userProvider) 
+        : IPipelineBehavior<TRequest, TResponse> where TRequest : IResoursePermissionQuery<TRequest>
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {

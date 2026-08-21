@@ -27,6 +27,11 @@ namespace Math.Api.MiddleWares
                 context.Response.StatusCode = 403;
                 await context.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
+            catch(UnauthorizedAccessException ex)
+            {
+                context.Response.StatusCode = 401;
+                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+            }
             catch (Exception ex)
             {
                 context.Response.StatusCode = 500;

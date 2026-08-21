@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Postgres
 {
-    public sealed class SwagDbContext : DbContext, ISwagDbContext
+    internal sealed class SwagDbContext : DbContext, ISwagDbContext
     {
         private IDbContextTransaction? _currentTransaction;
         public SwagDbContext(DbContextOptions<SwagDbContext> options) : base(options){ }

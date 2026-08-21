@@ -5,6 +5,6 @@ namespace Application.Queries.DefaultQueries
 {
     public sealed record GetStudentQuery : IQuery<DefaultStudentResponse>
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
     }
 }
