@@ -3,23 +3,39 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
 VisualStudioVersion = 18.4.11620.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{706CCECB-9296-43DA-9B03-C689439EE950}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		docker-compose.yml = docker-compose.yml
+		infra\docker-compose.yml = infra\docker-compose.yml
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{6C3708B2-E325-45AD-AD41-3997E5718442}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{7A1C2E44-5B9D-4F0A-9C3E-2D8B6F1A4E77}"
+	ProjectSection(SolutionItems) = preProject
+		infra\docker-compose.yml = infra\docker-compose.yml
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreService", "CoreService", "{4761ECAD-6047-4CED-ABA4-F3B7A38775B1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4DC24B70-3305-4FE2-90AC-7162B187B49B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{DA2D65F0-2D3F-451A-9CE1-3C6F34379711}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A4009AAE-B528-4ED1-84C6-A1B81367A5AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{898DB8F0-B936-4167-BEDE-5D4A065EE420}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CoreService", "CoreService", "{EB312089-CDD9-43D4-856D-4403B3EF9ECB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrasctrure\Infrastructure.csproj", "{CA02066F-9410-45ED-8417-1C8B8C26DA9E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{34ADC377-A02E-43F6-8359-9BEA6FA00048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math.Api", "Math.Api\Math.Api.csproj", "{A85787F3-3601-4FAE-9698-77087032FFD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math.Domain", "src\Services\CoreService\Math.Domain\Math.Domain.csproj", "{DA2D65F0-2D3F-451A-9CE1-3C6F34379711}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Messaging", "Infrastructure.Messaging\Infrastructure.Messaging.csproj", "{36B4B3C2-E1F5-4B09-AD50-73A754A792DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math.Application", "src\Services\CoreService\Math.Application\Math.Application.csproj", "{898DB8F0-B936-4167-BEDE-5D4A065EE420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Events", "Infrastructure.Events\Infrastructure.Events.csproj", "{5F27327F-2120-4D4D-A379-8FAA7164AE07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math.Infrastructure", "src\Services\CoreService\Math.Infrastructure\Math.Infrastructure.csproj", "{CA02066F-9410-45ED-8417-1C8B8C26DA9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math.Api", "src\Services\CoreService\Math.Api\Math.Api.csproj", "{A85787F3-3601-4FAE-9698-77087032FFD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math.Infrastructure.Messaging", "src\Services\CoreService\Math.Infrastructure.Messaging\Math.Infrastructure.Messaging.csproj", "{36B4B3C2-E1F5-4B09-AD50-73A754A792DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Events", "src\BuildingBlocks\Infrastructure.Events\Infrastructure.Events.csproj", "{5F27327F-2120-4D4D-A379-8FAA7164AE07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,14 +72,15 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6C3708B2-E325-45AD-AD41-3997E5718442} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{4761ECAD-6047-4CED-ABA4-F3B7A38775B1} = {6C3708B2-E325-45AD-AD41-3997E5718442}
-		{DA2D65F0-2D3F-451A-9CE1-3C6F34379711} = {4761ECAD-6047-4CED-ABA4-F3B7A38775B1}
-		{898DB8F0-B936-4167-BEDE-5D4A065EE420} = {4761ECAD-6047-4CED-ABA4-F3B7A38775B1}
-		{CA02066F-9410-45ED-8417-1C8B8C26DA9E} = {4761ECAD-6047-4CED-ABA4-F3B7A38775B1}
-		{A85787F3-3601-4FAE-9698-77087032FFD7} = {4761ECAD-6047-4CED-ABA4-F3B7A38775B1}
-		{36B4B3C2-E1F5-4B09-AD50-73A754A792DC} = {4761ECAD-6047-4CED-ABA4-F3B7A38775B1}
-		{5F27327F-2120-4D4D-A379-8FAA7164AE07} = {4761ECAD-6047-4CED-ABA4-F3B7A38775B1}
+		{A4009AAE-B528-4ED1-84C6-A1B81367A5AB} = {4DC24B70-3305-4FE2-90AC-7162B187B49B}
+		{EB312089-CDD9-43D4-856D-4403B3EF9ECB} = {A4009AAE-B528-4ED1-84C6-A1B81367A5AB}
+		{34ADC377-A02E-43F6-8359-9BEA6FA00048} = {4DC24B70-3305-4FE2-90AC-7162B187B49B}
+		{DA2D65F0-2D3F-451A-9CE1-3C6F34379711} = {EB312089-CDD9-43D4-856D-4403B3EF9ECB}
+		{898DB8F0-B936-4167-BEDE-5D4A065EE420} = {EB312089-CDD9-43D4-856D-4403B3EF9ECB}
+		{CA02066F-9410-45ED-8417-1C8B8C26DA9E} = {EB312089-CDD9-43D4-856D-4403B3EF9ECB}
+		{A85787F3-3601-4FAE-9698-77087032FFD7} = {EB312089-CDD9-43D4-856D-4403B3EF9ECB}
+		{36B4B3C2-E1F5-4B09-AD50-73A754A792DC} = {EB312089-CDD9-43D4-856D-4403B3EF9ECB}
+		{5F27327F-2120-4D4D-A379-8FAA7164AE07} = {34ADC377-A02E-43F6-8359-9BEA6FA00048}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B04E270B-11DA-4AE9-B3E5-8774BBF8D9AF}

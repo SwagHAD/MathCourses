@@ -1,9 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <RootNamespace>Application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,11 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Infrastructure.Events\Infrastructure.Events.csproj" />
+    <ProjectReference Include="..\Math.Domain\Math.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure.Events\Infrastructure.Events.csproj" />
   </ItemGroup>
-	<ItemGroup>
-		<Protobuf Include="ExternalAuth\Protos\BaseCrudService.proto" GrpcServices="Client" />
-	</ItemGroup>
 
 </Project>

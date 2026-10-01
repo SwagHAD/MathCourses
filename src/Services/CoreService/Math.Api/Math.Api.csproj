@@ -1,10 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-	<UserSecretsId>swag-math-service-dev</UserSecretsId>
+    <UserSecretsId>swag-math-service-dev</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
-    <ProjectReference Include="..\Infrasctrure\Infrastructure.csproj" />
-    <ProjectReference Include="..\Infrastructure.Messaging\Infrastructure.Messaging.csproj" />
+    <ProjectReference Include="..\Math.Application\Math.Application.csproj" />
+    <ProjectReference Include="..\Math.Infrastructure\Math.Infrastructure.csproj" />
+    <ProjectReference Include="..\Math.Infrastructure.Messaging\Math.Infrastructure.Messaging.csproj" />
   </ItemGroup>
 
 </Project>
