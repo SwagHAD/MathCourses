@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "123"
     # 5433 снаружи — чтобы не конфликтовать с локально установленным PostgreSQL на 5432.
-    # У каждого сервиса своя БД (auth_math_db, math_db) — EF создаёт её при миграции.
+    # У каждого сервиса своя БД (auth_math_db, math_db, streaming_db) — EF создаёт её при миграции.
     ports: ["5433:5432"]
     volumes: [postgres-data:/var/lib/postgresql/data]
     healthcheck:
@@ -53,10 +53,23 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  # Медиасервер для стриминга: WebRTC (WHIP публикация / WHEP просмотр), HLS, запись
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    volumes:
+      - ./mediamtx/mediamtx.yml:/mediamtx.yml:ro
+      - recordings:/recordings
+    ports:
+      - "9997:9997"     # control API
+      - "8889:8889"     # WebRTC
+      - "8888:8888"     # HLS
+      - "8189:8189/udp" # WebRTC ICE
+
 volumes:
   postgres-data:
   redis-data:
   rabbitmq-data:
+  recordings:
 
 networks:
   default:

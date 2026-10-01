@@ -1,0 +1,22 @@
+# API для динамического создания/удаления paths через ваш MediaMtxClient
+api: yes
+apiAddress: :9997
+
+# WebRTC (WHIP на публикацию, WHEP на просмотр)
+webrtc: yes
+webrtcAddress: :8889
+
+# КРИТИЧНО для локального теста: браузер должен знать, по какому IP/host
+# слать ICE-кандидаты. Без этого соединение установится, но видео не пойдёт —
+# зависнет на "connecting". Для localhost-теста достаточно 127.0.0.1,
+# для теста с телефона в той же сети — реальный IP машины (например 192.168.x.x).
+webrtcAdditionalHosts:
+  - 127.0.0.1
+
+# HLS для зрителей
+hls: yes
+hlsAddress: :8888
+hlsVariant: lowLatency
+hlsSegmentCount: 7
+
+paths: {}

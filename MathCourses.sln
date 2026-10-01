@@ -14,7 +14,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infra", "infra", "{7A1C2E44-5B9D-4F0A-9C3E-2D8B6F1A4E77}"
 	ProjectSection(SolutionItems) = preProject
 		infra\docker-compose.yml = infra\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nginx", "nginx", "{3B6E1F0A-8C2D-4E7B-9A51-6D4C2B8E1F03}"
+	ProjectSection(SolutionItems) = preProject
 		infra\nginx\nginx.conf = infra\nginx\nginx.conf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mediamtx", "mediamtx", "{9D2C4A7E-1B3F-4C68-8E5A-0F7B3D6A2C14}"
+	ProjectSection(SolutionItems) = preProject
+		infra\mediamtx\mediamtx.yml = infra\mediamtx\mediamtx.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4DC24B70-3305-4FE2-90AC-7162B187B49B}"
@@ -50,6 +59,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Seeds", "src\Services\AuthService\Auth.Seeds\Auth.Seeds.csproj", "{450F2B9B-2A36-44D3-87D5-A9970E773C37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Api", "src\Services\AuthService\Auth.Api\Auth.Api.csproj", "{DC7AA782-F6F0-4CD6-AC31-6EB3EB8E39FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StreamingService", "StreamingService", "{5EBA61D9-DF24-4ADD-AA38-42F8489CE0EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streaming.Domain", "src\Services\StreamingService\Streaming.Domain\Streaming.Domain.csproj", "{9049CC33-7E6C-46C6-8DFB-FB506E7A743F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streaming.Application", "src\Services\StreamingService\Streaming.Application\Streaming.Application.csproj", "{F4D6BD6D-2C3E-4652-A396-E184E28210F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streaming.Infrastructure", "src\Services\StreamingService\Streaming.Infrastructure\Streaming.Infrastructure.csproj", "{43174F27-F6FD-4FBF-958F-C415B9076C48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streaming.Api", "src\Services\StreamingService\Streaming.Api\Streaming.Api.csproj", "{42F49149-3179-45D0-AD94-3BBBDF4A1ED7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,11 +124,34 @@ Global
 		{DC7AA782-F6F0-4CD6-AC31-6EB3EB8E39FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC7AA782-F6F0-4CD6-AC31-6EB3EB8E39FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC7AA782-F6F0-4CD6-AC31-6EB3EB8E39FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9049CC33-7E6C-46C6-8DFB-FB506E7A743F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9049CC33-7E6C-46C6-8DFB-FB506E7A743F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9049CC33-7E6C-46C6-8DFB-FB506E7A743F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9049CC33-7E6C-46C6-8DFB-FB506E7A743F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4D6BD6D-2C3E-4652-A396-E184E28210F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D6BD6D-2C3E-4652-A396-E184E28210F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D6BD6D-2C3E-4652-A396-E184E28210F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D6BD6D-2C3E-4652-A396-E184E28210F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43174F27-F6FD-4FBF-958F-C415B9076C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43174F27-F6FD-4FBF-958F-C415B9076C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43174F27-F6FD-4FBF-958F-C415B9076C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43174F27-F6FD-4FBF-958F-C415B9076C48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42F49149-3179-45D0-AD94-3BBBDF4A1ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42F49149-3179-45D0-AD94-3BBBDF4A1ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42F49149-3179-45D0-AD94-3BBBDF4A1ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42F49149-3179-45D0-AD94-3BBBDF4A1ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3B6E1F0A-8C2D-4E7B-9A51-6D4C2B8E1F03} = {7A1C2E44-5B9D-4F0A-9C3E-2D8B6F1A4E77}
+		{9D2C4A7E-1B3F-4C68-8E5A-0F7B3D6A2C14} = {7A1C2E44-5B9D-4F0A-9C3E-2D8B6F1A4E77}
+		{5EBA61D9-DF24-4ADD-AA38-42F8489CE0EB} = {A4009AAE-B528-4ED1-84C6-A1B81367A5AB}
+		{9049CC33-7E6C-46C6-8DFB-FB506E7A743F} = {5EBA61D9-DF24-4ADD-AA38-42F8489CE0EB}
+		{F4D6BD6D-2C3E-4652-A396-E184E28210F5} = {5EBA61D9-DF24-4ADD-AA38-42F8489CE0EB}
+		{43174F27-F6FD-4FBF-958F-C415B9076C48} = {5EBA61D9-DF24-4ADD-AA38-42F8489CE0EB}
+		{42F49149-3179-45D0-AD94-3BBBDF4A1ED7} = {5EBA61D9-DF24-4ADD-AA38-42F8489CE0EB}
 		{A4009AAE-B528-4ED1-84C6-A1B81367A5AB} = {4DC24B70-3305-4FE2-90AC-7162B187B49B}
 		{EB312089-CDD9-43D4-856D-4403B3EF9ECB} = {A4009AAE-B528-4ED1-84C6-A1B81367A5AB}
 		{4DB869BC-40FE-47E0-A4A4-14E5F4C00E11} = {A4009AAE-B528-4ED1-84C6-A1B81367A5AB}
