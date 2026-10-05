@@ -4,12 +4,12 @@ using Application.Commands.UpdateCommands;
 using Application.Queries.DefaultQueries;
 using Application.Queries.PaginationQueries;
 using Application.Responses;
-using Domain.Attributes;
+using SharedKernel.Attributes;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Enums;
 
 namespace Math.Api.Controllers
 {

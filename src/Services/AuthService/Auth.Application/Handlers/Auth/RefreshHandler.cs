@@ -6,15 +6,16 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Auth
 {
-    public sealed class RefreshHandler(IAuthDbContext authDbContext, ITokenProvider tokenProvider) : IRequestHandler<RefreshCommand, RefreshResponse>
+    public sealed class RefreshHandler(ISwagDbContext authDbContext, ITokenProvider tokenProvider) : IRequestHandler<RefreshCommand, RefreshResponse>
     {
         public async Task<RefreshResponse> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
             var tokenHash = ComputeHash(request.RefreshToken);
-            var session = await authDbContext.RefreshTokenSessions
+            var session = await authDbContext.Set<RefreshTokenSession>()
             .FirstOrDefaultAsync(s =>
                 s.TokenHash == tokenHash &&
                 s.RevokedAt == null &&
@@ -33,9 +34,9 @@ namespace Application.Handlers.Auth
                 ExpiresAt = DateTimeOffset.UtcNow.AddDays(30),
                 CreatedAt = DateTimeOffset.UtcNow,
             };
-            await authDbContext.RefreshTokenSessions.AddAsync(newSession, cancellationToken);
+            await authDbContext.Set<RefreshTokenSession>().AddAsync(newSession, cancellationToken);
             await authDbContext.SaveChangesAsync(cancellationToken);
-            var userType = await authDbContext.Users.Where(f => f.Id == session.UserId)
+            var userType = await authDbContext.Set<User>().Where(f => f.Id == session.UserId)
                 .Select(f => f.RoleRef.UserType)
                 .FirstOrDefaultAsync(cancellationToken);
             return new RefreshResponse

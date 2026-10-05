@@ -1,18 +1,20 @@
 using Application.Commands.Update;
-using Application.Interfaces;
 using Application.Responses.DefaultResponses;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Enums;
+using SharedKernel.Interfaces;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Update
 {
-    public sealed class UpdateRoleHandler(IAuthDbContext DbContext, IPermissionCache permissionCache) : IRequestHandler<UpdateRoleCommand, RoleResponse>
+    public sealed class UpdateRoleHandler(ISwagDbContext DbContext, IPermissionCache permissionCache) : IRequestHandler<UpdateRoleCommand, RoleResponse>
     {
         public async Task<RoleResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = await DbContext.Roles
+            var role = await DbContext.Set<Role>()
                 .Include(x => x.RolePermissions)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Role), request.Id);
             role.Name = request.Name;
@@ -24,11 +26,11 @@ namespace Application.Handlers.Update
                 }).ToList();
             await DbContext.SaveChangesAsync(cancellationToken);
 
-            var userIds = await DbContext.Users.AsNoTracking()
+            var userIds = await DbContext.Set<User>().AsNoTracking()
                 .Where(x => x.RoleId == role.Id)
                 .Select(x => x.Id)
                 .ToArrayAsync(cancellationToken);
-            var permissions = await DbContext.Roles.AsNoTracking()
+            var permissions = await DbContext.Set<Role>().AsNoTracking()
                 .Where(x => x.Id == role.Id)
                 .SelectMany(x => x.RolePermissions)
                 .Select(x => $"{x.PermissionRef.ObjectTypeRef.ServiceType.ToString()}:{x.PermissionRef.ObjectType}:{x.PermissionRef.ActionType.ToString()}")

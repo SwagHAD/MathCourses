@@ -1,9 +1,10 @@
 ﻿using Application;
-using Application.Interfaces;
 using Infrastructure;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Options;
-using Infrastructure.Options;
+using SharedKernel.AspNetCore;
+using SharedKernel.Enums;
+using SharedKernel.Application.Interfaces;
 
 namespace Math.Api
 {
@@ -11,13 +12,7 @@ namespace Math.Api
     {
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddOptions<JwtOptions>()
-                .Bind(configuration.GetSection(JwtOptions.SectionName) ?? throw new ArgumentNullException("Jwt section is not configured"))
-                .ValidateDataAnnotations()
-                .Validate(options => !string.IsNullOrEmpty(options.SecretKey), "Jwt section is missing or SecretKey is not set")
-                .Validate(options => !string.IsNullOrEmpty(options.Issuer), "Jwt section is missing or Issuer is not set")
-                .Validate(options => !string.IsNullOrEmpty(options.Audience), "Jwt section is missing or Audience is not set")
-                .ValidateOnStart();
+            services.AddSharedKernel(configuration, ServiceType.CoreService);
 
             services.AddOptions<RabbitMqOptions>()
                 .Bind(configuration.GetSection(RabbitMqOptions.SectionName))

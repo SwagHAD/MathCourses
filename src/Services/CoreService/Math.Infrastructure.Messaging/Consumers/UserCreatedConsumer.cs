@@ -1,7 +1,8 @@
-﻿using Application.Interfaces;
 using Infrastructure.Events;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
+using Domain.Entities;
 
 namespace Infrastructure.Messaging.Consumers
 {
@@ -10,13 +11,13 @@ namespace Infrastructure.Messaging.Consumers
     {
         public async Task Consume(ConsumeContext<StudentUserCreatedEvent> context)
         {
-            await dbContext.Students.Where(s => s.ID == context.Message.StudentId)
+            await dbContext.Set<Student>().Where(s => s.ID == context.Message.StudentId)
                 .ExecuteUpdateAsync(s => s.SetProperty(s => s.UserId, context.Message.UserId));
         }
 
         public async Task Consume(ConsumeContext<TeacherUserCreatedEvent> context)
         {
-            await dbContext.Teachers.Where(t => t.ID == context.Message.TeacherId)
+            await dbContext.Set<Teacher>().Where(t => t.ID == context.Message.TeacherId)
                 .ExecuteUpdateAsync(t => t.SetProperty(t => t.UserId, context.Message.UserId));
         }
     }

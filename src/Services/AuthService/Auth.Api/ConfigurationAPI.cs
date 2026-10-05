@@ -1,9 +1,10 @@
 ﻿using Application;
 using Auth.Seeds.Options;
 using Infrasctrure;
-using Infrasctrure.Options;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Options;
+using SharedKernel.AspNetCore;
+using SharedKernel.Enums;
 
 namespace Auth.Api;
 
@@ -11,13 +12,7 @@ public static class ConfigurationAPI
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<JwtOptions>()
-            .Bind(configuration.GetSection(JwtOptions.SectionName) ?? throw new ArgumentNullException("Jwt section is not configured"))
-            .ValidateDataAnnotations()
-            .Validate(options => !string.IsNullOrEmpty(options.SecretKey), "Jwt section is missing or SecretKey is not set")
-            .Validate(options => !string.IsNullOrEmpty(options.Issuer), "Jwt section is missing or Issuer is not set")
-            .Validate(options => !string.IsNullOrEmpty(options.Audience), "Jwt section is missing or Audience is not set")
-            .ValidateOnStart();
+        services.AddSharedKernel(configuration, ServiceType.AuthService);
 
         services.AddOptions<SeedOptions>()
             .Bind(configuration.GetSection(SeedOptions.SectionName) ?? throw new ArgumentNullException("Seed section is not configured"))

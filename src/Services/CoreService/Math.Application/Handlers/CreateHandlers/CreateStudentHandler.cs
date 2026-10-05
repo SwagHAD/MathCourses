@@ -2,10 +2,10 @@
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Application.Interfaces;
 using Infrastructure.Events;
 using MediatR;
 using System.Text.Json;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.CreateHandlers
 {

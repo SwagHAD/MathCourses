@@ -1,9 +1,8 @@
-﻿using Application.Queries.Base;
 using Application.Responses;
 using Domain.Entities;
 using Domain.Enums;
-using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Queries;
 
 namespace Application.Queries.DefaultQueries
 {

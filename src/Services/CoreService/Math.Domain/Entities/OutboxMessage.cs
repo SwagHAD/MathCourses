@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Base;
+﻿using SharedKernel.Entities;
 
 namespace Domain.Entities
 {

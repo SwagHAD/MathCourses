@@ -1,4 +1,4 @@
-﻿using Application.Queries.Base;
+﻿using SharedKernel.Application.Queries;
 
 namespace Application.Queries.DefaultQueries
 {

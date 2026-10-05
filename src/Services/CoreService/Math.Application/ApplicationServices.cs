@@ -1,9 +1,7 @@
 using Application.Behaviors;
 using Application.Mapping.Base;
-using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using SharedKernel.Application;
 
 namespace Application
 {
@@ -11,27 +9,14 @@ namespace Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            AddValidation(services);
+            services.AddSharedApplication(typeof(ApplicationServices).Assembly,
+                cfg => cfg.AddOpenBehavior(typeof(ResoursePermissionBehavior<,>)));
             AddMapping(services);
-            AddMediatR(services);
             return services;
-        }
-        private static void AddValidation(IServiceCollection services)
-        {
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         }
         private static void AddMapping(IServiceCollection services)
         {
             services.AddAutoMapper(ctg => { } ,typeof(AssemblyMappingProfile));
-        }
-        private static void AddMediatR(IServiceCollection services)
-        {
-            services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ResoursePermissionBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
         }
     }
 }

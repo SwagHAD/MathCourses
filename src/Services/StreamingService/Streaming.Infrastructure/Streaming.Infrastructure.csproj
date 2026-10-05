@@ -1,19 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>StreamingService.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.12" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-    <PackageReference Include="StackExchange.Redis" Version="3.1.31" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Streaming.Application\Streaming.Application.csproj" />
     <ProjectReference Include="..\Streaming.Domain\Streaming.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.AspNetCore\SharedKernel.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.Persistence\SharedKernel.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

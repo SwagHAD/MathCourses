@@ -10,7 +10,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         builder.Property(x => x.Login).HasMaxLength(320).IsRequired();
         builder.HasIndex(x => x.Login).IsUnique();
         builder.Property(x => x.PasswordHash).HasMaxLength(500).IsRequired();

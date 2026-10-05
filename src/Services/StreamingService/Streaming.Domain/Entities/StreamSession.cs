@@ -1,8 +1,9 @@
 ﻿using StreamingService.Domain.Enums;
+using SharedKernel.Entities;
 
 namespace StreamingService.Domain.Entities
 {
-    public sealed class StreamSession
+    public sealed class StreamSession : BaseEntity
     {
         public int Id { get; set; }
         public int LessonId { get; set; }

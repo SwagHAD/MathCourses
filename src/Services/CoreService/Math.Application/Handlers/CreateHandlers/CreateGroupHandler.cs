@@ -1,10 +1,10 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Interfaces;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.CreateHandlers
 {

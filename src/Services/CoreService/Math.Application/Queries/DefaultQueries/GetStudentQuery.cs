@@ -1,5 +1,5 @@
-﻿using Application.Queries.Base;
 using Application.Responses;
+using SharedKernel.Application.Queries;
 
 namespace Application.Queries.DefaultQueries
 {

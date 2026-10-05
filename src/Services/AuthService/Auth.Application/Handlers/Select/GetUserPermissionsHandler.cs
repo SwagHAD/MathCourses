@@ -1,6 +1,6 @@
-﻿using Application.Interfaces;
 using Application.Queries.DefaultQueries;
 using MediatR;
+using SharedKernel.Interfaces;
 
 namespace Application.Handlers.Select
 {

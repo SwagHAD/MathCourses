@@ -1,4 +1,4 @@
-using Application.Commands.Base;
+using SharedKernel.Application.Commands;
 using MediatR;
 
 namespace Application.Commands.Delete

@@ -1,14 +1,11 @@
 using Math.Api;
-using Math.Api.MiddleWares;
 using Microsoft.OpenApi;
+using SharedKernel.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServices(builder.Configuration);
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<ErrorHandlingMiddleWare>();
-builder.Services.AddScoped<PermissionCheckerMiddleWare>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -39,8 +36,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<ErrorHandlingMiddleWare>();
-app.UseMiddleware<PermissionCheckerMiddleWare>();
+app.UseSharedKernel();
 
 if (app.Environment.IsDevelopment())
 {

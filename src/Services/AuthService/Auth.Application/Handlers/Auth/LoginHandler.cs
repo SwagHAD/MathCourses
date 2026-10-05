@@ -7,19 +7,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using SharedKernel.Enums;
+using SharedKernel.Interfaces;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Auth
 {
     public sealed class LoginHandler(
         ITokenProvider tokenProvider,
-        IAuthDbContext authDbContext,
+        ISwagDbContext authDbContext,
         IPasswordHasher<User> passwordHasher,
         IPermissionCache permissionCache)
         : IRequestHandler<LoginCommand, LoginResponse>
     {
         public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await authDbContext.Users.AsNoTracking()
+            var user = await authDbContext.Set<User>().AsNoTracking()
                 .Include(u => u.RoleRef)
                 .FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken);
             if(user is null)
@@ -33,7 +36,7 @@ namespace Application.Handlers.Auth
             var rawRefreshToken = tokenProvider.GenerateRefreshToken();
             var tokenHash = ComputeHash(rawRefreshToken);
             var expiresAt = DateTimeOffset.UtcNow.AddDays(30);
-            var permissions = await authDbContext.Users.AsNoTracking()
+            var permissions = await authDbContext.Set<User>().AsNoTracking()
                 .Where(u => u.Id == user.Id)
                 .Select(u => u.RoleRef)
                 .SelectMany(r => r.RolePermissions)
@@ -47,7 +50,7 @@ namespace Application.Handlers.Auth
                 ExpiresAt = expiresAt,
                 CreatedAt = DateTimeOffset.UtcNow,
             };
-            await authDbContext.RefreshTokenSessions.AddAsync(session, cancellationToken);
+            await authDbContext.Set<RefreshTokenSession>().AddAsync(session, cancellationToken);
             await authDbContext.SaveChangesAsync();
             await permissionCache.SetUserPermissionsAsync(user.Id, permissions, cancellationToken);
             return new LoginResponse

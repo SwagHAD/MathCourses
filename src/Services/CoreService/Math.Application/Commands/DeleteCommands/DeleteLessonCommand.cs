@@ -1,4 +1,4 @@
-﻿using Application.Commands.Base;
+﻿using SharedKernel.Application.Commands;
 using Application.Mapping.Base;
 using Application.Responses;
 using AutoMapper;

@@ -1,18 +1,20 @@
 using Application.Commands.Update;
-using Application.Interfaces;
 using Application.Responses.DefaultResponses;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Enums;
+using SharedKernel.Interfaces;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Update
 {
-    public sealed class UpdateUserHandler(IAuthDbContext DbContext, IPermissionCache permissionCache) : IRequestHandler<UpdateUserCommand, UserResponse>
+    public sealed class UpdateUserHandler(ISwagDbContext DbContext, IPermissionCache permissionCache) : IRequestHandler<UpdateUserCommand, UserResponse>
     {
         public async Task<UserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await DbContext.Users
+            var user = await DbContext.Set<User>()
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(nameof(User), request.Id);
 
             user.Login = request.Login;
@@ -20,7 +22,7 @@ namespace Application.Handlers.Update
             user.RoleId = request.RoleId;
 
             await DbContext.SaveChangesAsync(cancellationToken);
-            var permissions = await DbContext.Users.AsNoTracking()
+            var permissions = await DbContext.Set<User>().AsNoTracking()
                 .Where(u => u.Id == user.Id)
                 .Select(u => u.RoleRef)
                 .SelectMany(r => r.RolePermissions)

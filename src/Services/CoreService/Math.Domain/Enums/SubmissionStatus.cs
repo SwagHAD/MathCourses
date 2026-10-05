@@ -1,4 +1,4 @@
-﻿using Domain.Attributes;
+﻿using SharedKernel.Attributes;
 
 namespace Domain.Enums
 {

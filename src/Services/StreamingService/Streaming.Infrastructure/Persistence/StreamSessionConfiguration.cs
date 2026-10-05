@@ -8,6 +8,8 @@ namespace StreamingService.Infrastructure.Persistence
     {
         public void Configure(EntityTypeBuilder<StreamSession> builder)
         {
+            // Имя таблицы раньше бралось из DbSet в контексте — фиксируем его явно
+            builder.ToTable("StreamSessions");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.LessonId).IsRequired();
             builder.Property(x => x.UserId).IsRequired();

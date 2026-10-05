@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+﻿using SharedKernel.Enums;
 
 namespace Application.Interfaces
 {

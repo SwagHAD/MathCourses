@@ -1,6 +1,5 @@
-﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using StreamingService.Application.Behaviers;
+using SharedKernel.Application;
 
 namespace StreamingService.Application
 {
@@ -8,15 +7,8 @@ namespace StreamingService.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            AddMediator(services);
+            services.AddSharedApplication(typeof(ApplicationServices).Assembly);
             return services;
-        }
-        private static void AddMediator(IServiceCollection services)
-        {
-            services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(typeof(ApplicationServices).Assembly));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
     }
 }

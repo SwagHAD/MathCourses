@@ -1,21 +1,23 @@
 ﻿using Application.Commands.Auth;
-using Application.Interfaces;
 using Application.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
+using SharedKernel.Interfaces;
+using SharedKernel.Application.Interfaces;
+using Domain.Entities;
 
 namespace Application.Handlers.Auth
 {
-    public sealed class LogoutHandler(IAuthDbContext authDbContext, IPermissionCache permissionCache, IUserProvider userProvider) : IRequestHandler<LogoutCommand, LogoutResponse>
+    public sealed class LogoutHandler(ISwagDbContext authDbContext, IPermissionCache permissionCache, IUserProvider userProvider) : IRequestHandler<LogoutCommand, LogoutResponse>
     {
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
             var tokenHash = ComputeHash(request.RefreshToken);
-            if (!await authDbContext.RefreshTokenSessions.AnyAsync(f => f.TokenHash == tokenHash && f.RevokedAt == null))
+            if (!await authDbContext.Set<RefreshTokenSession>().AnyAsync(f => f.TokenHash == tokenHash && f.RevokedAt == null))
                 throw new UnauthorizedAccessException("Invalid refresh token");
-            await authDbContext.RefreshTokenSessions.Where(f => f.TokenHash == tokenHash && f.RevokedAt == null)
+            await authDbContext.Set<RefreshTokenSession>().Where(f => f.TokenHash == tokenHash && f.RevokedAt == null)
                 .ExecuteUpdateAsync(f => f.SetProperty(s => s.RevokedAt, DateTimeOffset.UtcNow), cancellationToken);
             await authDbContext.SaveChangesAsync(cancellationToken);
             await permissionCache.RemoveUserPermissionsAsync(userProvider.GetUserId(), cancellationToken);

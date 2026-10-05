@@ -1,18 +1,18 @@
-using Application.Interfaces;
 using Application.Queries.DefaultQueries;
 using Application.Responses.DefaultResponses;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Select
 {
-    public sealed class GetRoleHandler(IAuthDbContext DbContext) : IRequestHandler<GetRoleQuery, RoleResponse>
+    public sealed class GetRoleHandler(ISwagDbContext DbContext) : IRequestHandler<GetRoleQuery, RoleResponse>
     {
         public async Task<RoleResponse> Handle(GetRoleQuery request, CancellationToken cancellationToken)
         {
-            return await DbContext.Roles.AsNoTracking()
+            return await DbContext.Set<Role>().AsNoTracking()
                 .Select(x => new RoleResponse
                 {
                     Id = x.Id,

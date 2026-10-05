@@ -1,11 +1,11 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Interfaces;
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Events;
 using MediatR;
 using System.Text.Json;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.CreateHandlers
 {
@@ -15,7 +15,7 @@ namespace Application.Handlers.CreateHandlers
         public async Task<Unit> Handle(CreateTeacherCommand request, CancellationToken cancellationToken)
         {
             var teacher = Mapper.Map<Teacher>(request);
-            await DbContext.Teachers.AddAsync(teacher, cancellationToken);
+            await DbContext.Set<Teacher>().AddAsync(teacher, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
             var outboxMessage = new OutboxMessage
             {

@@ -1,6 +1,7 @@
-﻿using Application.Interfaces;
 using Application.Queries.Base;
 using MediatR;
+using SharedKernel.Interfaces;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Behaviors
 {
@@ -10,8 +11,8 @@ namespace Application.Behaviors
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var userId = userProvider.GetUserId();
-            var userType = userProvider.GetUserType();
-            if (!await request.CheckResoursePermissionAsync(userId, userType, swagDbContext, cancellationToken))
+            var roleType = userProvider.GetRoleType();
+            if (!await request.CheckResoursePermissionAsync(userId, roleType, swagDbContext, cancellationToken))
                 throw new UnauthorizedAccessException("У вас нет прав для доступа к этому ресурсу.");
             return await next();
         }

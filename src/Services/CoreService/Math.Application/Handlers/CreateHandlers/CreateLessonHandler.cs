@@ -2,8 +2,8 @@
 using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
-using Application.Interfaces;
 using MediatR;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.CreateHandlers
 {

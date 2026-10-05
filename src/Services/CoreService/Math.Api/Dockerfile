@@ -6,6 +6,10 @@ WORKDIR /repo
 # Сначала только файлы проектов — чтобы restore кэшировался
 COPY Directory.Build.props ./
 COPY src/BuildingBlocks/Infrastructure.Events/*.csproj src/BuildingBlocks/Infrastructure.Events/
+COPY src/BuildingBlocks/SharedKernel/*.csproj src/BuildingBlocks/SharedKernel/
+COPY src/BuildingBlocks/SharedKernel.AspNetCore/*.csproj src/BuildingBlocks/SharedKernel.AspNetCore/
+COPY src/BuildingBlocks/SharedKernel.Application/*.csproj src/BuildingBlocks/SharedKernel.Application/
+COPY src/BuildingBlocks/SharedKernel.Persistence/*.csproj src/BuildingBlocks/SharedKernel.Persistence/
 COPY src/Services/CoreService/Math.Domain/*.csproj src/Services/CoreService/Math.Domain/
 COPY src/Services/CoreService/Math.Application/*.csproj src/Services/CoreService/Math.Application/
 COPY src/Services/CoreService/Math.Infrastructure/*.csproj src/Services/CoreService/Math.Infrastructure/

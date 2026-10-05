@@ -1,11 +1,11 @@
-﻿using Application.Interfaces;
 using Application.Queries.DefaultQueries;
 using Application.Responses;
-using Application.Tools;
+using SharedKernel.Tools;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.GetHandlers
 {
@@ -13,7 +13,7 @@ namespace Application.Handlers.GetHandlers
     {
         public async Task<DefaultTeacherResponse> Handle(GetTeacherQuery request, CancellationToken cancellationToken)
         {
-            return await swagDbContext.Teachers.AsNoTracking().Where(f => f.ID == request.Id).Select(s => new DefaultTeacherResponse
+            return await swagDbContext.Set<Teacher>().AsNoTracking().Where(f => f.ID == request.Id).Select(s => new DefaultTeacherResponse
             {
                 Id = s.ID,
                 Name = s.Name,

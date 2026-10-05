@@ -1,7 +1,8 @@
-﻿using Application.Interfaces;
 using Application.Queries.DefaultQueries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
+using Domain.Entities;
 
 namespace Application.Handlers.GetHandlers
 {
@@ -9,7 +10,7 @@ namespace Application.Handlers.GetHandlers
     {
         public async Task<int> Handle(GetCountOfGroupsQuery request, CancellationToken cancellationToken)
         {
-            return await swagDbContext.Groups.CountAsync(cancellationToken);
+            return await swagDbContext.Set<Group>().CountAsync(cancellationToken);
         }
     }
 }

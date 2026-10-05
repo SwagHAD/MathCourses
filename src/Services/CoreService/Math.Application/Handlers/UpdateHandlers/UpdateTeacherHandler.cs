@@ -1,11 +1,11 @@
 using Application.Commands.UpdateCommands;
-using Application.Interfaces;
-using Application.Tools;
+using SharedKernel.Tools;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.UpdateHandlers
 {

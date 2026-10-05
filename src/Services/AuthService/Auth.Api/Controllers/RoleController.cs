@@ -3,12 +3,12 @@ using Application.Commands.Delete;
 using Application.Commands.Update;
 using Application.Queries.DefaultQueries;
 using Application.Responses.DefaultResponses;
-using Domain.Attributes;
+using SharedKernel.Attributes;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Enums;
 
 namespace Auth.Api.Controllers
 {

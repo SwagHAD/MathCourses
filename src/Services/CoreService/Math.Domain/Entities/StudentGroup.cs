@@ -1,10 +1,11 @@
-﻿using Domain.Attributes;
+﻿using SharedKernel.Attributes;
 using Domain.Enums;
+using SharedKernel.Entities;
 
 namespace Domain.Entities
 {
     [Title("УчительГруппа")]
-    public sealed class StudentGroup
+    public sealed class StudentGroup : BaseEntity
     {
         public int StudentID { get; set; }
         public Student StudentRef { get; set; }

@@ -1,11 +1,11 @@
 ﻿using Application.Commands.Create;
-using Application.Interfaces;
 using Domain.Entities;
 using MediatR;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Create
 {
-    public sealed class CreateRoleHandler(IAuthDbContext DbContext) : IRequestHandler<CreateRoleCommand, int>
+    public sealed class CreateRoleHandler(ISwagDbContext DbContext) : IRequestHandler<CreateRoleCommand, int>
     {
         public async Task<int> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
         {
@@ -14,7 +14,7 @@ namespace Application.Handlers.Create
                 Name = request.Name,
                 RolePermissions = request.PermissionIds.Select(id => new RolePermission { PermissionId = id }).ToList()
             };
-            await DbContext.Roles.AddAsync(newrole, cancellationToken);
+            await DbContext.Set<Role>().AddAsync(newrole, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
             return newrole.Id;
         }

@@ -1,4 +1,5 @@
-﻿using Domain.Base;
+﻿using SharedKernel.Application.Queries;
+using SharedKernel.Entities;
 
 namespace Application.Queries.Base
 {

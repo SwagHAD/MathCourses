@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using StreamingService.Application.Commands.Base;
+using SharedKernel.Application.Commands;
 
 namespace StreamingService.Application.Commands
 {

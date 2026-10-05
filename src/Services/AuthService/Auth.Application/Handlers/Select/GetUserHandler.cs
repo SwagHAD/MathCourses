@@ -1,18 +1,18 @@
-using Application.Interfaces;
 using Application.Queries.DefaultQueries;
 using Application.Responses.DefaultResponses;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Select
 {
-    public sealed class GetUserHandler(IAuthDbContext DbContext) : IRequestHandler<GetUserQuery, UserResponse>
+    public sealed class GetUserHandler(ISwagDbContext DbContext) : IRequestHandler<GetUserQuery, UserResponse>
     {
         public async Task<UserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            return await DbContext.Users.AsNoTracking()
+            return await DbContext.Set<User>().AsNoTracking()
                 .Select(x => new UserResponse
                 {
                     Id = x.Id,

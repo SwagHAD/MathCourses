@@ -1,16 +1,17 @@
 ﻿using MassTransit;
 using MediatR;
 using StreamingService.Application.Commands;
-using StreamingService.Application.Common.Interfaces;
 using StreamingService.Application.Contracts;
 using StreamingService.Application.Responses;
 using StreamingService.Domain.Entities;
 using StreamingService.Domain.Enums;
+using SharedKernel.Interfaces;
+using SharedKernel.Application.Interfaces;
 
 namespace StreamingService.Application.Handlers
 {
     public sealed class StartStreamHandler(IMediaServerClient mediaServerClient, 
-        IStreamDbContext streamDbContext, IUserProvider userProvider) : IRequestHandler<StartStreamCommand, StartStreamResponse>
+        ISwagDbContext streamDbContext, IUserProvider userProvider) : IRequestHandler<StartStreamCommand, StartStreamResponse>
     {
         public async Task<StartStreamResponse> Handle(StartStreamCommand request, CancellationToken cancellationToken)
         {
@@ -25,7 +26,7 @@ namespace StreamingService.Application.Handlers
             };
 
             await mediaServerClient.CreatePathAsync(session.StreamPath, cancellationToken);
-            await streamDbContext.StreamSessions.AddAsync(session, cancellationToken);
+            await streamDbContext.Set<StreamSession>().AddAsync(session, cancellationToken);
 
             //await publishEndpoint.Publish(new StreamStartedEvent(session.LessonId, mediaServerClient.GetHlsPlaybackUrl(session.StreamPath)), cancellationToken);
             await streamDbContext.SaveChangesAsync(cancellationToken);

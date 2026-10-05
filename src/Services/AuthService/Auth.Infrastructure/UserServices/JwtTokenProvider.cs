@@ -1,12 +1,12 @@
 ﻿using Application.Interfaces;
-using Domain.Enums;
-using Infrasctrure.Options;
+using SharedKernel.AspNetCore.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using SharedKernel.Enums;
 
 namespace Infrasctrure.UserServices;
 

@@ -1,15 +1,14 @@
-using Application.Interfaces;
 using Auth.Api;
-using Auth.Api.MiddleWares;
 using Auth.Api.Seeders;
 using Auth.Seeds.Options;
 using Auth.Seeds.Seeders;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
+using SharedKernel.AspNetCore;
+using SharedKernel.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServices(builder.Configuration);
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
@@ -21,8 +20,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-builder.Services.AddScoped<ErrorHandlingMiddleWare>();
-builder.Services.AddScoped<PermissionCheckerMiddleWare>();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -45,12 +42,11 @@ app.UseSwaggerUI();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseMiddleware<ErrorHandlingMiddleWare>();
-app.UseMiddleware<PermissionCheckerMiddleWare>();
+app.UseSharedKernel();
 app.MapControllers();
 await using (var scope = app.Services.CreateAsyncScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<IAuthDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<ISwagDbContext>();
     var seedOptions = scope.ServiceProvider.GetRequiredService<IOptions<SeedOptions>>().Value;
     await db.MigrateAsync();
     try

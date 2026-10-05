@@ -1,17 +1,17 @@
 using Application.Commands.Delete;
-using Application.Interfaces;
 using Domain.Entities;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Delete
 {
-    public sealed class DeleteUserHandler(IAuthDbContext DbContext) : IRequestHandler<DeleteUserCommand, Unit>
+    public sealed class DeleteUserHandler(ISwagDbContext DbContext) : IRequestHandler<DeleteUserCommand, Unit>
     {
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var existUser = await DbContext.Users
+            var existUser = await DbContext.Set<User>()
                 .AnyAsync(x => x.Id == request.Id, cancellationToken);
 
             if (!existUser)
@@ -19,7 +19,7 @@ namespace Application.Handlers.Delete
                 throw new NotFoundException(nameof(User), request.Id);
             }
 
-            await DbContext.Users.Where(x => x.Id == request.Id)
+            await DbContext.Set<User>().Where(x => x.Id == request.Id)
                 .ExecuteDeleteAsync(cancellationToken);
 
             return Unit.Value;

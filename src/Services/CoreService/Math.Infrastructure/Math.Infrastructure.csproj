@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
@@ -18,12 +16,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
-    <PackageReference Include="StackExchange.Redis" Version="3.0.17" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Math.Application\Math.Application.csproj" />
     <ProjectReference Include="..\Math.Domain\Math.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.AspNetCore\SharedKernel.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.Persistence\SharedKernel.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

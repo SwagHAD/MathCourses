@@ -1,9 +1,9 @@
 ﻿using Application.Commands.DeleteCommands;
 using Application.Responses;
 using Domain.Entities;
-using Application.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.DeleteHandlers
 {

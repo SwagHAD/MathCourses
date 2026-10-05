@@ -1,10 +1,10 @@
-﻿using Application.Interfaces;
 using Application.Queries.PaginationQueries;
 using Application.Responses;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.GetHandlers
 {

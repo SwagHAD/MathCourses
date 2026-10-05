@@ -1,6 +1,6 @@
-﻿using Domain.Attributes;
-using Domain.Base;
-using Domain.Enums;
+﻿using SharedKernel.Attributes;
+using SharedKernel.Entities;
+using SharedKernel.Enums;
 
 namespace Domain.Entities;
 

@@ -1,4 +1,4 @@
-﻿using Application.Commands.Base;
+﻿using SharedKernel.Application.Commands;
 using Application.Responses;
 
 namespace Application.Commands.Auth

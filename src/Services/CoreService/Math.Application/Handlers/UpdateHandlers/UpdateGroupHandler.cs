@@ -3,10 +3,10 @@ using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Domain.Exceptions;
+using SharedKernel.Exceptions;
 using Microsoft.EntityFrameworkCore;
-using Application.Tools;
-using Application.Interfaces;
+using SharedKernel.Tools;
+using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.UpdateHandlers
 {

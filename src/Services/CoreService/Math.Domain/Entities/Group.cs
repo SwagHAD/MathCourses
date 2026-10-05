@@ -1,5 +1,5 @@
-﻿using Domain.Attributes;
-using Domain.Entities.Base;
+﻿using SharedKernel.Attributes;
+using SharedKernel.Entities;
 
 namespace Domain.Entities
 {

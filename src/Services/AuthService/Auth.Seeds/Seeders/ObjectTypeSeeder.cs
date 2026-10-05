@@ -1,7 +1,7 @@
-﻿using Application.Interfaces;
 using Domain.Entities;
-using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Enums;
+using SharedKernel.Application.Interfaces;
 
 namespace Auth.Seeds.Seeders
 {
@@ -23,17 +23,17 @@ namespace Auth.Seeds.Seeders
             new ObjectType { Name = "LessonMaterial", ServiceType = ServiceType.CoreService, NormalizedName = "Материал урока" },
             new ObjectType { Name = "StreamLesson", ServiceType = ServiceType.CoreService, NormalizedName = "Прямой эфир урока" },
         };
-        public static async Task SeedAsync(IAuthDbContext dbContext, CancellationToken cancellationToken = default)
+        public static async Task SeedAsync(ISwagDbContext dbContext, CancellationToken cancellationToken = default)
         {
             await SeedObjectTypesAsync(dbContext, cancellationToken);
         }
-        private static async ValueTask SeedObjectTypesAsync(IAuthDbContext context, CancellationToken cancellationToken)
+        private static async ValueTask SeedObjectTypesAsync(ISwagDbContext context, CancellationToken cancellationToken)
         {
             foreach(var type in _objectTypes) 
             {
-                if(await context.ObjectTypes.AnyAsync(x => x.Name == type.Name && x.ServiceType == type.ServiceType))
+                if(await context.Set<ObjectType>().AnyAsync(x => x.Name == type.Name && x.ServiceType == type.ServiceType))
                     continue;
-                await context.ObjectTypes.AddAsync(type, cancellationToken);
+                await context.Set<ObjectType>().AddAsync(type, cancellationToken);
             }
             await context.SaveChangesAsync(cancellationToken);
         }
