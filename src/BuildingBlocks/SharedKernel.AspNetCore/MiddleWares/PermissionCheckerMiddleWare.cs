@@ -25,7 +25,7 @@ namespace SharedKernel.AspNetCore.MiddleWares
             var hasPermission = await permissionCache.HasPermissionAsync(userId, requiredPermission, context.RequestAborted);
             if (!hasPermission)
                 throw new PermissionDeniedException(permissionAttr.ObjectTypeName, permissionAttr.ActionType.GetDescription());
-            if (permissionAttr.Roles.Length > 0 && !permissionAttr.Roles.Contains(userProvider.GetRoleType()))
+            if (permissionAttr.Roles.Count > 0 && !permissionAttr.Roles.Contains(userProvider.GetRoleType()))
                 throw new PermissionDeniedException(permissionAttr.ObjectTypeName, permissionAttr.ActionType.GetDescription());
             await next(context);
         }

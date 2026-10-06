@@ -6,7 +6,7 @@ namespace Domain.Entities
     /// <summary>
     /// Группы
     /// </summary>
-    [Title("Группа")]
+    [Title("Группа", Secured = true)]
     public sealed class Group : BaseEntity
     {
         public int ID { get; set; }

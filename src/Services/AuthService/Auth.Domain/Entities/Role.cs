@@ -4,7 +4,7 @@ using SharedKernel.Enums;
 
 namespace Domain.Entities;
 
-[Title("Роль")]
+[Title("Роль", Secured = true)]
 public sealed class Role : BaseEntity
 {
     public int Id { get; set; }

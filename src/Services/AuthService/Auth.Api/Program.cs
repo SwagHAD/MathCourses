@@ -1,3 +1,4 @@
+using Application.Services;
 using Auth.Api;
 using Auth.Api.Seeders;
 using Auth.Seeds.Options;
@@ -48,12 +49,13 @@ await using (var scope = app.Services.CreateAsyncScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ISwagDbContext>();
     var seedOptions = scope.ServiceProvider.GetRequiredService<IOptions<SeedOptions>>().Value;
+    var objectTypeRegistrar = scope.ServiceProvider.GetRequiredService<ObjectTypeRegistrar>();
     await db.MigrateAsync();
     try
     {
         await db.BeginTransactionAsync();
-        await ObjectTypeSeeder.SeedAsync(db);
         await SuperAdminSeeder.SeedAsync(db, seedOptions);
+        await ObjectTypeSeeder.SeedAsync(objectTypeRegistrar);
         await db.CommitTransactionAsync();
     }
     catch

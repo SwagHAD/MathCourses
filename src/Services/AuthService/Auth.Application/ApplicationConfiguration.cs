@@ -1,3 +1,4 @@
+using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Application;
 
@@ -8,6 +9,7 @@ namespace Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddSharedApplication(typeof(ApplicationConfiguration).Assembly);
+            services.AddScoped<ObjectTypeRegistrar>();
             return services;
         }
     }

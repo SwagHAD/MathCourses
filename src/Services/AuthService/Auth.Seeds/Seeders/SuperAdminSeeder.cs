@@ -1,4 +1,3 @@
-using SharedKernel.Tools;
 using Auth.Seeds.Options;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +18,6 @@ public static class SuperAdminSeeder
     {
         await SeedRolesAsync(dbContext, cancellationToken);
         await SeedUsersAsync(dbContext, seedOptions, cancellationToken);
-        await SeedPermissionsAsync(dbContext, cancellationToken);
     }
 
     private static async ValueTask SeedUsersAsync(
@@ -56,35 +54,5 @@ public static class SuperAdminSeeder
         await context.Set<Role>().AddAsync(superAdminRole, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
         AdminRoleID = superAdminRole.Id;
-    }
-
-    private static async ValueTask SeedPermissionsAsync(ISwagDbContext context, CancellationToken cancellationToken)
-    {
-        var objectTypes = await context.Set<ObjectType>().AsNoTracking().ToArrayAsync(cancellationToken);
-        foreach (var objectType in objectTypes)
-        {
-            if (await context.Set<Permission>().AnyAsync(p => p.ObjectType == objectType.Name, cancellationToken))
-                continue;
-
-            foreach (var action in Enum.GetValues<ActionType>())
-            {
-                var permission = new Permission
-                {
-                    ObjectType = objectType.Name,
-                    Name = $"{action.GetDescription()} {objectType.NormalizedName}",
-                    ActionType = action,
-                    RolePermissions = new List<RolePermission>
-                    {
-                        new()
-                        {
-                            RoleId = AdminRoleID,
-                        },
-                    },
-                };
-                await context.Set<Permission>().AddAsync(permission, cancellationToken);
-            }
-        }
-
-        await context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -15,6 +15,7 @@ namespace Infrastructure.Messaging
             {
                 x.AddConsumer<StudentCreationRequestedConsumer>();
                 x.AddConsumer<TeacherCreationRequestedConsumer>();
+                x.AddConsumer<ObjectTypesRegisteredConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {

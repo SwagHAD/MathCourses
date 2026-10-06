@@ -4,7 +4,7 @@ using SharedKernel.Entities;
 
 namespace Domain.Entities
 {
-    [Title("УчительГруппа")]
+    [Title("СтудентГруппа")]
     public sealed class StudentGroup : BaseEntity
     {
         public int StudentID { get; set; }

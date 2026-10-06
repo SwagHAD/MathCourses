@@ -3,7 +3,7 @@ using SharedKernel.Entities;
 
 namespace Domain.Entities
 {
-    [Title("Оценка")]
+    [Title("Оценка", Secured = true)]
     public sealed class Grade : BaseEntity
     {
         public int Id { get; set; }

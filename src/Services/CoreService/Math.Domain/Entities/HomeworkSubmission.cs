@@ -4,7 +4,7 @@ using Domain.Enums;
 
 namespace Domain.Entities
 {
-    [Title("Сдача домашнего задания")]
+    [Title("Сдача домашнего задания", Secured = true)]
     public sealed class HomeworkSubmission : BaseEntity
     {
         public int Id { get; set; }

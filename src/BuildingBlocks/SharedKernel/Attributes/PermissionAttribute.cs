@@ -6,7 +6,6 @@ namespace SharedKernel.Attributes
     {
         public string ObjectTypeName { get; set; } = null!;
         public ActionType ActionType { get; set; }
-        /// <summary>Роли, которым доступен эндпоинт. Пусто — роль не проверяется.</summary>
-        public RoleType[] Roles { get; set; } = [];
+        public HashSet<RoleType> Roles { get; set; } = [];
     }
 }

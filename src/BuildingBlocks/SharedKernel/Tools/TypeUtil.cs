@@ -1,4 +1,5 @@
 using SharedKernel.Attributes;
+using SharedKernel.Models;
 using System.Reflection;
 
 namespace SharedKernel.Tools
@@ -20,6 +21,15 @@ namespace SharedKernel.Tools
                 .Description
                 ?? throw new InvalidOperationException(
                     $"Элемент перечисления '{value.GetType().FullName}.{value}' не содержит атрибут {nameof(TitleAttribute)}.");
+        }
+        /// <summary>Находит в сборке сущности, помеченные <see cref="TitleAttribute.Secured"/>.</summary>
+        public static ObjectTypeDescriptor[] GetSecuredObjectTypes(this Assembly assembly)
+        {
+            return assembly.GetTypes()
+                .Where(type => type.IsClass && !type.IsAbstract && type.GetCustomAttribute<TitleAttribute>() is { Secured: true })
+                .Select(type => new ObjectTypeDescriptor { Name = type.Name, Title = type.GetDescription() })
+                .OrderBy(descriptor => descriptor.Name)
+                .ToArray();
         }
     }
 }

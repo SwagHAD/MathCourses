@@ -3,4 +3,8 @@
   <!-- Общие контракты интеграционных событий между микросервисами (MassTransit).
        Namespace не меняем: он входит в URN сообщения в RabbitMQ. -->
 
+  <ItemGroup>
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
+  </ItemGroup>
+
 </Project>

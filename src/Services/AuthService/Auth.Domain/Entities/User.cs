@@ -4,7 +4,7 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
-[Title("Пользователь")]
+[Title("Пользователь", Secured = true)]
 public sealed class  User : BaseEntity
 {
     public int Id { get; set; }

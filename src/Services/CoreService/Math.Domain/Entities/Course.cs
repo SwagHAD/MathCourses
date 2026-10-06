@@ -6,7 +6,7 @@ namespace Domain.Entities
     /// <summary>
     /// Направление
     /// </summary>
-    [Title("Направление")]
+    [Title("Направление", Secured = true)]
     public sealed class Course : BaseEntity
     {
         public int ID { get; set; }

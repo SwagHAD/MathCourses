@@ -4,7 +4,7 @@ using Domain.Enums;
 
 namespace Domain.Entities
 {
-    [Title("Стрим")]
+    [Title("Стрим", Secured = true)]
     public sealed class StreamLesson : BaseEntity
     {
         public int Id { get; set; }

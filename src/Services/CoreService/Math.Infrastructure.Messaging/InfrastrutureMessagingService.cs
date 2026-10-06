@@ -27,6 +27,7 @@ namespace Infrastructure.Messaging
                 });
             });
             services.AddHostedService<OutboxPublisher>();
+            services.AddHostedService<ObjectTypesPublisher>();
             return services;
         }
     }
