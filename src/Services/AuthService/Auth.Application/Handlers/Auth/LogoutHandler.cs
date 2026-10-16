@@ -1,5 +1,5 @@
 ﻿using Application.Commands.Auth;
-using Application.Responses;
+using AuthService.Contracts.Auth;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -14,7 +14,7 @@ namespace Application.Handlers.Auth
     {
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var tokenHash = ComputeHash(request.RefreshToken);
+            var tokenHash = ComputeHash(request.Data.RefreshToken);
             if (!await authDbContext.Set<RefreshTokenSession>().AnyAsync(f => f.TokenHash == tokenHash && f.RevokedAt == null))
                 throw new UnauthorizedAccessException("Invalid refresh token");
             await authDbContext.Set<RefreshTokenSession>().Where(f => f.TokenHash == tokenHash && f.RevokedAt == null)

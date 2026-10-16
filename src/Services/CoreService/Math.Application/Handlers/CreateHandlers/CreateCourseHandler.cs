@@ -1,5 +1,4 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -11,7 +10,7 @@ namespace Application.Handlers.CreateHandlers
     {
         public async Task<Unit> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
-            var course = Mapper.Map<Course>(request);
+            var course = Mapper.Map<Course>(request.Data);
             await DbContext.AddAsync(course, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;

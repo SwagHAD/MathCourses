@@ -1,0 +1,23 @@
+@page "/students"
+@using CoreService.Contracts.Students
+@inject CoreApi CoreApi
+
+<PageTitle>Студенты</PageTitle>
+
+<h1 class="h3 mb-3">Студенты</h1>
+
+<PagedTable TItem="StudentResponse" Load="LoadAsync">
+    <Header>
+        <th style="width: 100px;">ID</th>
+        <th>Имя</th>
+    </Header>
+    <Row Context="student">
+        <td>@student.Id</td>
+        <td>@student.Name</td>
+    </Row>
+</PagedTable>
+
+@code {
+    private Task<PageResult<StudentResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
+        CoreApi.GetStudentsAsync(new PageRequest<StudentFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+}

@@ -1,22 +1,8 @@
-﻿using SharedKernel.Application.Commands;
-using Application.Mapping.Base;
-using AutoMapper;
-using Domain.Entities;
+using CoreService.Contracts.Courses;
 using MediatR;
+using SharedKernel.Application.Commands;
 
 namespace Application.Commands.UpdateCommands
 {
-    public sealed class UpdateCourseCommand : ICommand<Unit> , IMapWith<Course>
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<UpdateCourseCommand, Course>()
-                .ForMember(course => course.ID,
-                    entity => entity.MapFrom(coursedto => coursedto.ID))
-                .ForMember(course => course.Name,
-                    entity => entity.MapFrom(coursedto => coursedto.Name));
-        }
-    }
+    public sealed record UpdateCourseCommand(UpdateCourseRequest Data) : ICommand<Unit>;
 }

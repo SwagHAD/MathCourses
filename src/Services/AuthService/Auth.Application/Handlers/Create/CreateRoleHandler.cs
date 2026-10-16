@@ -11,8 +11,8 @@ namespace Application.Handlers.Create
         {
             var newrole = new Role
             {
-                Name = request.Name,
-                RolePermissions = request.PermissionIds.Select(id => new RolePermission { PermissionId = id }).ToList()
+                Name = request.Data.Name,
+                RolePermissions = request.Data.PermissionIds.Select(id => new RolePermission { PermissionId = id }).ToList()
             };
             await DbContext.Set<Role>().AddAsync(newrole, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);

@@ -1,5 +1,4 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -12,7 +11,7 @@ namespace Application.Handlers.CreateHandlers
     {
         public async Task<Unit> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
-            var group = Mapper.Map<Group>(request);
+            var group = Mapper.Map<Group>(request.Data);
             await DbContext.Set<Group>().AddAsync(group, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- HTTP-контракты CoreService: запросы, ответы, фильтры, маршруты.
+       Без EF, MediatR, AutoMapper и Domain — подключается Blazor-клиентом.
+       Namespace не "Math.*": в клиенте он перекрыл бы System.Math. -->
+
+  <PropertyGroup>
+    <RootNamespace>CoreService.Contracts</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.Contracts\SharedKernel.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

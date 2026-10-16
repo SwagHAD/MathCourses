@@ -1,0 +1,134 @@
+@typeparam TItem
+@using SharedKernel.Contracts.Pagination
+@using Swag.Web.Api
+@implements IDisposable
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <span class="text-muted">Всего: @_totalCount</span>
+    <div class="d-flex align-items-center gap-2">
+        <label class="text-muted small" for="page-size">На странице</label>
+        <select id="page-size" class="form-select form-select-sm w-auto" value="@_pageSize" @onchange="OnPageSizeChanged">
+            @foreach (var size in PageSizes)
+            {
+                <option value="@size">@size</option>
+            }
+        </select>
+    </div>
+</div>
+
+@if (_error is not null)
+{
+    <div class="alert alert-danger d-flex justify-content-between align-items-center">
+        <span>@_error</span>
+        <button class="btn btn-sm btn-outline-danger" @onclick="LoadAsync">Повторить</button>
+    </div>
+}
+
+<table class="table table-striped table-hover align-middle">
+    <thead>
+        <tr>@Header</tr>
+    </thead>
+    <tbody>
+        @if (_loading)
+        {
+            <tr><td colspan="100" class="text-center text-muted py-4">Загрузка…</td></tr>
+        }
+        else if (_items.Count == 0)
+        {
+            <tr><td colspan="100" class="text-center text-muted py-4">Нет данных</td></tr>
+        }
+        else
+        {
+            @foreach (var item in _items)
+            {
+                <tr>@Row(item)</tr>
+            }
+        }
+    </tbody>
+</table>
+
+<Pager Page="_page" TotalPages="TotalPages" PageChanged="OnPageChanged" />
+
+@code {
+    private static readonly int[] PageSizes = [10, 20, 50];
+
+    /// <summary>Загрузка страницы: номер с 1, размер, токен отмены.</summary>
+    [Parameter, EditorRequired] public Func<int, int, CancellationToken, Task<PageResult<TItem>>> Load { get; set; } = null!;
+    [Parameter, EditorRequired] public RenderFragment Header { get; set; } = null!;
+    [Parameter, EditorRequired] public RenderFragment<TItem> Row { get; set; } = null!;
+    [Parameter] public int PageSize { get; set; } = 10;
+
+    private IReadOnlyList<TItem> _items = [];
+    private int _totalCount;
+    private int _page = 1;
+    private int _pageSize;
+    private bool _loading;
+    private string? _error;
+    private CancellationTokenSource? _loadCts;
+
+    private int TotalPages => Math.Max(1, (int)Math.Ceiling(_totalCount / (double)_pageSize));
+
+    protected override async Task OnInitializedAsync()
+    {
+        _pageSize = PageSize;
+        await LoadAsync();
+    }
+
+    /// <summary>Перечитать текущую страницу — например, после создания или удаления записи.</summary>
+    public Task ReloadAsync() => LoadAsync();
+
+    private async Task OnPageChanged(int page)
+    {
+        _page = page;
+        await LoadAsync();
+    }
+
+    private async Task OnPageSizeChanged(ChangeEventArgs e)
+    {
+        _pageSize = int.Parse(e.Value!.ToString()!);
+        _page = 1;
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        // Быстрые переключения страниц: отменяем предыдущую загрузку, чтобы старый ответ не перетёр новый
+        _loadCts?.Cancel();
+        _loadCts?.Dispose();
+        var cts = _loadCts = new CancellationTokenSource();
+
+        _loading = true;
+        _error = null;
+        try
+        {
+            var result = await Load(_page, _pageSize, cts.Token);
+            _items = result.Items;
+            _totalCount = result.TotalCount;
+
+            // Страница могла опустеть (например, удалили последние записи) — уходим на последнюю существующую
+            if (_items.Count == 0 && _page > TotalPages)
+            {
+                _page = TotalPages;
+                await LoadAsync();
+                return;
+            }
+        }
+        catch (OperationCanceledException) when (cts.IsCancellationRequested)
+        {
+            return;
+        }
+        catch (Exception ex)
+        {
+            _items = [];
+            _error = ApiError.Describe(ex);
+        }
+        if (!cts.IsCancellationRequested)
+            _loading = false;
+    }
+
+    public void Dispose()
+    {
+        _loadCts?.Cancel();
+        _loadCts?.Dispose();
+    }
+}

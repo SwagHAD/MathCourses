@@ -1,5 +1,4 @@
 using Application.Commands.UpdateCommands;
-using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -18,9 +17,9 @@ namespace Application.Handlers.UpdateHandlers
             var group = await DbContext.Set<Group>()
                 .Include(g => g.TeacherGroups)
                 .Include(g => g.StudentGroups)
-                .FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken) 
-                ?? throw new NotFoundException(typeof(Group).GetDescription(), request.ID);
-            Mapper.Map(request, group);
+                .FirstOrDefaultAsync(f => f.ID == request.Data.Id, cancellationToken) 
+                ?? throw new NotFoundException(typeof(Group).GetDescription(), request.Data.Id);
+            Mapper.Map(request.Data, group);
             await DbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }

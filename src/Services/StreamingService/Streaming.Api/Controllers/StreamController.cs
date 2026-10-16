@@ -1,16 +1,17 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using StreamingService.Application.Commands;
-using StreamingService.Application.Responses;
+using StreamingService.Contracts;
+using StreamingService.Contracts.Streams;
 
 namespace StreamingService.Controllers
 {
     [ApiController]
-    [Route("api/streams")]
+    [Route(StreamingRoutes.Prefix)]
     public sealed class StreamController(IMediator mediator) : ControllerBase
     {
 
-        [HttpPost("{lessonId:int}/start")]
+        [HttpPost(StreamingRoutes.Start)]
         public async Task<ActionResult<StartStreamResponse>> Start(int lessonId, CancellationToken ct)
         {
             var command = new StartStreamCommand()
@@ -21,7 +22,7 @@ namespace StreamingService.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{lessonId:int}/stop")]
+        [HttpPost(StreamingRoutes.Stop)]
         public async Task<IActionResult> Stop(int lessonId, CancellationToken ct)
         {
             var command = new StopStreamCommand()

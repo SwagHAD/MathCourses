@@ -1,5 +1,5 @@
 using Application.Queries.DefaultQueries;
-using Application.Responses;
+using CoreService.Contracts.Lessons;
 using SharedKernel.Tools;
 using Domain.Entities;
 using SharedKernel.Exceptions;
@@ -9,11 +9,11 @@ using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.GetHandlers
 {
-    public sealed class GetLessonHandler(ISwagDbContext swagDbContext) : IRequestHandler<GetLessonQuery, DefaultLessonResponse>
+    public sealed class GetLessonHandler(ISwagDbContext swagDbContext) : IRequestHandler<GetLessonQuery, LessonResponse>
     {
-        public async Task<DefaultLessonResponse> Handle(GetLessonQuery request, CancellationToken cancellationToken)
+        public async Task<LessonResponse> Handle(GetLessonQuery request, CancellationToken cancellationToken)
         {
-            return await swagDbContext.Set<Lesson>().AsNoTracking().Where(f => f.ID == request.Id).Select(f => new DefaultLessonResponse
+            return await swagDbContext.Set<Lesson>().AsNoTracking().Where(f => f.ID == request.Id).Select(f => new LessonResponse
             {
                 Id = f.ID,
                 Name = f.Name,

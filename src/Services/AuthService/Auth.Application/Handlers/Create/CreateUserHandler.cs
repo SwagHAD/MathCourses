@@ -12,11 +12,11 @@ namespace Application.Handlers.Create
         {
             var user = new User
             {
-                Login = request.Login,
-                RoleId = request.RoleId
+                Login = request.Data.Login,
+                RoleId = request.Data.RoleId
             };
             var passwordHasher = new PasswordHasher<User>();
-            user.PasswordHash = passwordHasher.HashPassword(user, request.Password);
+            user.PasswordHash = passwordHasher.HashPassword(user, request.Data.Password);
             await DbContext.Set<User>().AddAsync(user, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
             return user.Id;

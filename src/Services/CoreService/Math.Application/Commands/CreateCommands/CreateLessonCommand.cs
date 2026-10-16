@@ -1,24 +1,8 @@
-﻿using SharedKernel.Application.Commands;
-using Application.Mapping.Base;
-using AutoMapper;
-using Domain.Entities;
+using CoreService.Contracts.Lessons;
 using MediatR;
+using SharedKernel.Application.Commands;
 
 namespace Application.Commands.CreateCommands
 {
-    public sealed class CreateLessonCommand : ICommand<Unit>, IMapWith<Lesson>
-    {
-        public string Name { get; set; }
-
-        public int? GroupID { get; set; }
-
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<CreateLessonCommand, Lesson>()
-                .ForMember(lessondto => lessondto.Name,
-                    entity => entity.MapFrom(lessondto => lessondto.Name))
-                .ForMember(lessondto => lessondto.GroupID,
-                    entity => entity.MapFrom(lessondto => lessondto.GroupID));
-        }
-    }
+    public sealed record CreateLessonCommand(CreateLessonRequest Data) : ICommand<Unit>;
 }

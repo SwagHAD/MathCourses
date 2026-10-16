@@ -1,10 +1,7 @@
-﻿using SharedKernel.Application.Commands;
-using Application.Responses;
+using AuthService.Contracts.Auth;
+using SharedKernel.Application.Commands;
 
 namespace Application.Commands.Auth
 {
-    public sealed record LogoutCommand : ICommand<LogoutResponse>
-    {
-        public string RefreshToken { get; set; } = null!;
-    }
+    public sealed record LogoutCommand(LogoutRequest Data) : ICommand<LogoutResponse>;
 }

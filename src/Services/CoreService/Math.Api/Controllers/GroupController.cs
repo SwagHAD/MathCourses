@@ -1,54 +1,65 @@
-﻿using Application.Commands.CreateCommands;
+using Application.Commands.CreateCommands;
 using Application.Commands.DeleteCommands;
 using Application.Commands.UpdateCommands;
 using Application.Queries.DefaultQueries;
-using Application.Responses;
-using SharedKernel.Attributes;
+using CoreService.Contracts;
+using CoreService.Contracts.Groups;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel.Application.Pagination;
+using SharedKernel.Attributes;
+using SharedKernel.Contracts.Pagination;
 using SharedKernel.Enums;
 
 namespace Math.Api.Controllers
 {
     [Authorize]
-    [Route("api/core")]
+    [Route(MathRoutes.Prefix)]
     public sealed class GroupController(IMediator mediator) : ControllerBase
     {
-        [HttpPost("CreateGroup")]
+        [HttpGet(MathRoutes.Groups.Get)]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
+        public async Task<ActionResult<GroupDetailsResponse>> GetGroup([FromQuery] GetGroupQuery query, CancellationToken cancellationToken)
+        {
+            return await mediator.Send(query, cancellationToken);
+        }
+
+        [HttpGet(MathRoutes.Groups.GetPage)]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
+        public async Task<ActionResult<PageResult<GroupResponse>>> GetGroups([FromQuery] PageRequest<GroupFilter> request,
+            CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new PaginationQuery<GroupFilter, GroupResponse>(request), cancellationToken);
+        }
+
+        [HttpGet(MathRoutes.Groups.Count)]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
+        public async Task<ActionResult<int>> GetCountOfGroups(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new GetCountOfGroupsQuery(), cancellationToken);
+        }
+
+        [HttpPost(MathRoutes.Groups.Create)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Create)]
-        public async Task<ActionResult> CreateGroup(CreateGroupCommand createGroup)
+        public async Task<ActionResult> CreateGroup([FromBody] CreateGroupRequest request, CancellationToken cancellationToken)
         {
-            return Ok(await mediator.Send(createGroup));
+            return Ok(await mediator.Send(new CreateGroupCommand(request), cancellationToken));
         }
 
-        [HttpDelete("DeleteGroup")]
-        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Delete)]
-        public async Task<ActionResult> DeleteStudent(DeleteGroupCommand deletegroupDto)
-        {
-            return  Ok(await mediator.Send(deletegroupDto));
-        }
-
-        [HttpGet("GetGroup")]
-        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
-        public async Task<ActionResult<GroupResponse>> GetGroup(GetGroupQuery getGroupCommand)
-        {
-            return await mediator.Send(getGroupCommand);
-        }
-
-        [HttpPut("UpdateGroup")]
+        [HttpPut(MathRoutes.Groups.Update)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Update)]
-        public async Task<ActionResult> UpdateGroup(UpdateGroupCommand updateGroupCommand)
+        public async Task<ActionResult> UpdateGroup([FromBody] UpdateGroupRequest request, CancellationToken cancellationToken)
         {
-            return Ok(await mediator.Send(updateGroupCommand));
+            return Ok(await mediator.Send(new UpdateGroupCommand(request), cancellationToken));
         }
 
-        [HttpGet("GetCountOfGroups")]
-        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
-        public async Task<ActionResult<int>> GetCountOfGroups(GetCountOfGroupsQuery getCountOfGroupsQuery)
+        [HttpDelete(MathRoutes.Groups.Delete)]
+        [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Delete)]
+        public async Task<ActionResult> DeleteGroup([FromQuery] DeleteGroupCommand command, CancellationToken cancellationToken)
         {
-            return await mediator.Send(getCountOfGroupsQuery);
+            return Ok(await mediator.Send(command, cancellationToken));
         }
     }
 }

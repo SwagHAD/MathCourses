@@ -1,5 +1,5 @@
 using Application.Queries.DefaultQueries;
-using Application.Responses;
+using CoreService.Contracts.Students;
 using SharedKernel.Tools;
 using Domain.Entities;
 using SharedKernel.Exceptions;
@@ -9,11 +9,11 @@ using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.GetHandlers
 {
-    public sealed class GetStudentHandler(ISwagDbContext swagDbContext) : IRequestHandler<GetStudentQuery, DefaultStudentResponse>
+    public sealed class GetStudentHandler(ISwagDbContext swagDbContext) : IRequestHandler<GetStudentQuery, StudentResponse>
     {
-        public async Task<DefaultStudentResponse> Handle(GetStudentQuery request, CancellationToken cancellationToken)
+        public async Task<StudentResponse> Handle(GetStudentQuery request, CancellationToken cancellationToken)
         {
-            return await swagDbContext.Set<Student>().AsNoTracking().Where(f => f.ID == request.Id).Select(s => new DefaultStudentResponse
+            return await swagDbContext.Set<Student>().AsNoTracking().Where(f => f.ID == request.Id).Select(s => new StudentResponse
             {
                 Id = s.ID,
                 Name = s.Name,

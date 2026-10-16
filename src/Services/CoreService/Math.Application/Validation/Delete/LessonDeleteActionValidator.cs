@@ -10,7 +10,7 @@ namespace Application.Validation.Delete
     {
         public LessonDeleteActionValidator() 
         {
-            RuleFor(f => f.ID)
+            RuleFor(f => f.Id)
                 .GreaterThan(0)
                 .WithMessage("Индификатор должен быть больше 0");
         }

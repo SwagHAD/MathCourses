@@ -7,8 +7,8 @@ namespace Application.Validators.Create
     {
         public CreateUserValidator() 
         {
-            RuleFor(c => c.Login).NotEmpty().WithMessage("Логин не может быть пустым");
-            RuleFor(c => c.Password).NotEmpty().WithMessage("Пароль не может быть пустым");
+            RuleFor(c => c.Data.Login).NotEmpty().WithMessage("Логин не может быть пустым");
+            RuleFor(c => c.Data.Password).NotEmpty().WithMessage("Пароль не может быть пустым");
         }
     }
 }

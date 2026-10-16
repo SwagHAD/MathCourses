@@ -1,5 +1,5 @@
 using Application.Queries.DefaultQueries;
-using Application.Responses.DefaultResponses;
+using AuthService.Contracts.Users;
 using Domain.Entities;
 using SharedKernel.Exceptions;
 using MediatR;
@@ -17,7 +17,7 @@ namespace Application.Handlers.Select
                 {
                     Id = x.Id,
                     Login = x.Login,
-                    Role = x.RoleId ?? 0
+                    RoleId = x.RoleId
                 })
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(nameof(User), request.Id);
         }

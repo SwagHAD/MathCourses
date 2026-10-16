@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- HTTP-контракты StreamingService. Без зависимостей — подключается Blazor-клиентом. -->
+
+  <PropertyGroup>
+    <RootNamespace>StreamingService.Contracts</RootNamespace>
+  </PropertyGroup>
+
+</Project>

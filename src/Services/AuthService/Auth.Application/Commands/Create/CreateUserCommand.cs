@@ -1,11 +1,7 @@
-﻿using SharedKernel.Application.Commands;
+using AuthService.Contracts.Users;
+using SharedKernel.Application.Commands;
 
 namespace Application.Commands.Create
 {
-    public sealed record CreateUserCommand : ICommand<int>
-    {
-        public string Login { get; init; } = null!;
-        public string Password { get; init; } = null!;
-        public int RoleId { get; init; }
-    }
+    public sealed record CreateUserCommand(CreateUserRequest Data) : ICommand<int>;
 }

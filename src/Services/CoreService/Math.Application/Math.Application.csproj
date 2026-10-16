@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Math.Contracts\Math.Contracts.csproj" />
     <ProjectReference Include="..\Math.Domain\Math.Domain.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure.Events\Infrastructure.Events.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.Application\SharedKernel.Application.csproj" />

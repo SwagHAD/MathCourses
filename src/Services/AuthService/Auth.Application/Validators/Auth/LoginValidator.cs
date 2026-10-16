@@ -7,9 +7,9 @@ namespace Application.Validators.Auth
     {
         public LoginValidator()
         {
-            RuleFor(x => x.Login)
+            RuleFor(x => x.Data.Login)
                 .NotEmpty().WithMessage("Логин не может быть пустым.");
-            RuleFor(x => x.Password)
+            RuleFor(x => x.Data.Password)
                 .NotEmpty().WithMessage("Пароль обязателен.");
         }
     }

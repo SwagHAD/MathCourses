@@ -1,0 +1,23 @@
+@page "/groups"
+@using CoreService.Contracts.Groups
+@inject CoreApi CoreApi
+
+<PageTitle>Группы</PageTitle>
+
+<h1 class="h3 mb-3">Группы</h1>
+
+<PagedTable TItem="GroupResponse" Load="LoadAsync">
+    <Header>
+        <th style="width: 100px;">ID</th>
+        <th>Название</th>
+    </Header>
+    <Row Context="group">
+        <td>@group.Id</td>
+        <td>@group.Name</td>
+    </Row>
+</PagedTable>
+
+@code {
+    private Task<PageResult<GroupResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
+        CoreApi.GetGroupsAsync(new PageRequest<GroupFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+}

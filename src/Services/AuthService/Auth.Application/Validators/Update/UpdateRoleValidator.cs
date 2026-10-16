@@ -7,13 +7,13 @@ namespace Application.Validators.Update
     {
         public UpdateRoleValidator()
         {
-            RuleFor(c => c.Id)
+            RuleFor(c => c.Data.Id)
                 .GreaterThan(0)
                 .WithMessage("Id должен быть больше 0");
-            RuleFor(c => c.Name)
+            RuleFor(c => c.Data.Name)
                 .NotEmpty()
                 .WithMessage("Название не может быть пустым");
-            RuleFor(c => c.PermissionIds)
+            RuleFor(c => c.Data.PermissionIds)
                 .NotEmpty()
                 .WithMessage("Доступы не могут быть пустыми");
         }

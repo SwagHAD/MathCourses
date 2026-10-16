@@ -7,7 +7,7 @@ namespace Application.Validation.Delete
     {
         public StudentDeleteActionValidator()
         {
-            RuleFor(f => f.ID)
+            RuleFor(f => f.Id)
                 .GreaterThan(0).WithMessage("Идентификатор должен быть больше 0");
         }
     }

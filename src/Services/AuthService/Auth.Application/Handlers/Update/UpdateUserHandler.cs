@@ -1,8 +1,9 @@
 using Application.Commands.Update;
-using Application.Responses.DefaultResponses;
+using AuthService.Contracts.Users;
 using Domain.Entities;
 using SharedKernel.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Enums;
 using SharedKernel.Interfaces;
@@ -10,16 +11,19 @@ using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Update
 {
-    public sealed class UpdateUserHandler(ISwagDbContext DbContext, IPermissionCache permissionCache) : IRequestHandler<UpdateUserCommand, UserResponse>
+    public sealed class UpdateUserHandler(ISwagDbContext DbContext, IPermissionCache permissionCache,
+        IPasswordHasher<User> passwordHasher) : IRequestHandler<UpdateUserCommand, UserResponse>
     {
         public async Task<UserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var user = await DbContext.Set<User>()
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(nameof(User), request.Id);
+                .FirstOrDefaultAsync(x => x.Id == request.Data.Id, cancellationToken) ?? throw new NotFoundException(nameof(User), request.Data.Id);
 
-            user.Login = request.Login;
-            user.PasswordHash = request.PasswordHash;
-            user.RoleId = request.RoleId;
+            user.Login = request.Data.Login;
+            // Раньше сюда записывалась строка от клиента как есть — после этого вход ломался
+            if (!string.IsNullOrEmpty(request.Data.Password))
+                user.PasswordHash = passwordHasher.HashPassword(user, request.Data.Password);
+            user.RoleId = request.Data.RoleId;
 
             await DbContext.SaveChangesAsync(cancellationToken);
             var permissions = await DbContext.Set<User>().AsNoTracking()
@@ -34,7 +38,7 @@ namespace Application.Handlers.Update
             {
                 Id = user.Id,
                 Login = user.Login,
-                Role = request.RoleId
+                RoleId = request.Data.RoleId
             };
         }
     }

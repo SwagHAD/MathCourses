@@ -7,15 +7,16 @@ namespace Application.Validators.Update
     {
         public UpdateUserValidator()
         {
-            RuleFor(c => c.Id)
+            RuleFor(c => c.Data.Id)
                 .NotEmpty()
                 .WithMessage("Id не может быть пустым");
-            RuleFor(c => c.Login)
+            RuleFor(c => c.Data.Login)
                 .NotEmpty()
                 .WithMessage("Логин не может быть пустым");
-            RuleFor(c => c.PasswordHash)
-                .NotEmpty()
-                .WithMessage("Пароль не может быть пустым");
+            RuleFor(c => c.Data.Password)
+                .MinimumLength(3)
+                .When(c => c.Data.Password is not null)
+                .WithMessage("Пароль слишком короткий");
         }
     }
 }

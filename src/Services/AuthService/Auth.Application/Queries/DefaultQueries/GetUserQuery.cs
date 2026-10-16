@@ -1,4 +1,4 @@
-using Application.Responses.DefaultResponses;
+using AuthService.Contracts.Users;
 using SharedKernel.Application.Queries;
 
 namespace Application.Queries.DefaultQueries

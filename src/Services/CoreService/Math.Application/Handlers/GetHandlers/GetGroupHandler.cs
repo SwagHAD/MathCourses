@@ -1,5 +1,7 @@
 using Application.Queries.DefaultQueries;
-using Application.Responses;
+using CoreService.Contracts.Groups;
+using CoreService.Contracts.Students;
+using CoreService.Contracts.Teachers;
 using SharedKernel.Tools;
 using Domain.Entities;
 using SharedKernel.Exceptions;
@@ -9,21 +11,21 @@ using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.GetHandlers
 {
-    public sealed class GetGroupHandler(ISwagDbContext swagDbContext) : IRequestHandler<GetGroupQuery, GroupResponse>
+    public sealed class GetGroupHandler(ISwagDbContext swagDbContext) : IRequestHandler<GetGroupQuery, GroupDetailsResponse>
     {
-        public async Task<GroupResponse> Handle(GetGroupQuery request, CancellationToken cancellationToken)
+        public async Task<GroupDetailsResponse> Handle(GetGroupQuery request, CancellationToken cancellationToken)
         {
             return await swagDbContext.Set<Group>().AsNoTracking().Where(f => f.ID == request.Id)
-                .Select(s => new GroupResponse
+                .Select(s => new GroupDetailsResponse
                 {
                     Id = s.ID,
                     Name = s.Name,
-                    Students = s.StudentGroups.Select(f => new DefaultStudentResponse
+                    Students = s.StudentGroups.Select(f => new StudentResponse
                     {
                         Id = f.StudentRef.ID,
                         Name = f.StudentRef.Name
                     }).ToArray(),
-                    Teachers = s.TeacherGroups.Select(f => new DefaultTeacherResponse
+                    Teachers = s.TeacherGroups.Select(f => new TeacherResponse
                     {
                         Id = f.TeacherRef.ID,
                         Name = f.TeacherRef.Name

@@ -1,0 +1,25 @@
+@* Неавторизованных отправляет на вход с возвратом; вошедшим без нужной роли показывает отказ *@
+@inject NavigationManager Navigation
+
+@if (_forbidden)
+{
+    <div class="alert alert-warning m-4">Недостаточно прав для просмотра этой страницы.</div>
+}
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; } = null!;
+
+    private bool _forbidden;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationState;
+        if (state.User.Identity?.IsAuthenticated == true)
+        {
+            _forbidden = true;
+            return;
+        }
+        var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+        Navigation.NavigateTo($"login?returnUrl={Uri.EscapeDataString(returnUrl)}", replace: true);
+    }
+}

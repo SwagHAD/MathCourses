@@ -1,6 +1,6 @@
 ﻿using Application.Commands.Auth;
 using Application.Interfaces;
-using Application.Responses;
+using AuthService.Contracts.Auth;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -18,17 +18,17 @@ namespace Application.Handlers.Auth
         ISwagDbContext authDbContext,
         IPasswordHasher<User> passwordHasher,
         IPermissionCache permissionCache)
-        : IRequestHandler<LoginCommand, LoginResponse>
+        : IRequestHandler<LoginCommand, TokenResponse>
     {
-        public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<TokenResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await authDbContext.Set<User>().AsNoTracking()
                 .Include(u => u.RoleRef)
-                .FirstOrDefaultAsync(u => u.Login == request.Login, cancellationToken);
+                .FirstOrDefaultAsync(u => u.Login == request.Data.Login, cancellationToken);
             if(user is null)
                 throw new UnauthorizedAccessException("Неправильный логин или пароль");
 
-            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
+            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Data.Password);
             if (result is PasswordVerificationResult.Failed)
                 throw new UnauthorizedAccessException("Неправильный логин или пароль");
 
@@ -53,7 +53,7 @@ namespace Application.Handlers.Auth
             await authDbContext.Set<RefreshTokenSession>().AddAsync(session, cancellationToken);
             await authDbContext.SaveChangesAsync();
             await permissionCache.SetUserPermissionsAsync(user.Id, permissions, cancellationToken);
-            return new LoginResponse
+            return new TokenResponse
             {
                 AccessToken = accessToken,
                 RefreshToken = rawRefreshToken,

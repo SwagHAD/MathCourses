@@ -1,11 +1,7 @@
-﻿using SharedKernel.Application.Commands;
-using Application.Responses;
+using AuthService.Contracts.Auth;
+using SharedKernel.Application.Commands;
 
 namespace Application.Commands.Auth
 {
-    public sealed record LoginCommand : ICommand<LoginResponse>
-    {
-        public string Login { get; set; } = null!;
-        public string Password { get; set; } = null!;
-    }
+    public sealed record LoginCommand(LoginRequest Data) : ICommand<TokenResponse>;
 }

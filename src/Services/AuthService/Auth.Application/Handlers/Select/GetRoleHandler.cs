@@ -1,5 +1,5 @@
 using Application.Queries.DefaultQueries;
-using Application.Responses.DefaultResponses;
+using AuthService.Contracts.Roles;
 using Domain.Entities;
 using SharedKernel.Exceptions;
 using MediatR;

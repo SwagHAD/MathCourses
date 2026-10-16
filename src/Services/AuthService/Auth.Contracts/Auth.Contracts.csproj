@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- HTTP-контракты AuthService: запросы, ответы, фильтры, маршруты.
+       Без EF, MediatR и Domain — подключается Blazor-клиентом. -->
+
+  <PropertyGroup>
+    <RootNamespace>AuthService.Contracts</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.Contracts\SharedKernel.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

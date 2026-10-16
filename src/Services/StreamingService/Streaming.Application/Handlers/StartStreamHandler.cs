@@ -2,7 +2,7 @@
 using MediatR;
 using StreamingService.Application.Commands;
 using StreamingService.Application.Contracts;
-using StreamingService.Application.Responses;
+using StreamingService.Contracts.Streams;
 using StreamingService.Domain.Entities;
 using StreamingService.Domain.Enums;
 using SharedKernel.Interfaces;
@@ -30,11 +30,12 @@ namespace StreamingService.Application.Handlers
 
             //await publishEndpoint.Publish(new StreamStartedEvent(session.LessonId, mediaServerClient.GetHlsPlaybackUrl(session.StreamPath)), cancellationToken);
             await streamDbContext.SaveChangesAsync(cancellationToken);
-            return new StartStreamResponse(
-                whipPublishUrl: mediaServerClient.GetWhipPublishUrl(session.StreamPath),
-                hlsPlaybackUrl: mediaServerClient.GetHlsPlaybackUrl(session.StreamPath),
-                streamToken: session.StreamToken
-            );
+            return new StartStreamResponse
+            {
+                WhipPublishUrl = mediaServerClient.GetWhipPublishUrl(session.StreamPath),
+                HlsPlaybackUrl = mediaServerClient.GetHlsPlaybackUrl(session.StreamPath),
+                StreamToken = session.StreamToken
+            };
         }
     }
 }

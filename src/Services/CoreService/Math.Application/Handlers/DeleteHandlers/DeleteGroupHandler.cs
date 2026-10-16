@@ -1,5 +1,4 @@
 ﻿using Application.Commands.DeleteCommands;
-using Application.Responses;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +11,9 @@ namespace Application.Handlers.DeleteHandlers
     {
         public async Task<Unit> Handle(DeleteGroupCommand request, CancellationToken cancellationToken)
         {
-            if (await DbContext.Set<Group>().AnyAsync(f => f.ID == request.ID))
+            if (await DbContext.Set<Group>().AnyAsync(f => f.ID == request.Id))
                 throw new ArgumentException(nameof(request));
-            await DbContext.Set<Group>().Where(f => f.ID == request.ID).ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Set<Group>().Where(f => f.ID == request.Id).ExecuteDeleteAsync(cancellationToken);
             return Unit.Value;
         }
     }

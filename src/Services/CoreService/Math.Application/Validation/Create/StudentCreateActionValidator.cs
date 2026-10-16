@@ -7,7 +7,7 @@ namespace Application.Validation.Create
     {
         public StudentCreateActionValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(x => x.Data.Name)
                 .NotEmpty().WithMessage("Имя обязательно")
                 .MaximumLength(100).WithMessage("Имя слишком длинное");
         }

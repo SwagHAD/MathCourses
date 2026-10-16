@@ -1,21 +1,10 @@
-﻿using SharedKernel.Application.Commands;
-using Application.Mapping.Base;
-using Application.Responses;
-using AutoMapper;
-using Domain.Entities;
 using MediatR;
+using SharedKernel.Application.Commands;
 
 namespace Application.Commands.DeleteCommands
 {
-    public sealed class DeleteLessonCommand : ICommand<Unit>, IMapWith<Lesson>
+    public sealed record DeleteLessonCommand : ICommand<Unit>
     {
-        public int ID { get; set; }
-
-        public void Mapping(Profile profile)
-        {
-            profile.CreateMap<DeleteLessonCommand, Lesson>()
-                .ForMember(lesson => lesson.ID,
-                    entity => entity.MapFrom(lessondto => lessondto.ID));
-        }
+        public int Id { get; init; }
     }
 }

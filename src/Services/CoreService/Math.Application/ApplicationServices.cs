@@ -1,5 +1,5 @@
 using Application.Behaviors;
-using Application.Mapping.Base;
+using Application.Mapping;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Application;
 
@@ -16,7 +16,7 @@ namespace Application
         }
         private static void AddMapping(IServiceCollection services)
         {
-            services.AddAutoMapper(ctg => { } ,typeof(AssemblyMappingProfile));
+            services.AddAutoMapper(ctg => { } ,typeof(RequestMappingProfile));
         }
     }
 }

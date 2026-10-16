@@ -1,0 +1,95 @@
+@page "/login"
+@layout LoginLayout
+@attribute [AllowAnonymous]
+@using System.ComponentModel.DataAnnotations
+@inject AuthSession AuthSession
+@inject NavigationManager Navigation
+
+<PageTitle>Вход</PageTitle>
+
+<div class="card shadow-sm w-100" style="max-width: 400px;">
+    <div class="card-body p-4">
+        <h1 class="h4 mb-4 text-center">Вход</h1>
+
+        <EditForm Model="_model" OnValidSubmit="SubmitAsync" FormName="login">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+                <label for="login" class="form-label">Логин</label>
+                <InputText id="login" class="form-control" @bind-Value="_model.Login" autocomplete="username" />
+                <ValidationMessage For="() => _model.Login" />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Пароль</label>
+                <InputText id="password" type="password" class="form-control" @bind-Value="_model.Password" autocomplete="current-password" />
+                <ValidationMessage For="() => _model.Password" />
+            </div>
+
+            @if (_error is not null)
+            {
+                <div class="alert alert-danger py-2" role="alert">@_error</div>
+            }
+
+            <button type="submit" class="btn btn-primary w-100" disabled="@_submitting">
+                @if (_submitting)
+                {
+                    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                }
+                Войти
+            </button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
+    [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; } = null!;
+
+    private readonly LoginModel _model = new();
+    private bool _submitting;
+    private string? _error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await AuthenticationState;
+        if (state.User.Identity?.IsAuthenticated == true)
+            Navigation.NavigateTo(SafeReturnUrl, replace: true);
+    }
+
+    private async Task SubmitAsync()
+    {
+        _submitting = true;
+        _error = null;
+        try
+        {
+            _error = await AuthSession.LoginAsync(_model.Login, _model.Password);
+            if (_error is null)
+                Navigation.NavigateTo(SafeReturnUrl, replace: true);
+        }
+        catch (HttpRequestException)
+        {
+            _error = "Сервер авторизации недоступен";
+        }
+        finally
+        {
+            _submitting = false;
+        }
+    }
+
+    /// <summary>Возвращаем только на относительный адрес внутри приложения, не на чужой сайт.</summary>
+    private string SafeReturnUrl =>
+        !string.IsNullOrEmpty(ReturnUrl) && Uri.TryCreate(ReturnUrl, UriKind.Relative, out _) && !ReturnUrl.StartsWith("//")
+            && !ReturnUrl.StartsWith("login", StringComparison.OrdinalIgnoreCase)
+            ? ReturnUrl
+            : "";
+
+    private sealed class LoginModel
+    {
+        [Required(ErrorMessage = "Введите логин")]
+        public string Login { get; set; } = "";
+
+        [Required(ErrorMessage = "Введите пароль")]
+        public string Password { get; set; } = "";
+    }
+}

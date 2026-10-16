@@ -1,5 +1,4 @@
 ﻿using Application.Commands.CreateCommands;
-using Application.Responses;
 using AutoMapper;
 using Domain.Entities;
 using Infrastructure.Events;
@@ -13,7 +12,7 @@ namespace Application.Handlers.CreateHandlers
     {
         public async Task<Unit> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
-            var student = Mapper.Map<Student>(request);
+            var student = Mapper.Map<Student>(request.Data);
             await DbContext.Set<Student>().AddAsync(student, cancellationToken);
             await DbContext.SaveChangesAsync(cancellationToken);
 
@@ -24,9 +23,9 @@ namespace Application.Handlers.CreateHandlers
                 Payload = JsonSerializer.Serialize(new StudentCreationRequestedEvent
                 {
                     StudentId = student.ID,
-                    Login = request.Login,
-                    Password = request.Password,
-                    RoleId = request.Role
+                    Login = request.Data.Login,
+                    Password = request.Data.Password,
+                    RoleId = request.Data.RoleId
                 })
             };
             await DbContext.Set<OutboxMessage>().AddAsync(outboxMessage, cancellationToken);

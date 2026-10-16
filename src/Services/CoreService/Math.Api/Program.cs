@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5246", "https://localhost:7284")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -34,6 +34,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 app.UseHttpsRedirection();
+// CORS до аутентификации и проверки доступов, иначе preflight (OPTIONS) отбивается 401
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSharedKernel();
@@ -43,7 +45,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowFrontend");
 app.MapControllers();
 await GeneralConfiguration.MigrateAsync(app.Services);
 await app.RunAsync();

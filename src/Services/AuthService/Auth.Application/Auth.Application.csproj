@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Auth.Contracts\Auth.Contracts.csproj" />
     <ProjectReference Include="..\Auth.Domain\Auth.Domain.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure.Events\Infrastructure.Events.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel.Application\SharedKernel.Application.csproj" />

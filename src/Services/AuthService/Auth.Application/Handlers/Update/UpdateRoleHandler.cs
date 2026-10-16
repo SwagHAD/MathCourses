@@ -1,5 +1,5 @@
 using Application.Commands.Update;
-using Application.Responses.DefaultResponses;
+using AuthService.Contracts.Roles;
 using Domain.Entities;
 using SharedKernel.Exceptions;
 using MediatR;
@@ -16,9 +16,9 @@ namespace Application.Handlers.Update
         {
             var role = await DbContext.Set<Role>()
                 .Include(x => x.RolePermissions)
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Role), request.Id);
-            role.Name = request.Name;
-            role.RolePermissions = request.PermissionIds
+                .FirstOrDefaultAsync(x => x.Id == request.Data.Id, cancellationToken) ?? throw new NotFoundException(nameof(Role), request.Data.Id);
+            role.Name = request.Data.Name;
+            role.RolePermissions = request.Data.PermissionIds
                 .Select(permissionId => new RolePermission
                 {
                     RoleId = role.Id,
@@ -46,7 +46,7 @@ namespace Application.Handlers.Update
             {
                 Id = role.Id,
                 Name = role.Name,
-                PermissionIds = request.PermissionIds.ToArray()
+                PermissionIds = request.Data.PermissionIds.ToArray()
             };
         }
     }

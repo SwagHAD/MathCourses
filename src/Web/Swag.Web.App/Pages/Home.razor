@@ -1,0 +1,16 @@
+@page "/"
+
+<PageTitle>Главная</PageTitle>
+
+<h1 class="h3 mb-3">Главная</h1>
+
+<AuthorizeView>
+    <p>Вы вошли как <strong>@context.User.Identity?.Name</strong>.</p>
+</AuthorizeView>
+
+<div class="list-group" style="max-width: 400px;">
+    <a class="list-group-item list-group-item-action" href="students">Студенты</a>
+    <a class="list-group-item list-group-item-action" href="teachers">Преподаватели</a>
+    <a class="list-group-item list-group-item-action" href="groups">Группы</a>
+    <a class="list-group-item list-group-item-action" href="courses">Направления</a>
+</div>

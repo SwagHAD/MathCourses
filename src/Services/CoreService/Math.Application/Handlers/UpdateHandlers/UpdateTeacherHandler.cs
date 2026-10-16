@@ -14,9 +14,9 @@ namespace Application.Handlers.UpdateHandlers
     {
         public async Task<Unit> Handle(UpdateTeacherCommand request, CancellationToken cancellationToken)
         {
-            var teacher = await DbContext.Set<Teacher>().FirstOrDefaultAsync(f => f.ID == request.ID, cancellationToken) 
-                ?? throw new NotFoundException(typeof(Teacher).GetDescription(), request.ID);
-            Mapper.Map(request, teacher);
+            var teacher = await DbContext.Set<Teacher>().FirstOrDefaultAsync(f => f.ID == request.Data.Id, cancellationToken) 
+                ?? throw new NotFoundException(typeof(Teacher).GetDescription(), request.Data.Id);
+            Mapper.Map(request.Data, teacher);
             await DbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }

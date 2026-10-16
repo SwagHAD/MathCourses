@@ -1,6 +1,6 @@
 ﻿using Application.Commands.Auth;
 using Application.Interfaces;
-using Application.Responses;
+using AuthService.Contracts.Auth;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +10,11 @@ using SharedKernel.Application.Interfaces;
 
 namespace Application.Handlers.Auth
 {
-    public sealed class RefreshHandler(ISwagDbContext authDbContext, ITokenProvider tokenProvider) : IRequestHandler<RefreshCommand, RefreshResponse>
+    public sealed class RefreshHandler(ISwagDbContext authDbContext, ITokenProvider tokenProvider) : IRequestHandler<RefreshCommand, TokenResponse>
     {
-        public async Task<RefreshResponse> Handle(RefreshCommand request, CancellationToken cancellationToken)
+        public async Task<TokenResponse> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
-            var tokenHash = ComputeHash(request.RefreshToken);
+            var tokenHash = ComputeHash(request.Data.RefreshToken);
             var session = await authDbContext.Set<RefreshTokenSession>()
             .FirstOrDefaultAsync(s =>
                 s.TokenHash == tokenHash &&
@@ -39,7 +39,7 @@ namespace Application.Handlers.Auth
             var userType = await authDbContext.Set<User>().Where(f => f.Id == session.UserId)
                 .Select(f => f.RoleRef.UserType)
                 .FirstOrDefaultAsync(cancellationToken);
-            return new RefreshResponse
+            return new TokenResponse
             {
                 AccessToken = tokenProvider.GenerateAccessToken(session.UserId ?? 0, userType),
                 RefreshToken = newRawRefreshToken

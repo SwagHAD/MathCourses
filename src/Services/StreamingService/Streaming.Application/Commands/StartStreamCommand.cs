@@ -1,5 +1,5 @@
 ﻿using SharedKernel.Application.Commands;
-using StreamingService.Application.Responses;
+using StreamingService.Contracts.Streams;
 
 namespace StreamingService.Application.Commands
 {
