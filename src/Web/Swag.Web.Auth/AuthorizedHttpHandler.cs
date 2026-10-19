@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using Swag.Web.Auth.Interfaces;
 
 namespace Swag.Web.Auth
 {
@@ -8,7 +9,7 @@ namespace Swag.Web.Auth
     /// Если обновить не удалось, отдаёт исходный 401: состояние уже сброшено,
     /// и AuthorizeRouteView сам отправит на страницу входа.
     /// </summary>
-    public sealed class AuthorizedHttpHandler(AuthSession authSession) : DelegatingHandler
+    public sealed class AuthorizedHttpHandler(IAuthSession authSession) : DelegatingHandler
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

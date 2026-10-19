@@ -16,17 +16,17 @@ using SharedKernel.Enums;
 namespace Math.Api.Controllers
 {
     [Authorize]
-    [Route(MathRoutes.Prefix)]
+    [Route(CoreRoutes.Prefix)]
     public sealed class StudentController(IMediator mediator) : ControllerBase
     {
-        [HttpGet(MathRoutes.Students.Get)]
+        [HttpGet(CoreRoutes.Students.Get)]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Read)]
         public async Task<ActionResult<StudentResponse>> GetStudent([FromQuery] GetStudentQuery query, CancellationToken cancellationToken)
         {
             return await mediator.Send(query, cancellationToken);
         }
 
-        [HttpGet(MathRoutes.Students.GetPage)]
+        [HttpGet(CoreRoutes.Students.GetPage)]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Read)]
         public async Task<ActionResult<PageResult<StudentResponse>>> GetStudents([FromQuery] PageRequest<StudentFilter> request,
             CancellationToken cancellationToken)
@@ -34,28 +34,28 @@ namespace Math.Api.Controllers
             return await mediator.Send(new PaginationQuery<StudentFilter, StudentResponse>(request), cancellationToken);
         }
 
-        [HttpGet(MathRoutes.Students.Count)]
+        [HttpGet(CoreRoutes.Students.Count)]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Read)]
         public async Task<ActionResult<int>> GetCountOfStudents(CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetCountOfStudentsQuery(), cancellationToken);
         }
 
-        [HttpPost(MathRoutes.Students.Create)]
+        [HttpPost(CoreRoutes.Students.Create)]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Create)]
         public async Task<ActionResult> CreateStudent([FromBody] CreateStudentRequest request, CancellationToken cancellationToken)
         {
             return Ok(await mediator.Send(new CreateStudentCommand(request), cancellationToken));
         }
 
-        [HttpPut(MathRoutes.Students.Update)]
+        [HttpPut(CoreRoutes.Students.Update)]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Update)]
         public async Task<ActionResult> UpdateStudent([FromBody] UpdateStudentRequest request, CancellationToken cancellationToken)
         {
             return Ok(await mediator.Send(new UpdateStudentCommand(request), cancellationToken));
         }
 
-        [HttpDelete(MathRoutes.Students.Delete)]
+        [HttpDelete(CoreRoutes.Students.Delete)]
         [Permission(ObjectTypeName = nameof(Student), ActionType = ActionType.Delete)]
         public async Task<ActionResult> DeleteStudent([FromQuery] DeleteStudentCommand command, CancellationToken cancellationToken)
         {

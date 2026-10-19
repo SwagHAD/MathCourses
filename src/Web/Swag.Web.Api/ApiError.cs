@@ -27,6 +27,9 @@ namespace Swag.Web.Api
 
         public static string Describe(Exception exception) => exception switch
         {
+            // Текст от сервера (например, ошибки валидации) понятнее общего; на 401/403 оставляем свою формулировку
+            ApiException { StatusCode: not (HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden) } api
+                when !string.IsNullOrWhiteSpace(api.Message) => api.Message,
             HttpRequestException { StatusCode: { } status } => Describe(status),
             HttpRequestException => "Сервер недоступен",
             _ => exception.Message

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
+using Swag.Web.Auth.Interfaces;
 
 namespace Swag.Web.Auth
 {
@@ -7,7 +8,7 @@ namespace Swag.Web.Auth
     /// Токены в localStorage: переживают перезагрузку страницы и общие для вкладок.
     /// Читаем каждый раз из хранилища, чтобы вкладка видела токены, обновлённые соседней вкладкой.
     /// </summary>
-    public sealed class TokenStorage(IJSRuntime js)
+    internal sealed class TokenStorage(IJSRuntime js) : ITokenStorage
     {
         private const string Key = "swag.auth";
 

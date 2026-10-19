@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Swag.Web.Auth.Interfaces;
 
 namespace Swag.Web.Auth
 {
@@ -12,10 +13,10 @@ namespace Swag.Web.Auth
         /// </summary>
         public static IServiceCollection AddWebAuth(this IServiceCollection services)
         {
-            services.AddSingleton<TokenStorage>();
+            services.AddSingleton<ITokenStorage, TokenStorage>();
             services.AddSingleton<JwtAuthenticationStateProvider>();
             services.AddSingleton<AuthenticationStateProvider>(sp => sp.GetRequiredService<JwtAuthenticationStateProvider>());
-            services.AddSingleton<AuthSession>();
+            services.AddSingleton<IAuthSession, AuthSession>();
             services.AddTransient<AuthorizedHttpHandler>();
             services.AddAuthorizationCore();
             services.AddCascadingAuthenticationState();

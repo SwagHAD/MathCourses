@@ -1,6 +1,6 @@
 @page "/groups"
 @using CoreService.Contracts.Groups
-@inject CoreApi CoreApi
+@inject IGroupService GroupService
 
 <PageTitle>Группы</PageTitle>
 
@@ -19,5 +19,5 @@
 
 @code {
     private Task<PageResult<GroupResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
-        CoreApi.GetGroupsAsync(new PageRequest<GroupFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+        GroupService.GetItemsAsync(new PageRequest<GroupFilter> { Page = page, PageSize = pageSize }, cancellationToken);
 }

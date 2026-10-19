@@ -1,7 +1,7 @@
 namespace CoreService.Contracts
 {
     /// <summary>Маршруты CoreService: контроллеры используют их в атрибутах, клиент — для URL.</summary>
-    public static class MathRoutes
+    public static class CoreRoutes
     {
         public const string Prefix = "api/core";
 

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
+using Swag.Web.Auth.Interfaces;
 
 namespace Swag.Web.Auth
 {
@@ -7,7 +8,7 @@ namespace Swag.Web.Auth
     /// Пользователь считается вошедшим, пока есть пара токенов. Протухший access-токен не разлогинивает:
     /// его обновит <see cref="AuthorizedHttpHandler"/> при первом же запросе.
     /// </summary>
-    public sealed class JwtAuthenticationStateProvider(TokenStorage storage) : AuthenticationStateProvider
+    internal sealed class JwtAuthenticationStateProvider(ITokenStorage storage) : AuthenticationStateProvider
     {
         private static readonly AuthenticationState Anonymous = new(new ClaimsPrincipal(new ClaimsIdentity()));
 

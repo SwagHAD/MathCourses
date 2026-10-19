@@ -1,8 +1,8 @@
 using System.Net;
-using System.Net.Http.Json;
-using AuthService.Contracts;
 using AuthService.Contracts.Auth;
 using Swag.Web.Api;
+using Swag.Web.Api.Services.Interfaces;
+using Swag.Web.Auth.Interfaces;
 
 namespace Swag.Web.Auth
 {
@@ -10,29 +10,32 @@ namespace Swag.Web.Auth
     /// Вход, выход и обновление пары токенов.
     /// Refresh-токен на сервере одноразовый (при обновлении старый отзывается), поэтому обновление
     /// идёт строго по одному: параллельные запросы, получившие 401, ждут первого и берут его результат.
-    /// Регистрируется синглтоном — IHttpClientFactory создаёт обработчики в своём scope.
+    /// Синглтон: блокировка и уведомления о входе общие на всё приложение. Держит typed-клиент
+    /// <see cref="IAuthApi"/> всё время жизни — в WASM ротация обработчиков HttpClient не нужна.
     /// </summary>
-    public sealed class AuthSession(IHttpClientFactory httpClientFactory, TokenStorage storage,
-        JwtAuthenticationStateProvider stateProvider)
+    internal sealed class AuthSession(IAuthApi authApi, ITokenStorage storage,
+        JwtAuthenticationStateProvider stateProvider) : IAuthSession
     {
         /// <summary>Обновляем заранее, чтобы токен не истёк, пока запрос идёт до сервера.</summary>
         private static readonly TimeSpan RefreshBeforeExpiry = TimeSpan.FromSeconds(30);
         private readonly SemaphoreSlim _refreshLock = new(1, 1);
 
-        /// <returns>null при успехе, иначе текст ошибки.</returns>
         public async Task<string?> LoginAsync(string login, string password, CancellationToken cancellationToken = default)
         {
-            var client = httpClientFactory.CreateClient(HttpClients.AuthAnonymous);
-            using var response = await client.PostAsJsonAsync(AuthRoutes.Url(AuthRoutes.Auth.Login),
-                new LoginRequest { Login = login, Password = password }, cancellationToken);
-            if (!response.IsSuccessStatusCode)
-                return response.StatusCode == HttpStatusCode.Unauthorized
-                    ? "Неверный логин или пароль"
-                    : await ApiError.ReadAsync(response, cancellationToken);
-
-            var tokens = await response.Content.ReadFromJsonAsync<TokenResponse>(cancellationToken);
-            await SaveAsync(ToStored(tokens!, login));
-            return null;
+            try
+            {
+                var tokens = await authApi.LoginAsync(new LoginRequest { Login = login, Password = password }, cancellationToken);
+                await SaveAsync(ToStored(tokens, login));
+                return null;
+            }
+            catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return "Неверный логин или пароль";
+            }
+            catch (ApiException ex)
+            {
+                return ApiError.Describe(ex);
+            }
         }
 
         public async Task LogoutAsync(CancellationToken cancellationToken = default)
@@ -42,20 +45,19 @@ namespace Swag.Web.Auth
             {
                 try
                 {
-                    // Через клиент с токеном: logout на сервере требует авторизации
-                    var client = httpClientFactory.CreateClient(HttpClients.Auth);
-                    using var _ = await client.PostAsJsonAsync(AuthRoutes.Url(AuthRoutes.Auth.Logout),
-                        new LogoutRequest { RefreshToken = tokens.RefreshToken }, cancellationToken);
+                    // Logout на сервере требует авторизации — берём действующий, при необходимости обновлённый токен
+                    var accessToken = await GetAccessTokenAsync(cancellationToken);
+                    var current = await storage.GetAsync() ?? tokens;
+                    await authApi.LogoutAsync(new LogoutRequest { RefreshToken = current.RefreshToken }, accessToken, cancellationToken);
                 }
                 catch (HttpRequestException)
                 {
-                    // Сервер недоступен — всё равно выходим локально
+                    // Сервер недоступен или сессия уже отозвана — всё равно выходим локально
                 }
             }
             await ClearAsync();
         }
 
-        /// <summary>Действующий access-токен; если он вот-вот истечёт — сначала обновляет.</summary>
         public async Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default)
         {
             var tokens = await storage.GetAsync();
@@ -66,11 +68,6 @@ namespace Swag.Web.Auth
             return await RefreshAsync(tokens.AccessToken, cancellationToken);
         }
 
-        /// <summary>
-        /// Обновляет пару токенов, если текущий access-токен всё ещё <paramref name="staleAccessToken"/>.
-        /// Если его уже обновил другой запрос, просто возвращает новый.
-        /// </summary>
-        /// <returns>Новый access-токен или null, если сессия закончилась и нужно войти заново.</returns>
         public async Task<string?> RefreshAsync(string staleAccessToken, CancellationToken cancellationToken = default)
         {
             await _refreshLock.WaitAsync(cancellationToken);
@@ -82,22 +79,22 @@ namespace Swag.Web.Auth
                 if (tokens.AccessToken != staleAccessToken)
                     return tokens.AccessToken;
 
-                var client = httpClientFactory.CreateClient(HttpClients.AuthAnonymous);
-                using var response = await client.PostAsJsonAsync(AuthRoutes.Url(AuthRoutes.Auth.Refresh),
-                    new RefreshTokenRequest { RefreshToken = tokens.RefreshToken }, cancellationToken);
-
-                if (response.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest)
+                TokenResponse refreshed;
+                try
                 {
-                    // Refresh-токен отозван или истёк — сессии больше нет
+                    refreshed = await authApi.RefreshAsync(new RefreshTokenRequest { RefreshToken = tokens.RefreshToken },
+                        cancellationToken);
+                }
+                catch (ApiException ex) when (ex.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.BadRequest)
+                {
+                    // Refresh-токен отозван или истёк — сессии больше нет.
+                    // Сбой сервера или сети не повод разлогинивать: такие ошибки уходят вызывающему.
                     await ClearAsync();
                     return null;
                 }
-                // Сбой сервера или сети не повод разлогинивать: токены сохраняем, ошибка уйдёт вызывающему
-                response.EnsureSuccessStatusCode();
 
-                var refreshed = await response.Content.ReadFromJsonAsync<TokenResponse>(cancellationToken);
-                await SaveAsync(ToStored(refreshed!, tokens.Login));
-                return refreshed!.AccessToken;
+                await SaveAsync(ToStored(refreshed, tokens.Login));
+                return refreshed.AccessToken;
             }
             finally
             {

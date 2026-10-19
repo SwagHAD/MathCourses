@@ -11,12 +11,4 @@ namespace Swag.Web.Api
         public string AuthBaseUrl { get; set; } = null!;
         public string CoreBaseUrl { get; set; } = null!;
     }
-
-    public static class HttpClients
-    {
-        /// <summary>Без токена и без обработчика — только для login/refresh, чтобы refresh не зациклился.</summary>
-        public const string AuthAnonymous = "auth-anonymous";
-        public const string Auth = "auth";
-        public const string Core = "core";
-    }
 }

@@ -1,6 +1,6 @@
 @page "/courses"
 @using CoreService.Contracts.Courses
-@inject CoreApi CoreApi
+@inject ICourseService CourseService
 
 <PageTitle>Направления</PageTitle>
 
@@ -19,5 +19,5 @@
 
 @code {
     private Task<PageResult<CourseResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
-        CoreApi.GetCoursesAsync(new PageRequest<CourseFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+        CourseService.GetItemsAsync(new PageRequest<CourseFilter> { Page = page, PageSize = pageSize }, cancellationToken);
 }

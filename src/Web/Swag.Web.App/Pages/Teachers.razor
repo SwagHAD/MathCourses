@@ -1,6 +1,6 @@
 @page "/teachers"
 @using CoreService.Contracts.Teachers
-@inject CoreApi CoreApi
+@inject ITeacherService TeacherService
 
 <PageTitle>Преподаватели</PageTitle>
 
@@ -19,5 +19,5 @@
 
 @code {
     private Task<PageResult<TeacherResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
-        CoreApi.GetTeachersAsync(new PageRequest<TeacherFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+        TeacherService.GetItemsAsync(new PageRequest<TeacherFilter> { Page = page, PageSize = pageSize }, cancellationToken);
 }

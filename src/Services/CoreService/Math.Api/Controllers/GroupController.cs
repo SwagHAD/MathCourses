@@ -16,17 +16,17 @@ using SharedKernel.Enums;
 namespace Math.Api.Controllers
 {
     [Authorize]
-    [Route(MathRoutes.Prefix)]
+    [Route(CoreRoutes.Prefix)]
     public sealed class GroupController(IMediator mediator) : ControllerBase
     {
-        [HttpGet(MathRoutes.Groups.Get)]
+        [HttpGet(CoreRoutes.Groups.Get)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
         public async Task<ActionResult<GroupDetailsResponse>> GetGroup([FromQuery] GetGroupQuery query, CancellationToken cancellationToken)
         {
             return await mediator.Send(query, cancellationToken);
         }
 
-        [HttpGet(MathRoutes.Groups.GetPage)]
+        [HttpGet(CoreRoutes.Groups.GetPage)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
         public async Task<ActionResult<PageResult<GroupResponse>>> GetGroups([FromQuery] PageRequest<GroupFilter> request,
             CancellationToken cancellationToken)
@@ -34,28 +34,28 @@ namespace Math.Api.Controllers
             return await mediator.Send(new PaginationQuery<GroupFilter, GroupResponse>(request), cancellationToken);
         }
 
-        [HttpGet(MathRoutes.Groups.Count)]
+        [HttpGet(CoreRoutes.Groups.Count)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Read)]
         public async Task<ActionResult<int>> GetCountOfGroups(CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetCountOfGroupsQuery(), cancellationToken);
         }
 
-        [HttpPost(MathRoutes.Groups.Create)]
+        [HttpPost(CoreRoutes.Groups.Create)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Create)]
         public async Task<ActionResult> CreateGroup([FromBody] CreateGroupRequest request, CancellationToken cancellationToken)
         {
             return Ok(await mediator.Send(new CreateGroupCommand(request), cancellationToken));
         }
 
-        [HttpPut(MathRoutes.Groups.Update)]
+        [HttpPut(CoreRoutes.Groups.Update)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Update)]
         public async Task<ActionResult> UpdateGroup([FromBody] UpdateGroupRequest request, CancellationToken cancellationToken)
         {
             return Ok(await mediator.Send(new UpdateGroupCommand(request), cancellationToken));
         }
 
-        [HttpDelete(MathRoutes.Groups.Delete)]
+        [HttpDelete(CoreRoutes.Groups.Delete)]
         [Permission(ObjectTypeName = nameof(Group), ActionType = ActionType.Delete)]
         public async Task<ActionResult> DeleteGroup([FromQuery] DeleteGroupCommand command, CancellationToken cancellationToken)
         {

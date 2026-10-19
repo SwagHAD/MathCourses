@@ -1,6 +1,6 @@
 @page "/students"
 @using CoreService.Contracts.Students
-@inject CoreApi CoreApi
+@inject IStudentService StudentService
 
 <PageTitle>Студенты</PageTitle>
 
@@ -19,5 +19,5 @@
 
 @code {
     private Task<PageResult<StudentResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
-        CoreApi.GetStudentsAsync(new PageRequest<StudentFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+        StudentService.GetItemsAsync(new PageRequest<StudentFilter> { Page = page, PageSize = pageSize }, cancellationToken);
 }
