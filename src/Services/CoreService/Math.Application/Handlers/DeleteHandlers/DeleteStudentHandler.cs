@@ -12,9 +12,9 @@ namespace Application.Handlers.DeleteHandlers
     {
         public async Task<Unit> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
         {
-            if(!await DbContext.Set<Student>().AnyAsync(f => f.ID == request.Id))
+            if(!await DbContext.Set<Student>().AnyAsync(f => f.StudentId == request.Id))
                 throw new NotFoundException(nameof(Student), request.Id);
-            await DbContext.Set<Student>().Where(f => f.ID == request.Id).ExecuteDeleteAsync(cancellationToken);
+            await DbContext.Set<Person>().Where(f => f.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
             return Unit.Value;
         }
     }

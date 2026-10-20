@@ -4,20 +4,40 @@
 
 <PageTitle>Студенты</PageTitle>
 
-<h1 class="h3 mb-3">Студенты</h1>
+<MudText Typo="Typo.h4" HtmlTag="h1" GutterBottom="true">Студенты</MudText>
 
-<PagedTable TItem="StudentResponse" Load="LoadAsync">
+<PagedTable @ref="_table" TItem="StudentResponse" Load="LoadAsync">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField T="string" Value="_search" ValueChanged="SearchAsync" DebounceInterval="400" Clearable="true"
+                      Placeholder="Поиск по имени" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                      Class="mt-0" Style="max-width: 320px;" />
+    </ToolBarContent>
     <Header>
-        <th style="width: 100px;">ID</th>
-        <th>Имя</th>
+        <MudTh Style="width: 100px;">ID</MudTh>
+        <MudTh>Имя</MudTh>
     </Header>
     <Row Context="student">
-        <td>@student.Id</td>
-        <td>@student.Name</td>
+        <MudTd DataLabel="ID">@student.Id</MudTd>
+        <MudTd DataLabel="Имя">@student.Name</MudTd>
     </Row>
 </PagedTable>
 
 @code {
+    private PagedTable<StudentResponse> _table = null!;
+    private string? _search;
+
     private Task<PageResult<StudentResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
-        StudentService.GetItemsAsync(new PageRequest<StudentFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+        StudentService.GetItemsAsync(new PageRequest<StudentFilter>
+        {
+            Page = page,
+            PageSize = pageSize,
+            Filter = new StudentFilter { Name = _search }
+        }, cancellationToken);
+
+    private async Task SearchAsync(string? value)
+    {
+        _search = value;
+        await _table.ReloadAsync(resetPage: true);
+    }
 }

@@ -9,11 +9,8 @@ namespace Infrastructure.Persistence
         public void Configure(EntityTypeBuilder<Teacher> builder)
         {
             builder.ToTable("Teachers");
-            builder.HasKey(t => t.ID);
-            builder.Property(t => t.Name)
-                .IsRequired().HasMaxLength(100);
-            builder.HasIndex(t => t.UserId)
-                .IsUnique();
+            builder.HasKey(t => t.TeacherId);
+            builder.HasOne(t => t.PersonRef).WithOne();
         }
     }
 }

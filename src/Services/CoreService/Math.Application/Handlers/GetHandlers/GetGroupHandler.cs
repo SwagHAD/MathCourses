@@ -22,13 +22,13 @@ namespace Application.Handlers.GetHandlers
                     Name = s.Name,
                     Students = s.StudentGroups.Select(f => new StudentResponse
                     {
-                        Id = f.StudentRef.ID,
-                        Name = f.StudentRef.Name
+                        Id = f.StudentRef.StudentId,
+                        Name = f.StudentRef.PersonRef.Name
                     }).ToArray(),
                     Teachers = s.TeacherGroups.Select(f => new TeacherResponse
                     {
-                        Id = f.TeacherRef.ID,
-                        Name = f.TeacherRef.Name
+                        Id = f.TeacherRef.TeacherId,
+                        Name = f.TeacherRef.PersonRef.Name
                     }).ToArray()
                 }).FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(typeof(Group).GetDescription(), request.Id);
         }

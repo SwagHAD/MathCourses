@@ -4,20 +4,40 @@
 
 <PageTitle>Группы</PageTitle>
 
-<h1 class="h3 mb-3">Группы</h1>
+<MudText Typo="Typo.h4" HtmlTag="h1" GutterBottom="true">Группы</MudText>
 
-<PagedTable TItem="GroupResponse" Load="LoadAsync">
+<PagedTable @ref="_table" TItem="GroupResponse" Load="LoadAsync">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField T="string" Value="_search" ValueChanged="SearchAsync" DebounceInterval="400" Clearable="true"
+                      Placeholder="Поиск по названию" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                      Class="mt-0" Style="max-width: 320px;" />
+    </ToolBarContent>
     <Header>
-        <th style="width: 100px;">ID</th>
-        <th>Название</th>
+        <MudTh Style="width: 100px;">ID</MudTh>
+        <MudTh>Название</MudTh>
     </Header>
     <Row Context="group">
-        <td>@group.Id</td>
-        <td>@group.Name</td>
+        <MudTd DataLabel="ID">@group.Id</MudTd>
+        <MudTd DataLabel="Название">@group.Name</MudTd>
     </Row>
 </PagedTable>
 
 @code {
+    private PagedTable<GroupResponse> _table = null!;
+    private string? _search;
+
     private Task<PageResult<GroupResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
-        GroupService.GetItemsAsync(new PageRequest<GroupFilter> { Page = page, PageSize = pageSize }, cancellationToken);
+        GroupService.GetItemsAsync(new PageRequest<GroupFilter>
+        {
+            Page = page,
+            PageSize = pageSize,
+            Filter = new GroupFilter { Name = _search }
+        }, cancellationToken);
+
+    private async Task SearchAsync(string? value)
+    {
+        _search = value;
+        await _table.ReloadAsync(resetPage: true);
+    }
 }

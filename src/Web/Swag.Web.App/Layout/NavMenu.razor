@@ -1,45 +1,7 @@
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Swag</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Главная
-            </NavLink>
-        </div>
-        @foreach (var link in Links)
-        {
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="@link.Href">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> @link.Title
-                </NavLink>
-            </div>
-        }
-    </nav>
-</div>
-
-@code {
-    private static readonly (string Href, string Title)[] Links =
-    [
-        ("students", "Студенты"),
-        ("teachers", "Преподаватели"),
-        ("groups", "Группы"),
-        ("courses", "Направления"),
-    ];
-
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Главная</MudNavLink>
+    @foreach (var section in AppSections.All)
     {
-        collapseNavMenu = !collapseNavMenu;
+        <MudNavLink Href="@section.Href" Icon="@section.Icon">@section.Title</MudNavLink>
     }
-}
+</MudNavMenu>

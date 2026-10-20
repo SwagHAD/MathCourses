@@ -2,15 +2,25 @@
 
 <PageTitle>Главная</PageTitle>
 
-<h1 class="h3 mb-3">Главная</h1>
+<MudText Typo="Typo.h4" HtmlTag="h1" GutterBottom="true">Главная</MudText>
 
 <AuthorizeView>
-    <p>Вы вошли как <strong>@context.User.Identity?.Name</strong>.</p>
+    <MudText Class="mb-6">Вы вошли как <b>@context.User.Identity?.Name</b>.</MudText>
 </AuthorizeView>
 
-<div class="list-group" style="max-width: 400px;">
-    <a class="list-group-item list-group-item-action" href="students">Студенты</a>
-    <a class="list-group-item list-group-item-action" href="teachers">Преподаватели</a>
-    <a class="list-group-item list-group-item-action" href="groups">Группы</a>
-    <a class="list-group-item list-group-item-action" href="courses">Направления</a>
-</div>
+<MudGrid>
+    @foreach (var section in AppSections.All)
+    {
+        <MudItem xs="12" sm="6" md="3">
+            <MudCard Elevation="1">
+                <MudCardContent Class="d-flex flex-column align-center pa-6">
+                    <MudIcon Icon="@section.Icon" Color="Color.Primary" Size="Size.Large" />
+                    <MudText Typo="Typo.h6" Class="mt-2">@section.Title</MudText>
+                </MudCardContent>
+                <MudCardActions Class="justify-center">
+                    <MudButton Href="@section.Href" Variant="Variant.Text" Color="Color.Primary">Открыть</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>

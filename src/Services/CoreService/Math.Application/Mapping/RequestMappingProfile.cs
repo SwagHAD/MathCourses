@@ -29,11 +29,11 @@ namespace Application.Mapping
             // Login/Password/RoleId уходят в AuthService событием, в сущность не попадают
             CreateMap<CreateStudentRequest, Student>();
             CreateMap<UpdateStudentRequest, Student>()
-                .ForMember(student => student.ID, opt => opt.MapFrom(request => request.Id));
+                .ForMember(student => student.StudentId, opt => opt.MapFrom(request => request.Id));
 
             CreateMap<CreateTeacherRequest, Teacher>();
             CreateMap<UpdateTeacherRequest, Teacher>()
-                .ForMember(teacher => teacher.ID, opt => opt.MapFrom(request => request.Id));
+                .ForMember(teacher => teacher.TeacherId, opt => opt.MapFrom(request => request.Id));
 
             CreateMap<CreateGroupRequest, Group>()
                 .ForMember(group => group.CourseID, opt => opt.MapFrom(request => request.CourseId))

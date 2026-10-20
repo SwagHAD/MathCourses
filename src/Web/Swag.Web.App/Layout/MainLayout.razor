@@ -2,31 +2,39 @@
 @inject IAuthSession AuthSession
 @inject NavigationManager Navigation
 
-<div class="page">
-    <div class="sidebar">
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                       OnClick="() => _drawerOpen = !_drawerOpen" aria-label="Меню" />
+        <MudText Typo="Typo.h6" Class="ml-2">Swag</MudText>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudText Class="mr-2">@context.User.Identity?.Name</MudText>
+                <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Inherit" Class="mr-3">
+                    @RoleNames.Describe(context.User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)
+                </MudChip>
+                <MudButton Variant="Variant.Outlined" Color="Color.Inherit" StartIcon="@Icons.Material.Filled.Logout"
+                           OnClick="LogoutAsync" Disabled="_loggingOut">
+                    Выйти
+                </MudButton>
+            </Authorized>
+        </AuthorizeView>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Variant="DrawerVariant.Responsive" Elevation="1">
         <NavMenu />
-    </div>
+    </MudDrawer>
 
-    <main>
-        <div class="top-row px-4">
-            <AuthorizeView>
-                <Authorized>
-                    <span class="me-3">
-                        @context.User.Identity?.Name
-                        <span class="text-muted small">(@RoleNames.Describe(context.User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value))</span>
-                    </span>
-                    <button class="btn btn-sm btn-outline-secondary" @onclick="LogoutAsync" disabled="@_loggingOut">Выйти</button>
-                </Authorized>
-            </AuthorizeView>
-        </div>
-
-        <article class="content px-4">
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
 @code {
+    private bool _drawerOpen = true;
     private bool _loggingOut;
 
     private async Task LogoutAsync()

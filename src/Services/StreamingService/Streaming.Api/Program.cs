@@ -15,7 +15,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// В разработке без редиректа на https — иначе запросы с фронта падают с CORS-ошибкой (см. Math.Api)
+if (!app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();

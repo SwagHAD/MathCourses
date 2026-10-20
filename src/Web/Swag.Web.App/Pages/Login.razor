@@ -7,40 +7,42 @@
 
 <PageTitle>Вход</PageTitle>
 
-<div class="card shadow-sm w-100" style="max-width: 400px;">
-    <div class="card-body p-4">
-        <h1 class="h4 mb-4 text-center">Вход</h1>
+<MudCard Elevation="3" Style="width: 100%; max-width: 400px;">
+    <MudCardContent Class="pa-6">
+        <div class="d-flex flex-column align-center mb-4">
+            <MudIcon Icon="@Icons.Material.Filled.Lock" Color="Color.Primary" Size="Size.Large" />
+            <MudText Typo="Typo.h5" HtmlTag="h1" Class="mt-2">Вход</MudText>
+        </div>
 
         <EditForm Model="_model" OnValidSubmit="SubmitAsync" FormName="login">
             <DataAnnotationsValidator />
 
-            <div class="mb-3">
-                <label for="login" class="form-label">Логин</label>
-                <InputText id="login" class="form-control" @bind-Value="_model.Login" autocomplete="username" />
-                <ValidationMessage For="() => _model.Login" />
-            </div>
+            <MudTextField @bind-Value="_model.Login" For="@(() => _model.Login)" Label="Логин"
+                          Variant="Variant.Outlined" AutoFocus="true" Class="mb-3" />
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Пароль</label>
-                <InputText id="password" type="password" class="form-control" @bind-Value="_model.Password" autocomplete="current-password" />
-                <ValidationMessage For="() => _model.Password" />
-            </div>
+            <MudTextField @bind-Value="_model.Password" For="@(() => _model.Password)" Label="Пароль"
+                          Variant="Variant.Outlined" InputType="@(_showPassword ? InputType.Text : InputType.Password)"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@(_showPassword ? Icons.Material.Filled.VisibilityOff : Icons.Material.Filled.Visibility)"
+                          AdornmentAriaLabel="Показать пароль" OnAdornmentClick="() => _showPassword = !_showPassword"
+                          Class="mb-3" />
 
             @if (_error is not null)
             {
-                <div class="alert alert-danger py-2" role="alert">@_error</div>
+                <MudAlert Severity="Severity.Error" Dense="true" Class="mb-3">@_error</MudAlert>
             }
 
-            <button type="submit" class="btn btn-primary w-100" disabled="@_submitting">
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                       FullWidth="true" Size="Size.Large" Disabled="_submitting">
                 @if (_submitting)
                 {
-                    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
                 }
                 Войти
-            </button>
+            </MudButton>
         </EditForm>
-    </div>
-</div>
+    </MudCardContent>
+</MudCard>
 
 @code {
     [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
@@ -48,6 +50,7 @@
 
     private readonly LoginModel _model = new();
     private bool _submitting;
+    private bool _showPassword;
     private string? _error;
 
     protected override async Task OnInitializedAsync()

@@ -1,134 +1,86 @@
 @typeparam TItem
 @using SharedKernel.Contracts.Pagination
 @using Swag.Web.Api
-@implements IDisposable
 
-<div class="d-flex justify-content-between align-items-center mb-2">
-    <span class="text-muted">Всего: @_totalCount</span>
-    <div class="d-flex align-items-center gap-2">
-        <label class="text-muted small" for="page-size">На странице</label>
-        <select id="page-size" class="form-select form-select-sm w-auto" value="@_pageSize" @onchange="OnPageSizeChanged">
-            @foreach (var size in PageSizes)
-            {
-                <option value="@size">@size</option>
-            }
-        </select>
-    </div>
-</div>
+@* Таблица с серверной пагинацией на MudTable: номер страницы и размер приходят из пейджера *@
 
 @if (_error is not null)
 {
-    <div class="alert alert-danger d-flex justify-content-between align-items-center">
-        <span>@_error</span>
-        <button class="btn btn-sm btn-outline-danger" @onclick="LoadAsync">Повторить</button>
-    </div>
+    <MudAlert Severity="Severity.Error" Class="mb-3">
+        <div class="d-flex align-center gap-2">
+            <span>@_error</span>
+            <MudButton Variant="Variant.Text" Color="Color.Error" Size="Size.Small" OnClick="() => ReloadAsync()">Повторить</MudButton>
+        </div>
+    </MudAlert>
 }
 
-<table class="table table-striped table-hover align-middle">
-    <thead>
-        <tr>@Header</tr>
-    </thead>
-    <tbody>
-        @if (_loading)
-        {
-            <tr><td colspan="100" class="text-center text-muted py-4">Загрузка…</td></tr>
-        }
-        else if (_items.Count == 0)
-        {
-            <tr><td colspan="100" class="text-center text-muted py-4">Нет данных</td></tr>
-        }
-        else
-        {
-            @foreach (var item in _items)
-            {
-                <tr>@Row(item)</tr>
-            }
-        }
-    </tbody>
-</table>
-
-<Pager Page="_page" TotalPages="TotalPages" PageChanged="OnPageChanged" />
+<MudTable @ref="_table" T="TItem" ServerData="LoadServerDataAsync" RowsPerPage="PageSize"
+          Hover="true" Striped="true" Elevation="1" LoadingProgressColor="Color.Primary"
+          ToolBarContent="ToolBarContent" HeaderContent="Header" RowTemplate="Row">
+    <NoRecordsContent>
+        <MudText Color="Color.Secondary">Нет данных</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText Color="Color.Secondary">Загрузка…</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="PageSizes" RowsPerPageString="На странице:"
+                       InfoFormat="{first_item}–{last_item} из {all_items}" />
+    </PagerContent>
+</MudTable>
 
 @code {
     private static readonly int[] PageSizes = [10, 20, 50];
 
     /// <summary>Загрузка страницы: номер с 1, размер, токен отмены.</summary>
     [Parameter, EditorRequired] public Func<int, int, CancellationToken, Task<PageResult<TItem>>> Load { get; set; } = null!;
+    /// <summary>Заголовки колонок — <c>MudTh</c>.</summary>
     [Parameter, EditorRequired] public RenderFragment Header { get; set; } = null!;
+    /// <summary>Ячейки строки — <c>MudTd</c>.</summary>
     [Parameter, EditorRequired] public RenderFragment<TItem> Row { get; set; } = null!;
+    /// <summary>Панель над таблицей: поиск, фильтры, кнопки.</summary>
+    [Parameter] public RenderFragment? ToolBarContent { get; set; }
     [Parameter] public int PageSize { get; set; } = 10;
 
-    private IReadOnlyList<TItem> _items = [];
-    private int _totalCount;
-    private int _page = 1;
-    private int _pageSize;
-    private bool _loading;
+    private MudTable<TItem> _table = null!;
     private string? _error;
-    private CancellationTokenSource? _loadCts;
 
-    private int TotalPages => Math.Max(1, (int)Math.Ceiling(_totalCount / (double)_pageSize));
-
-    protected override async Task OnInitializedAsync()
+    /// <summary>
+    /// Перечитать данные. <paramref name="resetPage"/> — вернуться на первую страницу,
+    /// например после смены фильтра: на текущей странице новой выборки может уже не быть.
+    /// </summary>
+    public async Task ReloadAsync(bool resetPage = false)
     {
-        _pageSize = PageSize;
-        await LoadAsync();
+        if (resetPage && _table.CurrentPage != 0)
+            _table.NavigateTo(0);
+        await _table.ReloadServerData();
     }
 
-    /// <summary>Перечитать текущую страницу — например, после создания или удаления записи.</summary>
-    public Task ReloadAsync() => LoadAsync();
-
-    private async Task OnPageChanged(int page)
+    private async Task<TableData<TItem>> LoadServerDataAsync(TableState state, CancellationToken cancellationToken)
     {
-        _page = page;
-        await LoadAsync();
-    }
-
-    private async Task OnPageSizeChanged(ChangeEventArgs e)
-    {
-        _pageSize = int.Parse(e.Value!.ToString()!);
-        _page = 1;
-        await LoadAsync();
-    }
-
-    private async Task LoadAsync()
-    {
-        // Быстрые переключения страниц: отменяем предыдущую загрузку, чтобы старый ответ не перетёр новый
-        _loadCts?.Cancel();
-        _loadCts?.Dispose();
-        var cts = _loadCts = new CancellationTokenSource();
-
-        _loading = true;
-        _error = null;
         try
         {
-            var result = await Load(_page, _pageSize, cts.Token);
-            _items = result.Items;
-            _totalCount = result.TotalCount;
-
-            // Страница могла опустеть (например, удалили последние записи) — уходим на последнюю существующую
-            if (_items.Count == 0 && _page > TotalPages)
-            {
-                _page = TotalPages;
-                await LoadAsync();
-                return;
-            }
+            var result = await Load(state.Page + 1, state.PageSize, cancellationToken);
+            SetError(null);
+            return new TableData<TItem> { Items = result.Items, TotalItems = result.TotalCount };
         }
-        catch (OperationCanceledException) when (cts.IsCancellationRequested)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
-            return;
+            // MudTable отменяет предыдущую загрузку при быстром переключении — это не ошибка
+            return new TableData<TItem> { Items = [], TotalItems = 0 };
         }
         catch (Exception ex)
         {
-            _items = [];
-            _error = ApiError.Describe(ex);
+            SetError(ApiError.Describe(ex));
+            return new TableData<TItem> { Items = [], TotalItems = 0 };
         }
-        if (!cts.IsCancellationRequested)
-            _loading = false;
     }
 
-    public void Dispose()
+    private void SetError(string? error)
     {
-        _loadCts?.Cancel();
-        _loadCts?.Dispose();
+        if (_error == error)
+            return;
+        _error = error;
+        StateHasChanged();
     }
 }

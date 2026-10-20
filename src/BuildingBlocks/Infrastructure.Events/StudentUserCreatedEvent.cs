@@ -2,7 +2,7 @@
 {
     public sealed record StudentUserCreatedEvent
     {
-        public int StudentId { get; init; }
+        public int PersonId { get; init; }
         public int UserId { get; init; }
     }
 }

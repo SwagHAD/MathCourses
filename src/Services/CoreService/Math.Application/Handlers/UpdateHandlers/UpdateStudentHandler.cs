@@ -14,7 +14,7 @@ namespace Application.Handlers.UpdateHandlers
     {
         public async Task<Unit> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
         {
-            var student = await DbContext.Set<Student>().FirstOrDefaultAsync(f => f.ID == request.Data.Id, cancellationToken) 
+            var student = await DbContext.Set<Student>().FirstOrDefaultAsync(f => f.StudentId == request.Data.Id, cancellationToken) 
                 ?? throw new NotFoundException(typeof(Student).GetDescription(), request.Data.Id);
             Mapper.Map(request.Data, student);
             await DbContext.SaveChangesAsync(cancellationToken);

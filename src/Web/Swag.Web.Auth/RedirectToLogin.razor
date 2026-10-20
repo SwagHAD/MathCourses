@@ -1,13 +1,23 @@
-@* Неавторизованных отправляет на вход с возвратом; вошедшим без нужной роли показывает отказ *@
+@* Неавторизованных отправляет на вход с возвратом; вошедшим без нужной роли показывает Forbidden *@
 @inject NavigationManager Navigation
 
 @if (_forbidden)
 {
-    <div class="alert alert-warning m-4">Недостаточно прав для просмотра этой страницы.</div>
+    @if (Forbidden is not null)
+    {
+        @Forbidden
+    }
+    else
+    {
+        <p>Недостаточно прав для просмотра этой страницы.</p>
+    }
 }
 
 @code {
     [CascadingParameter] private Task<AuthenticationState> AuthenticationState { get; set; } = null!;
+
+    /// <summary>Что показать вошедшему пользователю без прав. Проект без UI-библиотеки — разметку даёт хост.</summary>
+    [Parameter] public RenderFragment? Forbidden { get; set; }
 
     private bool _forbidden;
 

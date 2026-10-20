@@ -23,7 +23,7 @@ namespace Infrastructure.Messaging.Consumers
 
             await bus.Publish(new TeacherUserCreatedEvent
             {
-                TeacherId = message.TeacherId,
+                PersonId = message.TeacherId,
                 UserId = user.Id
             }, context.CancellationToken);
         }

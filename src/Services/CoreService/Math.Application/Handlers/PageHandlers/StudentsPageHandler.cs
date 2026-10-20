@@ -14,26 +14,26 @@ namespace Application.Handlers.PageHandlers
             if (!string.IsNullOrWhiteSpace(filter.Name))
             {
                 var name = filter.Name.Trim().ToLower();
-                query = query.Where(s => s.Name.ToLower().Contains(name));
+                query = query.Where(s => s.PersonRef.Name.ToLower().Contains(name));
             }
             if (filter.GroupId is int groupId)
                 query = query.Where(s => s.StudentGroups.Any(g => g.GroupID == groupId));
             if (filter.HasUser is bool hasUser)
-                query = query.Where(s => (s.UserId != null) == hasUser);
+                query = query.Where(s => (s.PersonRef.UserId != null) == hasUser);
             return query;
         }
 
         protected override IReadOnlyDictionary<string, Expression<Func<Student, object>>> SortKeys { get; } =
             new Dictionary<string, Expression<Func<Student, object>>>(StringComparer.OrdinalIgnoreCase)
             {
-                ["id"] = s => s.ID,
-                ["name"] = s => s.Name,
+                ["id"] = s => s.StudentId,
+                ["name"] = s => s.PersonRef.Name,
                 ["createdAt"] = s => s.CreatedAt,
             };
 
-        protected override Expression<Func<Student, object>> DefaultSort => s => s.ID;
+        protected override Expression<Func<Student, object>> DefaultSort => s => s.StudentId;
 
         protected override Expression<Func<Student, StudentResponse>> Projection =>
-            s => new StudentResponse { Id = s.ID, Name = s.Name };
+            s => new StudentResponse { Id = s.StudentId, Name = s.PersonRef.Name };
     }
 }

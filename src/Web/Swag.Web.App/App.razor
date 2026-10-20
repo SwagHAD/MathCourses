@@ -1,11 +1,20 @@
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
 <Router AppAssembly="@typeof(App).Assembly" NotFoundPage="typeof(Pages.NotFound)">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <NotAuthorized>
-                <RedirectToLogin />
+                <RedirectToLogin>
+                    <Forbidden>
+                        <MudAlert Severity="Severity.Warning" Class="ma-4">Недостаточно прав для просмотра этой страницы.</MudAlert>
+                    </Forbidden>
+                </RedirectToLogin>
             </NotAuthorized>
             <Authorizing>
-                <p class="p-4 text-muted">Проверка входа…</p>
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
             </Authorizing>
         </AuthorizeRouteView>
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />

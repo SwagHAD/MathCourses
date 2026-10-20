@@ -22,7 +22,7 @@ namespace Application.Handlers.CreateHandlers
                 Type = nameof(StudentCreationRequestedEvent),
                 Payload = JsonSerializer.Serialize(new StudentCreationRequestedEvent
                 {
-                    StudentId = student.ID,
+                    StudentId = student.StudentId,
                     Login = request.Data.Login,
                     Password = request.Data.Password,
                     RoleId = request.Data.RoleId

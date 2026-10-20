@@ -13,10 +13,10 @@ namespace Application.Handlers.GetHandlers
     {
         public async Task<TeacherResponse> Handle(GetTeacherQuery request, CancellationToken cancellationToken)
         {
-            return await swagDbContext.Set<Teacher>().AsNoTracking().Where(f => f.ID == request.Id).Select(s => new TeacherResponse
+            return await swagDbContext.Set<Teacher>().AsNoTracking().Where(f => f.TeacherId == request.Id).Select(s => new TeacherResponse
             {
-                Id = s.ID,
-                Name = s.Name,
+                Id = s.TeacherId,
+                Name = s.PersonRef.Name,
             }).FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(typeof(Teacher).GetDescription(), request.Id);
         }
     }

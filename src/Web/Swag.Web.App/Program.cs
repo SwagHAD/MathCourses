@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using Swag.Web.Api;
 using Swag.Web.App;
 using Swag.Web.Auth;
@@ -11,6 +12,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 var apiOptions = builder.Configuration.GetSection(ApiOptions.SectionName).Get<ApiOptions>()
     ?? throw new InvalidOperationException("В wwwroot/appsettings.json не задана секция Api");
 
+builder.Services.AddMudServices();
 builder.Services.AddWebAuth();
 builder.Services.AddWebApi<AuthorizedHttpHandler>(apiOptions);
 

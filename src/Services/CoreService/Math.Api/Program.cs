@@ -33,9 +33,12 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-app.UseHttpsRedirection();
-// CORS до аутентификации и проверки доступов, иначе preflight (OPTIONS) отбивается 401
+// CORS первым: preflight (OPTIONS) должен получить ответ до редиректов, аутентификации и проверки доступов
 app.UseCors("AllowFrontend");
+// В разработке без редиректа на https: клиент ходит на http-порт, а браузер не следует редиректу
+// на preflight и сбрасывает Authorization при переходе на другой origin — получалась CORS-ошибка
+if (!app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSharedKernel();
