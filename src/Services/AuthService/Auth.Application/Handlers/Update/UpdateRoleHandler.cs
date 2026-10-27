@@ -5,12 +5,12 @@ using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Enums;
-using SharedKernel.Interfaces;
 using SharedKernel.Application.Interfaces;
+using SharedKernel.Cache;
 
 namespace Application.Handlers.Update
 {
-    public sealed class UpdateRoleHandler(ISwagDbContext DbContext, IPermissionCache permissionCache) : IRequestHandler<UpdateRoleCommand, RoleResponse>
+    public sealed class UpdateRoleHandler(ISwagDbContext DbContext, IPermissionCacheService permissionCache) : IRequestHandler<UpdateRoleCommand, RoleResponse>
     {
         public async Task<RoleResponse> Handle(UpdateRoleCommand request, CancellationToken cancellationToken)
         {

@@ -14,12 +14,11 @@ internal sealed class JwtTokenProvider(IOptions<JwtOptions> jwtOptions) : IToken
 {
     private readonly JwtOptions _jwt = jwtOptions.Value;
 
-    public string GenerateAccessToken(int userId, RoleType userType)
+    public string GenerateAccessToken(int userId)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, userId.ToString()),
-            new(ClaimTypes.Role, ((int)userType).ToString()),
         };
 
         var signingCredentials = new SigningCredentials(

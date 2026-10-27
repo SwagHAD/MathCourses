@@ -7,10 +7,11 @@ using System.Text;
 using SharedKernel.Interfaces;
 using SharedKernel.Application.Interfaces;
 using Domain.Entities;
+using SharedKernel.Cache;
 
 namespace Application.Handlers.Auth
 {
-    public sealed class LogoutHandler(ISwagDbContext authDbContext, IPermissionCache permissionCache, IUserProvider userProvider) : IRequestHandler<LogoutCommand, LogoutResponse>
+    public sealed class LogoutHandler(ISwagDbContext authDbContext, IPermissionCacheService permissionCache, IUserProvider userProvider) : IRequestHandler<LogoutCommand, LogoutResponse>
     {
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {

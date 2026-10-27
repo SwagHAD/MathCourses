@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using SharedKernel.Enums;
-using SharedKernel.Interfaces;
 using SharedKernel.Application.Interfaces;
+using SharedKernel.Cache;
 
 namespace Application.Handlers.Auth
 {
@@ -17,7 +17,7 @@ namespace Application.Handlers.Auth
         ITokenProvider tokenProvider,
         ISwagDbContext authDbContext,
         IPasswordHasher<User> passwordHasher,
-        IPermissionCache permissionCache)
+        IPermissionCacheService permissionCache)
         : IRequestHandler<LoginCommand, TokenResponse>
     {
         public async Task<TokenResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ namespace Application.Handlers.Auth
             if (result is PasswordVerificationResult.Failed)
                 throw new UnauthorizedAccessException("Неправильный логин или пароль");
 
-            var accessToken = tokenProvider.GenerateAccessToken(user.Id, user.RoleRef.UserType);
+            var accessToken = tokenProvider.GenerateAccessToken(user.Id);
             var rawRefreshToken = tokenProvider.GenerateRefreshToken();
             var tokenHash = ComputeHash(rawRefreshToken);
             var expiresAt = DateTimeOffset.UtcNow.AddDays(30);

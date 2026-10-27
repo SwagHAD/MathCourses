@@ -4,7 +4,7 @@ namespace Application.Interfaces
 {
     public interface ITokenProvider
     {
-        string GenerateAccessToken(int userId, RoleType userType);
+        string GenerateAccessToken(int userId);
         string GenerateRefreshToken();
     }
 }

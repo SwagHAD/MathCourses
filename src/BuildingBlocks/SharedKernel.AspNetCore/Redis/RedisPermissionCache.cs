@@ -1,18 +1,19 @@
+using SharedKernel.Cache;
 using SharedKernel.Interfaces;
 using StackExchange.Redis;
 
 namespace SharedKernel.AspNetCore.Redis
 {
-    internal sealed class RedisPermissionCache(IConnectionMultiplexer redis) : IPermissionCache
+    internal sealed class RedisPermissionCache(IConnectionMultiplexer redis, IUserProvider userProvider) : IPermissionCacheService
     {
         private readonly IDatabase _db = redis.GetDatabase();
         // Доступы записывает AuthService при логине, остальные сервисы читают по тому же ключу
         private static readonly string KeyPrefix = "auth:permissions:";
         private static readonly TimeSpan Ttl = TimeSpan.FromHours(8);
 
-        public async Task<IReadOnlySet<string>> GetUserPermissionsAsync(int userId, CancellationToken ct = default)
+        public async Task<IReadOnlySet<string>> GetCurrentUserPermissionsAsync(CancellationToken ct = default)
         {
-            var permissions = await _db.SetMembersAsync(KeyPrefix + userId);
+            var permissions = await _db.SetMembersAsync(KeyPrefix + userProvider.GetUserId());
             return permissions.Select(p => p.ToString()).ToHashSet();
         }
 
@@ -35,9 +36,9 @@ namespace SharedKernel.AspNetCore.Redis
             await tran.ExecuteAsync();
         }
 
-        public async Task<bool> HasPermissionAsync(int userId, string permission, CancellationToken ct = default)
+        public async Task<bool> HasPermissionAsync(string permission, CancellationToken ct = default)
         {
-            return await _db.SetContainsAsync(KeyPrefix + userId, permission);
+            return await _db.SetContainsAsync(KeyPrefix + userProvider.GetUserId(), permission);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Domain.Entities
     {
         public int StudentId { get; set; }
         public Person PersonRef { get; set; }
-        public List<StudentGroup> StudentGroups { get; set; } = new();
+        public List<StudentGroup> StudentGroups { get; set; }
     }
 }

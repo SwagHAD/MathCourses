@@ -6,12 +6,12 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Enums;
-using SharedKernel.Interfaces;
 using SharedKernel.Application.Interfaces;
+using SharedKernel.Cache;
 
 namespace Application.Handlers.Update
 {
-    public sealed class UpdateUserHandler(ISwagDbContext DbContext, IPermissionCache permissionCache,
+    public sealed class UpdateUserHandler(ISwagDbContext DbContext, IPermissionCacheService permissionCache,
         IPasswordHasher<User> passwordHasher) : IRequestHandler<UpdateUserCommand, UserResponse>
     {
         public async Task<UserResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)

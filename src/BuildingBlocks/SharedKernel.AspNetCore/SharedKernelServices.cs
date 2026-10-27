@@ -8,6 +8,7 @@ using SharedKernel.AspNetCore.MiddleWares;
 using SharedKernel.AspNetCore.Options;
 using SharedKernel.AspNetCore.Redis;
 using SharedKernel.AspNetCore.UserServices;
+using SharedKernel.Cache;
 using SharedKernel.Enums;
 using SharedKernel.Interfaces;
 using StackExchange.Redis;
@@ -45,13 +46,13 @@ namespace SharedKernel.AspNetCore
             services.AddSingleton<IConnectionMultiplexer>(_ =>
                 ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis") ?? 
                     throw new ArgumentNullException("Redis connection string is not configured")));
-            services.AddSingleton<IPermissionCache, RedisPermissionCache>();
+            services.AddSingleton<IPermissionCacheService, RedisPermissionCache>();
         }
 
         private static void AddUserServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.AddScoped<IUserProvider, UserProvider>();
+            services.AddSingleton<IUserProvider, UserProvider>();
         }
 
         private static void AddAuth(IServiceCollection services, IConfiguration configuration)
