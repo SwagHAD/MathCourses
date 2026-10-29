@@ -53,6 +53,7 @@ namespace Application.Services
         {
             var names = objectTypes.Select(x => x.Name).ToArray();
             var existing = (await dbContext.Set<Permission>()
+                .AsNoTracking()
                 .Where(p => names.Contains(p.ObjectType))
                 .Select(p => new { p.ObjectType, p.ActionType })
                 .ToArrayAsync(cancellationToken))
@@ -60,7 +61,7 @@ namespace Application.Services
                 .ToHashSet();
 
             var adminRoleId = await dbContext.Set<Role>()
-                .Where(r => r.UserType == RoleType.Admin)
+
                 .OrderBy(r => r.Id)
                 .Select(r => (int?)r.Id)
                 .FirstOrDefaultAsync(cancellationToken);

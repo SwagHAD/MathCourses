@@ -5,7 +5,7 @@ using Domain.Enums;
 namespace Domain.Entities;
 
 [Title("Пользователь", Secured = true)]
-public sealed class  User : BaseEntity
+public sealed class User : BaseEntity
 {
     public int Id { get; set; }
     public string Login { get; set; } = null!;

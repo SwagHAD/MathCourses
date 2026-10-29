@@ -30,7 +30,12 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
             .HasMaxLength(20)
             .IsRequired();
 
-        builder.HasIndex(x => new { x.ObjectType, x.ActionType })
+        builder.Property(x => x.ActionType)
+            .HasConversion<string>()
+            .HasMaxLength(20)
+            .IsRequired();
+
+        builder.HasIndex(x => new { x.ObjectType, x.ActionType, x.TypeAcceses })
             .IsUnique();
     }
 }

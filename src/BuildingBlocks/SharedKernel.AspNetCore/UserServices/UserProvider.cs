@@ -15,13 +15,5 @@ namespace SharedKernel.AspNetCore.UserServices
                 throw new UnauthorizedAccessException("User is not authenticated");
             return userId;
         }
-        public RoleType GetRoleType()
-        {
-            var claim = httpContextAccessor.HttpContext?.User
-                .FindFirst(ClaimTypes.Role)?.Value;
-            if (claim is null || !Enum.TryParse<RoleType>(claim, out var roleType))
-                throw new UnauthorizedAccessException("User role is not found");
-            return roleType;
-        }
     }
 }

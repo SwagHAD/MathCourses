@@ -11,6 +11,7 @@ public sealed class Permission : BaseEntity
     public string Name { get; set; } = null!;
     public string ObjectType { get; set; }
     public ActionType ActionType { get; set; }
+    public TypeAcceses TypeAcceses { get; set; }
     public ObjectType ObjectTypeRef { get; set; }
     public List<RolePermission> RolePermissions { get; set; } = [];
 }

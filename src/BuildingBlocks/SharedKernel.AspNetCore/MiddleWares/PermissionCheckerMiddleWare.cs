@@ -4,12 +4,11 @@ using SharedKernel.AspNetCore.Options;
 using SharedKernel.Attributes;
 using SharedKernel.Cache;
 using SharedKernel.Exceptions;
-using SharedKernel.Interfaces;
 using SharedKernel.Tools;
 
 namespace SharedKernel.AspNetCore.MiddleWares
 {
-    public sealed class PermissionCheckerMiddleWare(IUserProvider userProvider, IPermissionCacheService permissionCache,
+    public sealed class PermissionCheckerMiddleWare(IPermissionCacheService permissionCache,
         IOptions<ServiceOptions> serviceOptions) : IMiddleware
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -21,11 +20,9 @@ namespace SharedKernel.AspNetCore.MiddleWares
                 await next(context);
                 return;
             }
-            var requiredPermission = $"{serviceOptions.Value.ServiceType}:{permissionAttr.ObjectTypeName}:{permissionAttr.ActionType}";
+            var requiredPermission = $"{serviceOptions.Value.ServiceType}:{permissionAttr.ObjectTypeName}:{permissionAttr.ActionType}:{permissionAttr.TypeAcceses}";
             var hasPermission = await permissionCache.HasPermissionAsync(requiredPermission, context.RequestAborted);
             if (!hasPermission)
-                throw new PermissionDeniedException(permissionAttr.ObjectTypeName, permissionAttr.ActionType.GetDescription());
-            if (permissionAttr.Roles.Count > 0 && !permissionAttr.Roles.Contains(userProvider.GetRoleType()))
                 throw new PermissionDeniedException(permissionAttr.ObjectTypeName, permissionAttr.ActionType.GetDescription());
             await next(context);
         }

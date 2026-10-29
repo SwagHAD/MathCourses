@@ -11,8 +11,5 @@ internal sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.ToTable("roles");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name).HasMaxLength(128).IsRequired();
-        builder.Property(x => x.NormalizedName).HasMaxLength(128);
-        builder.HasIndex(x => x.NormalizedName).IsUnique();
-        builder.Property(x => x.UserType).IsRequired();
     }
 }

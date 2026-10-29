@@ -11,8 +11,7 @@ namespace Application.Behaviors
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var userId = userProvider.GetUserId();
-            var roleType = userProvider.GetRoleType();
-            if (!await request.CheckResoursePermissionAsync(userId, roleType, swagDbContext, cancellationToken))
+            if (!await request.CheckResoursePermissionAsync(userId, swagDbContext, cancellationToken))
                 throw new UnauthorizedAccessException("У вас нет прав для доступа к этому ресурсу.");
             return await next();
         }

@@ -36,12 +36,9 @@ namespace Application.Handlers.Auth
             };
             await authDbContext.Set<RefreshTokenSession>().AddAsync(newSession, cancellationToken);
             await authDbContext.SaveChangesAsync(cancellationToken);
-            var userType = await authDbContext.Set<User>().Where(f => f.Id == session.UserId)
-                .Select(f => f.RoleRef.UserType)
-                .FirstOrDefaultAsync(cancellationToken);
             return new TokenResponse
             {
-                AccessToken = tokenProvider.GenerateAccessToken(session.UserId ?? 0, userType),
+                AccessToken = tokenProvider.GenerateAccessToken(session.UserId ?? 0),
                 RefreshToken = newRawRefreshToken
             };
         }

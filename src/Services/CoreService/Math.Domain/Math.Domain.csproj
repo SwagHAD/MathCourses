@@ -4,6 +4,10 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="System\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <RootNamespace>Domain</RootNamespace>
   </PropertyGroup>

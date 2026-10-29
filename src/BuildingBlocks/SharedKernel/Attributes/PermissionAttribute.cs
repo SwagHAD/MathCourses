@@ -6,6 +6,6 @@ namespace SharedKernel.Attributes
     {
         public string ObjectTypeName { get; set; } = null!;
         public ActionType ActionType { get; set; }
-        public HashSet<RoleType> Roles { get; set; } = [];
+        public TypeAcceses? TypeAcceses { get; set; }
     }
 }

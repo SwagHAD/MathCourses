@@ -2,15 +2,14 @@ using Auth.Seeds.Options;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Enums;
 using SharedKernel.Application.Interfaces;
 
 namespace Auth.Api.Seeders;
 
 public static class SuperAdminSeeder
 {
-    private static int AdminUserID = 1;
-    private static int AdminRoleID = 1;
+    private static int AdminUserID;
+    private static int AdminRoleID;
     public static async Task SeedAsync(
         ISwagDbContext dbContext,
         SeedOptions seedOptions,
@@ -48,8 +47,7 @@ public static class SuperAdminSeeder
 
         var superAdminRole = new Role
         {
-            Name = "Админ",
-            UserType = RoleType.Admin,
+            Name = "Админ"
         };
         await context.Set<Role>().AddAsync(superAdminRole, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
