@@ -12,10 +12,12 @@ namespace Infrastructure.Persistence
             builder.HasKey(f => f.Id);
             builder.HasOne(f => f.SubmissionRef)
                 .WithMany().HasForeignKey(f => f.SubmissionId).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(f => f.TeacherRef)
-                .WithMany().HasForeignKey(f => f.TeacherId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(f => f.GradedByRef)
+                .WithMany().HasForeignKey(f => f.GradedById).OnDelete(DeleteBehavior.Restrict);
             builder.Property(f => f.Score)
                 .IsRequired();
+            builder.Property(f => f.Comment)
+                .HasMaxLength(2000);
         }
     }
 }

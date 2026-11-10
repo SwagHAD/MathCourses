@@ -24,8 +24,7 @@ namespace Swag.Web.Api
             services.AddAuthorizedClient<IRoleService, RoleService, TAuthHandler>(authUrl);
             services.AddAuthorizedClient<IPermissionService, PermissionService, TAuthHandler>(authUrl);
 
-            services.AddAuthorizedClient<IStudentService, StudentService, TAuthHandler>(coreUrl);
-            services.AddAuthorizedClient<ITeacherService, TeacherService, TAuthHandler>(coreUrl);
+            services.AddAuthorizedClient<IPersonService, PersonService, TAuthHandler>(coreUrl);
             services.AddAuthorizedClient<IGroupService, GroupService, TAuthHandler>(coreUrl);
             services.AddAuthorizedClient<ICourseService, CourseService, TAuthHandler>(coreUrl);
             return services;

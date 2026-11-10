@@ -7,24 +7,24 @@ namespace CoreService.Contracts
 
         public static string Url(string action) => $"{Prefix}/{action}";
 
-        public static class Students
+        public static class Persons
         {
-            public const string Get = "GetStudent";
-            public const string GetPage = "GetStudents";
-            public const string Count = "GetCountOfStudents";
-            public const string Create = "CreateStudent";
-            public const string Update = "UpdateStudent";
-            public const string Delete = "DeleteStudent";
+            public const string Get = "GetPerson";
+            public const string GetPage = "GetPersons";
+            public const string Count = "GetCountOfPersons";
+            public const string Create = "CreatePerson";
+            public const string Update = "UpdatePerson";
+            public const string Delete = "DeletePerson";
         }
 
-        public static class Teachers
+        public static class Lessons
         {
-            public const string Get = "GetTeacher";
-            public const string GetPage = "GetTeachers";
-            public const string Count = "GetCountOfTeachers";
-            public const string Create = "CreateTeacher";
-            public const string Update = "UpdateTeacher";
-            public const string Delete = "DeleteTeacher";
+            public const string Get = "GetLesson";
+            public const string GetPage = "GetLessons";
+            public const string Count = "GetCountOfLessons";
+            public const string Create = "CreateLesson";
+            public const string Update = "UpdateLesson";
+            public const string Delete = "DeleteLesson";
         }
 
         public static class Groups
@@ -35,6 +35,12 @@ namespace CoreService.Contracts
             public const string Create = "CreateGroup";
             public const string Update = "UpdateGroup";
             public const string Delete = "DeleteGroup";
+        }
+
+        public static class Access
+        {
+            /// <summary>Пересобрать выводимые кортежи доступа из доменных таблиц.</summary>
+            public const string Rebuild = "RebuildAccessTuples";
         }
 
         public static class Courses

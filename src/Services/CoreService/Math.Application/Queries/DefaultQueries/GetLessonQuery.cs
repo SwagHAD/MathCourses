@@ -8,6 +8,6 @@ namespace Application.Queries.DefaultQueries
 {
     public sealed record GetLessonQuery : IQuery<LessonResponse>
     {
-        public int Id { get; init; }
+        public long Id { get; init; }
     }
 }

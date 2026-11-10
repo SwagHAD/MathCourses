@@ -1,0 +1,65 @@
+@page "/persons"
+@using CoreService.Contracts.Groups
+@using CoreService.Contracts.Persons
+@inject IPersonService PersonService
+
+<PageTitle>Люди</PageTitle>
+
+<MudText Typo="Typo.h4" HtmlTag="h1" GutterBottom="true">Люди</MudText>
+
+<PagedTable @ref="_table" TItem="PersonResponse" Load="LoadAsync">
+    <ToolBarContent>
+        <MudChipSet T="MembershipKind?" SelectedValue="_kind" SelectedValueChanged="KindChangedAsync"
+                    SelectionMode="SelectionMode.ToggleSelection" Class="mr-4">
+            <MudChip T="MembershipKind?" Value="MembershipKind.Learner" Text="Студенты" />
+            <MudChip T="MembershipKind?" Value="MembershipKind.Instructor" Text="Преподаватели" />
+        </MudChipSet>
+        <MudSpacer />
+        <MudTextField T="string" Value="_search" ValueChanged="SearchAsync" DebounceInterval="400" Clearable="true"
+                      Placeholder="Поиск по ФИО" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                      Class="mt-0" Style="max-width: 320px;" />
+    </ToolBarContent>
+    <Header>
+        <MudTh Style="width: 100px;">ID</MudTh>
+        <MudTh>ФИО</MudTh>
+        <MudTh>Email</MudTh>
+        <MudTh Style="width: 140px;">Учётная запись</MudTh>
+    </Header>
+    <Row Context="person">
+        <MudTd DataLabel="ID">@person.Id</MudTd>
+        <MudTd DataLabel="ФИО">@person.FullName</MudTd>
+        <MudTd DataLabel="Email">@person.Email</MudTd>
+        <MudTd DataLabel="Учётная запись">
+            @if (person.HasUser)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" />
+            }
+        </MudTd>
+    </Row>
+</PagedTable>
+
+@code {
+    private PagedTable<PersonResponse> _table = null!;
+    private string? _search;
+    private MembershipKind? _kind;
+
+    private Task<PageResult<PersonResponse>> LoadAsync(int page, int pageSize, CancellationToken cancellationToken) =>
+        PersonService.GetItemsAsync(new PageRequest<PersonFilter>
+        {
+            Page = page,
+            PageSize = pageSize,
+            Filter = new PersonFilter { Name = _search, Kind = _kind }
+        }, cancellationToken);
+
+    private async Task SearchAsync(string? value)
+    {
+        _search = value;
+        await _table.ReloadAsync(resetPage: true);
+    }
+
+    private async Task KindChangedAsync(MembershipKind? value)
+    {
+        _kind = value;
+        await _table.ReloadAsync(resetPage: true);
+    }
+}

@@ -11,11 +11,15 @@ namespace Infrastructure.Persistence
             builder.ToTable("persons");
             builder.HasKey(f => f.Id);
             builder.Property(f => f.Name)
+                .IsRequired()
                 .HasMaxLength(50);
             builder.Property(f => f.Surname)
                 .HasMaxLength(50);
             builder.Property(f => f.Patronymic)
                 .HasMaxLength(50);
+            builder.Property(f => f.FullName)
+                .IsRequired()
+                .HasMaxLength(160);
             builder.Property(f => f.Email)
                 .HasMaxLength(100);
             builder.Property(f => f.Phone)

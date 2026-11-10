@@ -22,14 +22,14 @@ namespace Application.Handlers.PageHandlers
         protected override IReadOnlyDictionary<string, Expression<Func<Course, object>>> SortKeys { get; } =
             new Dictionary<string, Expression<Func<Course, object>>>(StringComparer.OrdinalIgnoreCase)
             {
-                ["id"] = c => c.ID,
+                ["id"] = c => c.Id,
                 ["name"] = c => c.Name,
                 ["createdAt"] = c => c.CreatedAt,
             };
 
-        protected override Expression<Func<Course, object>> DefaultSort => c => c.ID;
+        protected override Expression<Func<Course, object>> DefaultSort => c => c.Id;
 
         protected override Expression<Func<Course, CourseResponse>> Projection =>
-            c => new CourseResponse { Id = c.ID, Name = c.Name };
+            c => new CourseResponse { Id = c.Id, Name = c.Name, Description = c.Description };
     }
 }

@@ -9,7 +9,7 @@ namespace Swag.Web.Api.Services.Interfaces
     public interface ISelectionService<TItem, TDetails, TFilter>
         where TFilter : class, IQueryFilter, new()
     {
-        Task<TDetails> GetItemAsync(int id, CancellationToken cancellationToken = default);
+        Task<TDetails> GetItemAsync(long id, CancellationToken cancellationToken = default);
         Task<PageResult<TItem>> GetItemsAsync(PageRequest<TFilter> request, CancellationToken cancellationToken = default);
     }
 }

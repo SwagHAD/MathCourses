@@ -9,8 +9,7 @@ namespace Swag.Web.App.Layout
 
         public static readonly IReadOnlyList<Section> All =
         [
-            new("students", "Студенты", Icons.Material.Filled.School),
-            new("teachers", "Преподаватели", Icons.Material.Filled.Person),
+            new("persons", "Люди", Icons.Material.Filled.People),
             new("groups", "Группы", Icons.Material.Filled.Groups),
             new("courses", "Направления", Icons.Material.Filled.MenuBook),
         ];

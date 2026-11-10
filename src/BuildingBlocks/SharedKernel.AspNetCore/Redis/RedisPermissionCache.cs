@@ -1,4 +1,6 @@
+using SharedKernel.Access;
 using SharedKernel.Cache;
+using SharedKernel.Contracts.Access;
 using SharedKernel.Interfaces;
 using StackExchange.Redis;
 
@@ -25,8 +27,12 @@ namespace SharedKernel.AspNetCore.Redis
         public async Task SetUserPermissionsAsync(int userId, IEnumerable<string> permissions, CancellationToken ct = default)
         {
             var values = permissions.Select(p => (RedisValue)p).ToArray();
-            if (!values.Any())
+            if (values.Length == 0)
+            {
+                // Прав не осталось (роль сняли или опустошили) — старые права не должны жить в кэше до истечения TTL
+                await _db.KeyDeleteAsync(KeyPrefix + userId);
                 return;
+            }
 
             var key = KeyPrefix + userId;
             var tran = _db.CreateTransaction();
@@ -39,6 +45,22 @@ namespace SharedKernel.AspNetCore.Redis
         public async Task<bool> HasPermissionAsync(string permission, CancellationToken ct = default)
         {
             return await _db.SetContainsAsync(KeyPrefix + userProvider.GetUserId(), permission);
+        }
+
+        private static readonly AccessScope[] ScopesWidestFirst =
+            Enum.GetValues<AccessScope>().OrderByDescending(scope => scope).ToArray();
+
+        public async Task<AccessScope?> GetScopeAsync(string basePermission, CancellationToken ct = default)
+        {
+            // Один SMISMEMBER на все области вместо отдельного запроса на каждую
+            var keys = ScopesWidestFirst.Select(scope => (RedisValue)PermissionKey.WithScope(basePermission, scope)).ToArray();
+            var found = await _db.SetContainsAsync(KeyPrefix + userProvider.GetUserId(), keys);
+            for (var i = 0; i < found.Length; i++)
+            {
+                if (found[i])
+                    return ScopesWidestFirst[i];
+            }
+            return null;
         }
     }
 }

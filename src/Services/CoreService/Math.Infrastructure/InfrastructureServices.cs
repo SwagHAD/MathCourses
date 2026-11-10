@@ -1,4 +1,6 @@
+using Infrastructure.Access;
 using Infrastructure.Postgres;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Persistence;
@@ -10,6 +12,8 @@ namespace Infrastructure
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services, IConfiguration config)
         {
+            // Подхватывается AddSwagDbContext вместе с остальными ISaveChangesInterceptor из DI
+            services.AddSingleton<ISaveChangesInterceptor, AccessTupleInterceptor>();
             services.AddSwagDbContext<SwagDbContext>(config);
             return services;
         }

@@ -9,10 +9,14 @@ namespace Infrastructure.Persistence
         public void Configure(EntityTypeBuilder<Lesson> builder)
         {
             builder.ToTable("Lessons");
-            builder.HasKey(l => l.ID);
+            builder.HasKey(l => l.Id);
             builder.Property(l => l.Name).IsRequired().HasMaxLength(256);
-            builder.HasOne(f => f.GroupRef).WithMany()
-                .HasForeignKey(f => f.GroupID).OnDelete(DeleteBehavior.Restrict);
+            builder.Property(l => l.Description).HasMaxLength(4000);
+            // Удалить курс с уроками нельзя — сначала уроки
+            builder.HasOne(l => l.CourseRef).WithMany(c => c.Lessons)
+                .HasForeignKey(l => l.CourseId).OnDelete(DeleteBehavior.Restrict);
+            // Уроки курса читаются по порядку — индекс сразу покрывает и фильтр, и сортировку
+            builder.HasIndex(l => new { l.CourseId, l.Order });
         }
     }
 }

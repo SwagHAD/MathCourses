@@ -21,7 +21,7 @@ namespace Infrastructure.Messaging.BackgroundServices
             var message = new ObjectTypesRegisteredEvent
             {
                 ServiceType = serviceOptions.Value.ServiceType,
-                ObjectTypes = typeof(Student).Assembly.GetSecuredObjectTypes()
+                ObjectTypes = typeof(Person).Assembly.GetSecuredObjectTypes()
             };
             try
             {

@@ -13,8 +13,7 @@ namespace Infrastructure.Messaging
         {
             services.AddMassTransit(x =>
             {
-                x.AddConsumer<StudentCreationRequestedConsumer>();
-                x.AddConsumer<TeacherCreationRequestedConsumer>();
+                x.AddConsumer<PersonAccountRequestedConsumer>();
                 x.AddConsumer<ObjectTypesRegisteredConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>

@@ -46,7 +46,7 @@ namespace Swag.Web.Api.Services.Internal
             await EnsureSuccessAsync(response, cancellationToken);
         }
 
-        protected static string WithId(string url, int id) => $"{url}?id={id}";
+        protected static string WithId(string url, long id) => $"{url}?id={id}";
 
         protected static async Task EnsureSuccessAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {

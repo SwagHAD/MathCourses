@@ -6,19 +6,12 @@ using Domain.Entities;
 
 namespace Infrastructure.Messaging.Consumers
 {
-    public sealed class UserCreatedConsumer(ISwagDbContext dbContext)
-        : IConsumer<StudentUserCreatedEvent>, IConsumer<TeacherUserCreatedEvent>
+    public sealed class UserCreatedConsumer(ISwagDbContext dbContext) : IConsumer<PersonUserCreatedEvent>
     {
-        public async Task Consume(ConsumeContext<StudentUserCreatedEvent> context)
+        public async Task Consume(ConsumeContext<PersonUserCreatedEvent> context)
         {
-            await dbContext.Set<Person>().Where(s => s.Id == context.Message.PersonId)
-                .ExecuteUpdateAsync(s => s.SetProperty(s => s.UserId, context.Message.UserId));
-        }
-
-        public async Task Consume(ConsumeContext<TeacherUserCreatedEvent> context)
-        {
-            await dbContext.Set<Person>().Where(t => t.Id == context.Message.PersonId)
-                .ExecuteUpdateAsync(t => t.SetProperty(t => t.UserId, context.Message.UserId));
+            await dbContext.Set<Person>().Where(p => p.Id == context.Message.PersonId)
+                .ExecuteUpdateAsync(p => p.SetProperty(x => x.UserId, context.Message.UserId), context.CancellationToken);
         }
     }
 }

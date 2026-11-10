@@ -34,7 +34,9 @@ namespace Application.Handlers.PageHandlers
             {
                 Id = r.Id,
                 Name = r.Name,
-                PermissionIds = r.RolePermissions.Select(rp => rp.PermissionId).ToArray()
+                Permissions = r.RolePermissions
+                    .Select(rp => new RolePermissionGrant { PermissionId = rp.PermissionId, Scope = rp.Scope })
+                    .ToArray()
             };
     }
 }

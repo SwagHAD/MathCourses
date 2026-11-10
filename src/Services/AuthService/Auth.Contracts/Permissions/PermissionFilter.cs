@@ -6,7 +6,7 @@ namespace AuthService.Contracts.Permissions
     {
         /// <summary>Подстрока названия без учёта регистра.</summary>
         public string? Name { get; init; }
-        /// <summary>Имя типа объекта, например Student.</summary>
+        /// <summary>Имя типа объекта, например Person.</summary>
         public string? ObjectType { get; init; }
 
         public IEnumerable<KeyValuePair<string, string?>> ToQuery()

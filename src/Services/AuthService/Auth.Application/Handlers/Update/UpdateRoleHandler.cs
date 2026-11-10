@@ -1,10 +1,10 @@
 using Application.Commands.Update;
+using Application.Services;
 using AuthService.Contracts.Roles;
 using Domain.Entities;
 using SharedKernel.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Enums;
 using SharedKernel.Application.Interfaces;
 using SharedKernel.Cache;
 
@@ -18,35 +18,29 @@ namespace Application.Handlers.Update
                 .Include(x => x.RolePermissions)
                 .FirstOrDefaultAsync(x => x.Id == request.Data.Id, cancellationToken) ?? throw new NotFoundException(nameof(Role), request.Data.Id);
             role.Name = request.Data.Name;
-            role.RolePermissions = request.Data.PermissionIds
-                .Select(permissionId => new RolePermission
+            role.RolePermissions = request.Data.Permissions
+                .Select(grant => new RolePermission
                 {
                     RoleId = role.Id,
-                    PermissionId = permissionId
+                    PermissionId = grant.PermissionId,
+                    Scope = grant.Scope
                 }).ToList();
             await DbContext.SaveChangesAsync(cancellationToken);
 
+            // Права в кэше у всех пользователей роли сразу обновляем — иначе изменение вступит в силу только после перелогина
+            var permissions = await PermissionKeys.LoadForRoleAsync(DbContext, role.Id, cancellationToken);
             var userIds = await DbContext.Set<User>().AsNoTracking()
                 .Where(x => x.RoleId == role.Id)
                 .Select(x => x.Id)
                 .ToArrayAsync(cancellationToken);
-            var permissions = await DbContext.Set<Role>().AsNoTracking()
-                .Where(x => x.Id == role.Id)
-                .SelectMany(x => x.RolePermissions)
-                .Select(x => $"{x.PermissionRef.ObjectTypeRef.ServiceType.ToString()}:{x.PermissionRef.ObjectType}:{x.PermissionRef.ActionType.ToString()}")
-                .ToArrayAsync(cancellationToken);
-            if (userIds.Any())
-            {
-                foreach (var userId in userIds)
-                {
-                    await permissionCache.SetUserPermissionsAsync(userId, permissions);
-                }
-            }    
+            foreach (var userId in userIds)
+                await permissionCache.SetUserPermissionsAsync(userId, permissions, cancellationToken);
+
             return new RoleResponse
             {
                 Id = role.Id,
                 Name = role.Name,
-                PermissionIds = request.Data.PermissionIds.ToArray()
+                Permissions = request.Data.Permissions
             };
         }
     }

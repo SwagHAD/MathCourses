@@ -9,7 +9,7 @@ namespace Swag.Web.Api.Services.Internal
     {
         protected EntityRoutes Routes => routes;
 
-        public Task<TDetails> GetItemAsync(int id, CancellationToken cancellationToken = default) =>
+        public Task<TDetails> GetItemAsync(long id, CancellationToken cancellationToken = default) =>
             GetJsonAsync<TDetails>(WithId(routes.Get, id), cancellationToken);
 
         public Task<PageResult<TItem>> GetItemsAsync(PageRequest<TFilter> request, CancellationToken cancellationToken = default) =>

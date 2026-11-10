@@ -75,8 +75,7 @@ namespace Infrastructure.Messaging.BackgroundServices
         }
         private static Type? ResolveType(string typeName) => typeName switch
         {
-            nameof(StudentCreationRequestedEvent) => typeof(StudentCreationRequestedEvent),
-            nameof(TeacherCreationRequestedEvent) => typeof(TeacherCreationRequestedEvent),
+            nameof(PersonAccountRequestedEvent) => typeof(PersonAccountRequestedEvent),
             _ => null
         };
     }

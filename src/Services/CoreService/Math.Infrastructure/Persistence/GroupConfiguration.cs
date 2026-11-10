@@ -9,8 +9,11 @@ namespace Infrastructure.Persistence
         public void Configure(EntityTypeBuilder<Group> builder)
         {
             builder.ToTable("Groups");
-            builder.HasKey(g => g.ID);
+            builder.HasKey(g => g.Id);
             builder.Property(g => g.Name).IsRequired().HasMaxLength(100);
+            builder.HasOne(g => g.CourseRef).WithMany(c => c.Groups)
+                .HasForeignKey(g => g.CourseId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(g => g.CourseId);
         }
     }
 }

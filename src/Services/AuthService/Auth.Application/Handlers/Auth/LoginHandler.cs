@@ -1,5 +1,6 @@
 ﻿using Application.Commands.Auth;
 using Application.Interfaces;
+using Application.Services;
 using AuthService.Contracts.Auth;
 using Domain.Entities;
 using MediatR;
@@ -36,12 +37,7 @@ namespace Application.Handlers.Auth
             var rawRefreshToken = tokenProvider.GenerateRefreshToken();
             var tokenHash = ComputeHash(rawRefreshToken);
             var expiresAt = DateTimeOffset.UtcNow.AddDays(30);
-            var permissions = await authDbContext.Set<User>().AsNoTracking()
-                .Where(u => u.Id == user.Id)
-                .Select(u => u.RoleRef)
-                .SelectMany(r => r.RolePermissions)
-                .Select(rp => $"{rp.PermissionRef.ObjectTypeRef.ServiceType.ToString()}:{rp.PermissionRef.ObjectType.ToString()}:{rp.PermissionRef.ActionType.ToString()}")
-                .ToArrayAsync(cancellationToken);
+            var permissions = await PermissionKeys.LoadForRoleAsync(authDbContext, user.RoleId, cancellationToken);
 
             var session = new RefreshTokenSession
             {

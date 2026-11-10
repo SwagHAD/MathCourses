@@ -8,6 +8,6 @@ namespace Swag.Web.Api.Services.Interfaces
     {
         Task CreateAsync(TCreate request, CancellationToken cancellationToken = default);
         Task UpdateAsync(TUpdate request, CancellationToken cancellationToken = default);
-        Task DeleteAsync(int id, CancellationToken cancellationToken = default);
+        Task DeleteAsync(long id, CancellationToken cancellationToken = default);
     }
 }

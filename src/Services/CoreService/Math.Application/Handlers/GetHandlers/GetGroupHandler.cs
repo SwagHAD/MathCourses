@@ -1,7 +1,5 @@
 using Application.Queries.DefaultQueries;
 using CoreService.Contracts.Groups;
-using CoreService.Contracts.Students;
-using CoreService.Contracts.Teachers;
 using SharedKernel.Tools;
 using Domain.Entities;
 using SharedKernel.Exceptions;
@@ -15,21 +13,23 @@ namespace Application.Handlers.GetHandlers
     {
         public async Task<GroupDetailsResponse> Handle(GetGroupQuery request, CancellationToken cancellationToken)
         {
-            return await swagDbContext.Set<Group>().AsNoTracking().Where(f => f.ID == request.Id)
-                .Select(s => new GroupDetailsResponse
+            return await swagDbContext.Set<Group>().AsNoTracking().Where(g => g.Id == request.Id)
+                .Select(g => new GroupDetailsResponse
                 {
-                    Id = s.ID,
-                    Name = s.Name,
-                    Students = s.StudentGroups.Select(f => new StudentResponse
-                    {
-                        Id = f.StudentRef.StudentId,
-                        Name = f.StudentRef.PersonRef.Name
-                    }).ToArray(),
-                    Teachers = s.TeacherGroups.Select(f => new TeacherResponse
-                    {
-                        Id = f.TeacherRef.TeacherId,
-                        Name = f.TeacherRef.PersonRef.Name
-                    }).ToArray()
+                    Id = g.Id,
+                    Name = g.Name,
+                    CourseId = g.CourseId,
+                    CourseName = g.CourseRef.Name,
+                    Members = g.Members
+                        .OrderBy(m => m.Kind).ThenBy(m => m.PersonRef.FullName)
+                        .Select(m => new GroupMemberResponse
+                        {
+                            PersonId = m.PersonId,
+                            FullName = m.PersonRef.FullName,
+                            Kind = m.Kind,
+                            Status = m.Status,
+                            JoinedAt = m.JoinedAt
+                        }).ToArray()
                 }).FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(typeof(Group).GetDescription(), request.Id);
         }
     }

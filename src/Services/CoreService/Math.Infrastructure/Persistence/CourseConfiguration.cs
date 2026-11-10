@@ -9,8 +9,9 @@ namespace Infrastructure.Persistence
         public void Configure(EntityTypeBuilder<Course> builder)
         {
             builder.ToTable("Courses");
-            builder.HasKey(c => c.ID);
+            builder.HasKey(c => c.Id);
             builder.Property(c => c.Name).IsRequired().HasMaxLength(100);
+            builder.Property(c => c.Description).HasMaxLength(2000);
         }
     }
 }

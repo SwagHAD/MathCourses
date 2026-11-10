@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharedKernel.Application.Interfaces;
 using SharedKernel.Enums;
+using SharedKernel.Contracts.Access;
 using SharedKernel.Models;
 using SharedKernel.Tools;
 
@@ -80,7 +81,7 @@ namespace Application.Services
                         ActionType = action,
                     };
                     if (adminRoleId is int roleId)
-                        permission.RolePermissions.Add(new RolePermission { RoleId = roleId });
+                        permission.RolePermissions.Add(new RolePermission { RoleId = roleId, Scope = AccessScope.All });
 
                     await dbContext.Set<Permission>().AddAsync(permission, cancellationToken);
                 }

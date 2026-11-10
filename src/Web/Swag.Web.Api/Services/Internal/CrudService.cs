@@ -13,7 +13,7 @@ namespace Swag.Web.Api.Services.Internal
         public Task UpdateAsync(TUpdate request, CancellationToken cancellationToken = default) =>
             PutJsonAsync(Routes.Update, request, cancellationToken);
 
-        public Task DeleteAsync(int id, CancellationToken cancellationToken = default) =>
+        public Task DeleteAsync(long id, CancellationToken cancellationToken = default) =>
             SendDeleteAsync(WithId(Routes.Delete, id), cancellationToken);
     }
 }

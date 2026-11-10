@@ -1,7 +1,6 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SharedKernel.Enums;
 
 namespace Infrasctrure.Persistence;
 
@@ -30,12 +29,7 @@ internal sealed class PermissionConfiguration : IEntityTypeConfiguration<Permiss
             .HasMaxLength(20)
             .IsRequired();
 
-        builder.Property(x => x.ActionType)
-            .HasConversion<string>()
-            .HasMaxLength(20)
-            .IsRequired();
-
-        builder.HasIndex(x => new { x.ObjectType, x.ActionType, x.TypeAcceses })
+        builder.HasIndex(x => new { x.ObjectType, x.ActionType })
             .IsUnique();
     }
 }

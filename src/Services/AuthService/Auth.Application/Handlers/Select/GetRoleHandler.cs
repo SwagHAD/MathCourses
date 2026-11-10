@@ -17,7 +17,9 @@ namespace Application.Handlers.Select
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    PermissionIds = x.RolePermissions.Select(rp => rp.PermissionId).ToArray()
+                    Permissions = x.RolePermissions
+                    .Select(rp => new RolePermissionGrant { PermissionId = rp.PermissionId, Scope = rp.Scope })
+                    .ToArray()
                 })
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(nameof(Role), request.Id);
         }

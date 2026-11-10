@@ -1,12 +1,11 @@
 namespace CoreService.Contracts.Groups
 {
-    /// <summary>Списки студентов и преподавателей заменяются целиком.</summary>
+    /// <summary>Состав группы заменяется целиком: кого нет в списке — удаляется из группы.</summary>
     public sealed record UpdateGroupRequest
     {
-        public int Id { get; init; }
+        public long Id { get; init; }
         public string Name { get; init; } = null!;
-        public int? CourseId { get; init; }
-        public IReadOnlyList<int> StudentIds { get; init; } = [];
-        public IReadOnlyList<int> TeacherIds { get; init; } = [];
+        public long CourseId { get; init; }
+        public IReadOnlyList<GroupMemberRequest> Members { get; init; } = [];
     }
 }

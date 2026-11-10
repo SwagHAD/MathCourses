@@ -1,19 +1,29 @@
-﻿using Application.Commands.DeleteCommands;
+using Application.Commands.DeleteCommands;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Application.Interfaces;
+using SharedKernel.Exceptions;
+using SharedKernel.Tools;
 
 namespace Application.Handlers.DeleteHandlers
 {
-    public sealed class DeleteGroupHandler(ISwagDbContext DbContext) 
-        : IRequestHandler<DeleteGroupCommand, Unit>
+    /// <summary>
+    /// Через трекер, а не ExecuteDelete: участники загружаются и удаляются каскадом в памяти,
+    /// поэтому AccessTupleInterceptor видит их удаление и снимает кортежи group#learner/instructor.
+    /// При ExecuteDelete каскад сделала бы БД, и кортежи остались бы висеть.
+    /// </summary>
+    public sealed class DeleteGroupHandler(ISwagDbContext dbContext) : IRequestHandler<DeleteGroupCommand, Unit>
     {
         public async Task<Unit> Handle(DeleteGroupCommand request, CancellationToken cancellationToken)
         {
-            if (await DbContext.Set<Group>().AnyAsync(f => f.ID == request.Id))
-                throw new ArgumentException(nameof(request));
-            await DbContext.Set<Group>().Where(f => f.ID == request.Id).ExecuteDeleteAsync(cancellationToken);
+            var group = await dbContext.Set<Group>()
+                .Include(g => g.Members)
+                .FirstOrDefaultAsync(g => g.Id == request.Id, cancellationToken)
+                ?? throw new NotFoundException(typeof(Group).GetDescription(), request.Id);
+
+            dbContext.Set<Group>().Remove(group);
+            await dbContext.SaveChangesAsync(cancellationToken);
             return Unit.Value;
         }
     }

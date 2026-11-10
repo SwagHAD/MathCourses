@@ -1,4 +1,5 @@
 using Application.Commands.Update;
+using Application.Services;
 using AuthService.Contracts.Users;
 using Domain.Entities;
 using SharedKernel.Exceptions;
@@ -26,14 +27,8 @@ namespace Application.Handlers.Update
             user.RoleId = request.Data.RoleId;
 
             await DbContext.SaveChangesAsync(cancellationToken);
-            var permissions = await DbContext.Set<User>().AsNoTracking()
-                .Where(u => u.Id == user.Id)
-                .Select(u => u.RoleRef)
-                .SelectMany(r => r.RolePermissions)
-                .Select(rp => $"{rp.PermissionRef.ObjectTypeRef.ServiceType.ToString()}:{rp.PermissionRef.ObjectType.ToString()}:{rp.PermissionRef.ActionType.ToString()}")
-                .Distinct()
-                .ToArrayAsync(cancellationToken);
-            await permissionCache.SetUserPermissionsAsync(user.Id, permissions);
+            var permissions = await PermissionKeys.LoadForRoleAsync(DbContext, user.RoleId, cancellationToken);
+            await permissionCache.SetUserPermissionsAsync(user.Id, permissions, cancellationToken);
             return new UserResponse
             {
                 Id = user.Id,

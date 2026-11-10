@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence
             builder.ToTable("LessonMaterials");
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.LessonRef)
-                .WithMany()
+                .WithMany(l => l.Materials)
                 .HasForeignKey(x => x.LessonId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Property(x => x.FileName)

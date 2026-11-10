@@ -14,7 +14,7 @@ namespace Application.Handlers.UpdateHandlers
     {
         public async Task<Unit> Handle(UpdateLessonCommand request, CancellationToken cancellationToken)
         {
-            var lesson = await swagDbContext.Set<Lesson>().FirstOrDefaultAsync(f => f.ID == request.Data.Id, cancellationToken)
+            var lesson = await swagDbContext.Set<Lesson>().FirstOrDefaultAsync(f => f.Id == request.Data.Id, cancellationToken)
                 ?? throw new NotFoundException(typeof(Lesson).GetDescription(), request.Data.Id);
             mapper.Map(request.Data, lesson);
             await swagDbContext.SaveChangesAsync(cancellationToken);

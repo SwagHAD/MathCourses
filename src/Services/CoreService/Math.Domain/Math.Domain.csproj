@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\SharedKernel\SharedKernel.csproj" />
+    <!-- Перечисления, общие с клиентом (MembershipKind/Status), живут в контрактах -->
+    <ProjectReference Include="..\Math.Contracts\Math.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

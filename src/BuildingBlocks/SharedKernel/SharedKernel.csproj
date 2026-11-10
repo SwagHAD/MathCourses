@@ -1,6 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk"><!-- Общее ядро микросервисов: атрибуты, перечисления, исключения и контракты
-       доступа. Без внешних зависимостей, чтобы на него могли ссылаться Domain-проекты. -->
+<Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Общее ядро микросервисов: атрибуты, перечисления, исключения и контракты
+       доступа. Без внешних зависимостей, чтобы на него могли ссылаться Domain-проекты.
+       SharedKernel.Contracts тоже без зависимостей — оттуда AccessScope. -->
 
+  <ItemGroup>
+    <ProjectReference Include="..\SharedKernel.Contracts\SharedKernel.Contracts.csproj" />
+  </ItemGroup>
 
 </Project>

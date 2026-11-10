@@ -4,26 +4,17 @@ using SharedKernel.Entities;
 namespace Domain.Entities
 {
     /// <summary>
-    /// Группы
+    /// Группа — поток людей, проходящих один курс.
     /// </summary>
     [Title("Группа", Secured = true)]
     public sealed class Group : BaseEntity
     {
-        public int ID { get; set; }
-        /// <summary>
-        /// Имя группы
-        /// </summary>
-        public string Name { get; set; }
+        public long Id { get; set; }
+        public string Name { get; set; } = null!;
+        public long CourseId { get; set; }
+        public Course CourseRef { get; set; } = null!;
 
-        /// <summary>
-        /// Учитель
-        /// </summary>
-        public List<TeacherGroup> TeacherGroups { get; set; } = new();
-        /// <summary>
-        /// Направление группы
-        /// </summary>
-        public int? CourseID { get; set; }
-        public Course Course { get; set; }
-        public List<StudentGroup> StudentGroups { get; set; } = new();
+        public List<GroupMembership> Members { get; set; } = new();
+        public List<Session> Sessions { get; set; } = new();
     }
 }

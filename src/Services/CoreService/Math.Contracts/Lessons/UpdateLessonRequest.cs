@@ -1,9 +1,11 @@
 namespace CoreService.Contracts.Lessons
 {
+    /// <summary>Курс у урока не меняется: перенос урока в другой курс — это новый урок.</summary>
     public sealed record UpdateLessonRequest
     {
-        public int Id { get; init; }
+        public long Id { get; init; }
         public string Name { get; init; } = null!;
-        public int? GroupId { get; init; }
+        public string? Description { get; init; }
+        public int Order { get; init; }
     }
 }

@@ -5,6 +5,6 @@ namespace Application.Queries.DefaultQueries
 {
     public sealed record GetGroupQuery : IQuery<GroupDetailsResponse>
     {
-        public int Id { get; init; }
+        public long Id { get; init; }
     }
 }

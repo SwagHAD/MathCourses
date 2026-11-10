@@ -5,6 +5,6 @@ namespace Application.Commands.DeleteCommands
 {
     public sealed record DeleteGroupCommand : ICommand<Unit>
     {
-        public int Id { get; init; }
+        public long Id { get; init; }
     }
 }
